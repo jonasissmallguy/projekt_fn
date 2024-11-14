@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Page</title>
+    <link rel="stylesheet" href="/components/navbar/navbar.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navbar placeholder -->
+    <div id="navbar-container"></div>
+
+    <!-- Your page content here -->
+    <div id="main-content">
+        <!-- Page specific content -->
+    </div>
+
+    <script type="module">
+        import { loadComponent } from '/js/utils.js';
+        import { initializeNavbar } from '/components/navbar/navbar.js';
+
+        // When page loads
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Load navbar HTML
+            await loadComponent('navbar-container', '/components/navbar/navbar.html');
+            // Initialize navbar functionality
+            await initializeNavbar();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Country Information</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+    </style>
+</head>
+
+<link rel="stylesheet" href="/styles.css">
+<body>
+    <div id="country-info">
+        <div class="country-header">
+            <!-- Flag and name will be inserted here -->
+        </div>
+        <div id="visualizations">
+            <!-- D3 visualizations will be inserted here -->
+        </div>
+    </div>
+
+    <script>
+
+        async function loadCountryData() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const countryId = urlParams.get('id');
+            
+            if (!countryId) {
+                showError('No country specified');
+                return;
+            }
+
+            try {
+                showLoading();
+                const response = await fetch(`/api/countries/${countryId}`);
+                if (!response.ok) {
+                    throw new Error('Country not found');
+                }
+                
+                const countryData = await response.json();
+                displayCountryHeader(countryData);
+                createVisualizations(countryData);
+                hideLoading();
+            } catch (error) {
+                console.error('Error loading country data:', error);
+                showError('Error loading country data');
+            }
+        }
+
+        function displayCountryHeader(countryData) {
+            const header = document.querySelector('.country-header');
+            
+            // Clear existing content
+            header.innerHTML = '';
+            
+            // Create and add flag image
+            const flagImg = document.createElement('img');
+            flagImg.className = 'country-flag';
+            flagImg.src = `/images/flags/${countryData.country_iso.toLowerCase()}.png`; //country iso er med stort i db. 
+            flagImg.alt = `Flag of ${countryData.country_name}`;
+            
+            // Add error handling for flag image
+            flagImg.onerror = function() {
+                this.src = '/images/flags/placeholder.png';
+                console.warn(`Flag not found for ${countryData.country_iso}`);
+            };
+            
+            // Create and add country name
+            const nameH1 = document.createElement('h1');
+            nameH1.className = 'country-name';
+            nameH1.textContent = countryData.country_name;
+            
+            // Add elements to header
+            header.appendChild(flagImg);
+            header.appendChild(nameH1);
+            
+            // Update page title
+            document.title = `${countryData.country_name} - Country Information`;
+        }
+
+        function createVisualizations(countryData) {
+            const visualizations = document.getElementById('visualizations');
+            // Add your D3 visualizations here
+            // This is a placeholder for your actual visualization code
+        }
+
+        function showLoading() {
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'loading';
+            loadingDiv.textContent = 'Loading country data...';
+            document.getElementById('country-info').appendChild(loadingDiv);
+        }
+
+        function hideLoading() {
+            const loadingDiv = document.querySelector('.loading');
+            if (loadingDiv) {
+                loadingDiv.remove();
+            }
+        }
+
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error';
+            errorDiv.textContent = message;
+            document.getElementById('country-info').innerHTML = '';
+            document.getElementById('country-info').appendChild(errorDiv);
+        }
+
+        // Load country data when the page loads
+        document.addEventListener('DOMContentLoaded', loadCountryData);
+    </script>
+</body>
+</html>
