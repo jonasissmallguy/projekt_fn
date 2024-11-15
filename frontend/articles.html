@@ -1,30 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Your Page</title>
+    <title>Sources</title>
+    <!-- Note the paths start with / because of express.static -->
     <link rel="stylesheet" href="/components/navbar/navbar.css">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/components/footer/footer.css">
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-    <!-- Navbar placeholder -->
     <div id="navbar-container"></div>
 
-    <!-- Your page content here -->
     <div id="main-content">
-        <!-- Page specific content -->
+        <!-- Your page content here -->
     </div>
 
-    <script type="module">
-        import { loadComponent } from '/js/utils.js';
-        import { initializeNavbar } from '/components/navbar/navbar.js';
+    <div id="footer-container"></div>
 
-        // When page loads
-        document.addEventListener('DOMContentLoaded', async () => {
-            // Load navbar HTML
-            await loadComponent('navbar-container', '/components/navbar/navbar.html');
-            // Initialize navbar functionality
-            await initializeNavbar();
-        });
+    <script type="module">
+        import { initializePage } from '/js/utils/pageLoader.js';
+        document.addEventListener('DOMContentLoaded', initializePage);
     </script>
 </body>
 </html>
