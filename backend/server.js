@@ -2,6 +2,7 @@ import express from 'express';
 import pg from 'pg';
 import dotenv from 'dotenv';
 
+//load .env
 dotenv.config();
 console.log('Connecting to database', process.env.PG_DATABASE);
 
@@ -14,7 +15,7 @@ const db = new pg.Pool({
     password: process.env.PG_PASSWORD
 });
 
-//
+//connect
 const dbResult = await db.query('select now()');
 console.log('Database connection established on', dbResult.rows[0].now);
 
@@ -44,9 +45,9 @@ function onServerReady() {
 // Get all continents
 server.get('/api/continents', async (request, response) => {
     const query = `
-        SELECT continent_id, continent_name 
-        FROM continents 
-        ORDER BY continent_name`;
+        select continent_id, continent_name 
+        from continents 
+        order by continent_name`;
     const dbResult = await db.query(query);
     response.json(dbResult.rows);
 });
@@ -54,11 +55,11 @@ server.get('/api/continents', async (request, response) => {
 // Get countries by continent
 server.get('/api/continents/:continentId/countries', async (request, response) => {
     const query = `
-        SELECT c.country_id, c.country_name, c.country_iso
-        FROM countries c
-        JOIN continents cont ON c.continent_id = cont.continent_id
-        WHERE c.continent_id = $1
-        ORDER BY c.country_name`;
+        select c.country_id, c.country_name, c.country_iso
+        from countries c
+        join continents cont on c.continent_id = cont.continent_id
+        where c.continent_id = $1
+        order by c.country_name`;
     const dbResult = await db.query(query, [request.params.continentId]);
     response.json(dbResult.rows);
 });
@@ -66,15 +67,15 @@ server.get('/api/continents/:continentId/countries', async (request, response) =
 // Get specific country data
 server.get('/api/countries/:countryId', async (request, response) => {
     const query = `
-        SELECT 
+        select 
             c.country_id, 
             c.country_name, 
             c.country_iso,
             cont.continent_name,
             cont.continent_id
-        FROM countries c
-        JOIN continents cont ON c.continent_id = cont.continent_id
-        WHERE c.country_id = $1`;
+        from countries c
+        join continents cont on c.continent_id = cont.continent_id
+        where c.country_id = $1`;
     const dbResult = await db.query(query, [request.params.countryId]);
     if (dbResult.rows.length === 0) {
         response.status(404).json({ error: 'Country not found' });
