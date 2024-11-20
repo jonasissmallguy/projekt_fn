@@ -3,12 +3,52 @@
 <head>
     <title>Country Information</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
-        <link rel="stylesheet" href="/components/navbar/navbar.css">
-        <link rel="stylesheet" href="/components/footer/footer.css">
-        <link rel="stylesheet" href="/styles.css">
-</head>
+    <link rel="stylesheet" href="/components/navbar/navbar.css">
+    <link rel="stylesheet" href="/components/footer/footer.css">
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        .country-header {
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
 
-<link rel="stylesheet" href="/styles.css">
+        .country-flag {
+            max-width: 150px;
+            margin-bottom: 15px;
+        }
+
+        .country-name {
+            margin: 10px 0;
+            color: #333;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 20px;
+            text-align: center;
+        }
+
+        .chart {
+            width: 100%;
+            height: 100%;
+        }
+
+        .tooltip {
+            position: absolute;
+            padding: 8px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            pointer-events: none;
+            font-size: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
 <body>
     <div id="navbar-container"></div>
     <div id="country-info">
@@ -16,102 +56,383 @@
             <!-- Flag and name will be inserted here -->
         </div>
         <div id="visualizations">
-            <!-- D3 visualizations will be inserted here -->
+            <!-- D3 visualization will be inserted here -->
         </div>
     </div>
+
     <script type="module">
         import { initializePage } from '/js/utils/pageLoader.js';
         document.addEventListener('DOMContentLoaded', initializePage);
     </script>
-    <script>
 
+    <div id="footer-container"></div>
+
+
+    <script>
         async function loadCountryData() {
             const urlParams = new URLSearchParams(window.location.search);
             const countryId = urlParams.get('id');
             
             if (!countryId) {
-                showError('No country specified');
+                console.error('No country specified');
                 return;
             }
 
             try {
-                showLoading();
                 const response = await fetch(`/api/countries/${countryId}`);
-                if (!response.ok) {
-                    throw new Error('Country not found');
-                }
+                if (!response.ok) throw new Error('Country not found');
                 
                 const countryData = await response.json();
-                displayCountryHeader(countryData);
+                displayCountryHeader(countryData[0]); // Use first item for country info
                 createVisualizations(countryData);
-                hideLoading();
             } catch (error) {
                 console.error('Error loading country data:', error);
-                showError('Error loading country data');
             }
         }
 
         function displayCountryHeader(countryData) {
             const header = document.querySelector('.country-header');
             
-            // Clear existing content
             header.innerHTML = '';
         
-            // Create and add flag image
             const flagImg = document.createElement('img');
             flagImg.className = 'country-flag';
-            flagImg.src = `/images/flags/${countryData.country_iso.toLowerCase()}.png`; //country iso er med stort i db. 
+            flagImg.src = `/images/flags/${countryData.country_iso.toLowerCase()}.png`;
             flagImg.alt = `Flag of ${countryData.country_name}`;
             
-            // Add error handling for flag image
             flagImg.onerror = function() {
                 this.src = '/images/flags/placeholder.png';
-                console.warn(`Flag not found for ${countryData.country_iso}`);
             };
             
-            // Create and add country name
             const nameH1 = document.createElement('h1');
             nameH1.className = 'country-name';
             nameH1.textContent = countryData.country_name;
-            
-    
-            // Add elements to header
+        
             header.appendChild(flagImg);
             header.appendChild(nameH1);
             
-            // Update page title
-            document.title = `${countryData.country_name} - Country Information`;
+            document.title = `${countryData.country_name} - Country Page`;
         }
 
         function createVisualizations(countryData) {
             const visualizations = document.getElementById('visualizations');
-            // Add your D3 visualizations here
-            // This is a placeholder for your actual visualization code
+            visualizations.innerHTML = `
+                <div class="chart-container">
+                <div id="giniChart" class="chart">
+                    <h3>Gini Coefficient Over Time</h3> 
+                    <div class="chart-content"></div>
+                </div>
+                <div id="fertilityChart" class="chart">
+                    <h3>Fertility Rate Trends</h3>
+                    <div class="chart-content"></div>
+                </div>
+                <div id="gdpChart" class="chart">
+                    <h3>GDP per capital</h3>
+                    <div class="chart-content"></div>
+                </div>
+            </div>
+            `;
+
+            const timeData = countryData
+                .map(d => ({
+                    year: parseInt(d.year),
+                    gini: parseFloat(d.gini),
+                    palma: parseFloat(d.palma_ratio),
+                    avg_continent_gini: parseFloat(d.continent_avg_gini),
+                    fertility: parseFloat(d.fertility_rate),
+                    avg_continent_fertility: parseFloat(d.continent_avg_fertility),
+                    gdp_citizen: parseFloat(d.gdp_per_citizen),
+                    avg_continent_gdp_citizen: parseFloat(d.continent_avg_gdp_per_citizen)
+                }))
+                .sort((a, b) => a.year - b.year);
+
+            createGiniChart(timeData);
+            createFertilityChart(timeData);
+            createGDPcitizenChart(timeData);
         }
 
-        function showLoading() {
-            const loadingDiv = document.createElement('div');
-            loadingDiv.className = 'loading';
-            loadingDiv.textContent = 'Loading country data...';
-            document.getElementById('country-info').appendChild(loadingDiv);
+        function createGiniChart(data) {
+            const margin = {top: 40, right: 30, bottom: 50, left: 60};
+            const width = 800 - margin.left - margin.right;
+            const height = 400 - margin.top - margin.bottom;
+
+            const svg = d3.select("#giniChart")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
+
+            const x = d3.scaleLinear()
+                .domain(d3.extent(data, d => d.year))
+                .range([0, width]);
+
+            const y = d3.scaleLinear()
+            .domain([
+                d3.min(data, d => Math.min(d.gini, d.avg_continent_gini)) * 0.9, 
+                d3.max(data, d => Math.max(d.gini, d.avg_continent_gini)) * 1.1
+            ])
+            .range([height, 0]);
+
+            // X axis
+            svg.append("g")
+                .attr("transform", `translate(0,${height})`)
+                .call(d3.axisBottom(x)
+                    .tickFormat(d3.format("d"))
+                    .ticks(data.length))
+                .selectAll("text")
+                .style("text-anchor", "end")
+                .attr("dx", "-.8em")
+                .attr("dy", ".15em")
+                .attr("transform", "rotate(-45)");
+
+            //title
+            svg.append("text")
+            .attr("x",0)
+            .attr("y",-5)
+            .attr("text-anchor","left")
+            .style("font-size","16px")
+            .text("Change in gini-coefficient")
+
+            // Y axis
+            svg.append("g")
+                .call(d3.axisLeft(y)
+                    .tickFormat(d => d));
+
+            // Create the line
+            const line_country = d3.line()
+                .x(d => x(d.year))
+                .y(d => y(d.gini));
+
+            // Create the benchmark line
+            const line_benchmark = d3.line()
+            .x(d => x(d.year))
+            .y(d => y(d.avg_continent_gini));
+
+            // Add path for country_line
+            const path_country = svg.append("path")
+            .datum(data)
+            .attr("fill", "none")
+            .attr("stroke", "darkblue")
+            .attr("stroke-width", 2)
+            .attr("d", line_country);
+
+            // Animate the country line
+            const path_countryLength = path_country.node().getTotalLength();
+            path_country
+            .attr("stroke-dasharray", path_countryLength)
+            .attr("stroke-dashoffset", path_countryLength)
+            .transition()
+            .duration(2000)
+            .attr("stroke-dashoffset", 0);
+
+            // Create the benchmark line path
+            const benchmarkPath = svg.append("path") 
+            .datum(data)
+            .attr("fill", "none")
+            .attr("stroke", "steelblue")
+            .attr("stroke-width", 2)
+            .attr("d", line_benchmark);
+
+            // Animate the benchmark line
+            const benchmarkPathLength = benchmarkPath.node().getTotalLength();
+            benchmarkPath
+            .attr("stroke-dasharray", benchmarkPathLength)
+            .attr("stroke-dashoffset", benchmarkPathLength)  
+            .transition()
+            .duration(2000)
+            .attr("stroke-dashoffset", 0);
         }
 
-        function hideLoading() {
-            const loadingDiv = document.querySelector('.loading');
-            if (loadingDiv) {
-                loadingDiv.remove();
-            }
+        function createFertilityChart(data) {
+            const margin = {top: 40, right: 30, bottom: 50, left: 60};
+            const width = 800 - margin.left - margin.right;
+            const height = 400 - margin.top - margin.bottom;
+
+            const svg = d3.select("#fertilityChart")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
+
+            const x = d3.scaleLinear()
+                .domain(d3.extent(data, d => d.year))
+                .range([0, width]);
+
+            //scale on min/max of fertility or continent fertility
+            const y = d3.scaleLinear()
+            .domain([
+                d3.min(data, d => Math.min(d.fertility, d.avg_continent_fertility)) * 0.9, 
+                d3.max(data, d => Math.max(d.fertility, d.avg_continent_fertility)) * 1.1
+            ])
+            .range([height, 0]);
+
+            // X axis
+            svg.append("g")
+                .attr("transform", `translate(0,${height})`)
+                .call(d3.axisBottom(x)
+                    .tickFormat(d3.format("d"))
+                    .ticks(data.length))
+                .selectAll("text")
+                .style("text-anchor", "end")
+                .attr("dx", "-.8em")
+                .attr("dy", ".15em")
+                .attr("transform", "rotate(-45)");
+
+            svg.append("text")
+            .attr("x",0)
+            .attr("y",-5)
+            .attr("text-anchor","left")
+            .style("font-size","16px")
+            .text("Change in fertility")
+
+            // Y axis
+            svg.append("g")
+                .call(d3.axisLeft(y)
+                    .tickFormat(d => d));
+
+            // Create the line
+            const line_country = d3.line()
+                .x(d => x(d.year))
+                .y(d => y(d.fertility));
+
+            // Create the benchmark line
+            const line_benchmark = d3.line()
+            .x(d => x(d.year))
+            .y(d => y(d.avg_continent_fertility));
+
+            // Add path for country_line
+            const path_country = svg.append("path")
+            .datum(data)
+            .attr("fill", "none")
+            .attr("stroke", "darkblue")
+            .attr("stroke-width", 2)
+            .attr("d", line_country);
+
+            // Animate the country line
+            const path_countryLength = path_country.node().getTotalLength();
+            path_country
+            .attr("stroke-dasharray", path_countryLength)
+            .attr("stroke-dashoffset", path_countryLength)
+            .transition()
+            .duration(2000)
+            .attr("stroke-dashoffset", 0);
+
+            // Create the benchmark line path
+            const benchmarkPath = svg.append("path") 
+            .datum(data)
+            .attr("fill", "none")
+            .attr("stroke", "steelblue")
+            .attr("stroke-width", 2)
+            .attr("d", line_benchmark);
+
+            // Animate the benchmark line
+            const benchmarkPathLength = benchmarkPath.node().getTotalLength();
+            benchmarkPath
+            .attr("stroke-dasharray", benchmarkPathLength)
+            .attr("stroke-dashoffset", benchmarkPathLength)  
+            .transition()
+            .duration(2000)
+            .attr("stroke-dashoffset", 0);
         }
 
-        function showError(message) {
-            const errorDiv = document.createElement('div');
-            errorDiv.className = 'error';
-            errorDiv.textContent = message;
-            document.getElementById('country-info').innerHTML = '';
-            document.getElementById('country-info').appendChild(errorDiv);
+        
+        function createGDPcitizenChart(data) {
+            const margin = {top: 40, right: 30, bottom: 50, left: 60};
+            const width = 800 - margin.left - margin.right;
+            const height = 400 - margin.top - margin.bottom;
+
+            const svg = d3.select("#gdpChart")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
+
+            const x = d3.scaleLinear()
+                .domain(d3.extent(data, d => d.year))
+                .range([0, width]);
+
+            const y = d3.scaleLinear()
+            .domain([
+            d3.min(data, d => Math.min(d.gdp_citizen, d.avg_continent_gdp_citizen)) * 0.9, 
+            d3.max(data, d => Math.max(d.gdp_citizen, d.avg_continent_gdp_citizen)) * 1.1
+            ])
+            .range([height, 0]);
+
+            
+
+            // X axis
+            svg.append("g")
+                .attr("transform", `translate(0,${height})`)
+                .call(d3.axisBottom(x)
+                    .tickFormat(d3.format("d"))
+                    .ticks(data.length))
+                .selectAll("text")
+                .style("text-anchor", "end")
+                .attr("dx", "-.8em")
+                .attr("dy", ".15em")
+                .attr("transform", "rotate(-45)");
+
+
+            svg.append("text")
+            .attr("x",0)
+            .attr("y",-5)
+            .attr("text-anchor","left")
+            .style("font-size","16px")
+            .text("Change in GDP/citizen (USD)")
+
+            // Y axis
+            svg.append("g")
+                .call(d3.axisLeft(y)
+                    .tickFormat(d => d));
+
+            // Create the line
+            const line_country = d3.line()
+                .x(d => x(d.year))
+                .y(d => y(d.gdp_citizen));
+
+            // Create the benchmark line
+            const line_benchmark = d3.line()
+            .x(d => x(d.year))
+            .y(d => y(d.avg_continent_gdp_citizen));
+
+            // Add path for country_line
+            const path_country = svg.append("path")
+            .datum(data)
+            .attr("fill", "none")
+            .attr("stroke", "darkblue")
+            .attr("stroke-width", 2)
+            .attr("d", line_country);
+
+            // Animate the country line
+            const path_countryLength = path_country.node().getTotalLength();
+            path_country
+            .attr("stroke-dasharray", path_countryLength)
+            .attr("stroke-dashoffset", path_countryLength)
+            .transition()
+            .duration(2000)
+            .attr("stroke-dashoffset", 0);
+
+            // Create the benchmark line path
+            const benchmarkPath = svg.append("path") 
+            .datum(data)
+            .attr("fill", "none")
+            .attr("stroke", "steelblue")
+            .attr("stroke-width", 2)
+            .attr("d", line_benchmark);
+
+            // Animate the benchmark line
+            const benchmarkPathLength = benchmarkPath.node().getTotalLength();
+            benchmarkPath
+            .attr("stroke-dasharray", benchmarkPathLength)
+            .attr("stroke-dashoffset", benchmarkPathLength)  
+            .transition()
+            .duration(2000)
+            .attr("stroke-dashoffset", 0);
         }
 
-        // Load country data when the page loads
         document.addEventListener('DOMContentLoaded', loadCountryData);
     </script>
 </body>

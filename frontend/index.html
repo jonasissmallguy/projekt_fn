@@ -1,51 +1,424 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Home</title>
-    <!-- Note the paths start with / because of express.static -->
+    <title>World Economic Map</title>
     <link rel="stylesheet" href="/components/navbar/navbar.css">
     <link rel="stylesheet" href="/components/footer/footer.css">
     <link rel="stylesheet" href="/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <style>
+        .map-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .country {
+            stroke: #fff;
+            stroke-width: 0.5;
+            transition: all 0.2s;
+        }
+        
+        .country:hover {
+            stroke: #000;
+            stroke-width: 1;
+            cursor: pointer;
+        }
+
+        #map {
+            margin-top: 20px;
+            position: relative;
+        }
+
+        /* Timeline Controls */
+        .timeline-controls {
+            width: 80%;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .play-button {
+            padding: 8px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        #yearSlider {
+            flex-grow: 1;
+            height: 8px;
+        }
+
+        .year-display {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        /* Info Box */
+        #country-info {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            min-width: 300px;
+        }
+
+        .info-heading {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            margin-bottom: 15px;
+        }
+
+        #view-more-btn {
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #close-info {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            border: none;
+            background: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+
+        /* Legend */
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border: 1px solid #ccc;
+        }
+    </style>
 </head>
 <body>
     <div id="navbar-container"></div>
-
-    <div id="main-content">
-        <!-- Your page content here -->
-    </div>
-
-    <div class="header">
-        <h1>Welcome to the Home Page</h1>
-    </div>
-
-    <div class="information">
-        <h5>World Bank, Poverty and Inequality Platform. Data are based on primary household survey data obtained from government statistical agencies and World Bank country departments. Data for high-income economies are mostly from the Luxembourg Income Study database. For more information and methodology, please see pip.worldbank.org.</h5>
     
-    <script type="module">
-        import { initializePage } from '/js/utils/pageLoader.js';
-        document.addEventListener('DOMContentLoaded', initializePage);
+    <div class="map-container">
+        <h1>World Economic Inequality Map</h1>
+        <div class="information">
+            <p>World Bank, Poverty and Inequality Platform. Data based on primary household survey data.</p>
+        </div>
+
+        <!-- Timeline Controls -->
+        <div class="timeline-controls">
+            <button id="playButton" class="play-button">▶ Play</button>
+            <div class="year-display">
+                Year: <span id="currentYear">1990</span>
+            </div>
+            <div class="slider-container">
+                <span>1990</span>
+                <input type="range" id="yearSlider" min="1990" max="2020" value="1990" step="1">
+                <span>2020</span>
+            </div>
+        </div>
+
+        <div id="map"></div>
+        <div id="legend" class="legend"></div>
+
+        <!-- Overlay -->
+        <div id="overlay"></div>
+
+        <!-- Country Info Box -->
+        <div id="country-info">
+            <button id="close-info">&times;</button>
+            <div class="info-heading">Country:</div>
+            <div id="info-country" class="info-value"></div>
+            <div class="info-heading">Year:</div>
+            <div id="info-year" class="info-value"></div>
+            <div class="info-heading">GINI:</div>
+            <div id="info-gini" class="info-value"></div>
+            <div class="info-heading">Palma Ratio:</div>
+            <div id="info-palma" class="info-value"></div>
+            <button id="view-more-btn">View more country data</button>
+        </div>
+    </div>
+
+    <script>
+        let animationInterval;
+        let isPlaying = false;
+        let worldData;
+        let geoJsonData;
+
+        async function createMap() {
+            const width = 960;
+            const height = 500;
+            const svg = d3.select("#map")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            const projection = d3.geoMercator()
+                .scale(120)
+                .center([0, 20])
+                .translate([width / 2, height / 2]);
+
+            const path = d3.geoPath().projection(projection);
+
+            const colorScale = d3.scaleSequential(d3.interpolateReds)
+                .domain([20, 65]);
+
+            // Setup event listeners
+            setupEventListeners();
+
+            try {
+                // Load data
+                const [geoData, economicData] = await Promise.all([
+                    d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"),
+                    fetch('/api/world_data').then(res => res.json())
+                ]);
+
+                geoJsonData = geoData;
+                worldData = economicData.data;
+
+                // Create legend
+                createLegend(colorScale);
+
+                // Draw initial map
+                drawMap(svg, geoData, worldData['1990'], colorScale, path);
+
+                // Setup timeline
+                setupTimeline(Object.keys(worldData));
+
+            } catch (error) {
+                console.error('Error loading data:', error);
+            }
+        }
+
+        function setupEventListeners() {
+            // Close info box handlers
+            document.getElementById('close-info').onclick = closeInfoBox;
+            document.getElementById('overlay').onclick = closeInfoBox;
+        }
+
+        function closeInfoBox() {
+            document.getElementById('country-info').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        function createLegend(colorScale) {
+            const legendValues = [20, 30, 40, 50, 60, 65];
+            const legend = d3.select("#legend");
+            
+            legendValues.forEach(value => {
+                const div = legend.append("div")
+                    .attr("class", "legend-item");
+                
+                div.append("div")
+                    .attr("class", "legend-color")
+                    .style("background-color", colorScale(value));
+                
+                div.append("span")
+                    .text(`GINI: ${value}`);
+            });
+        }
+
+        function setupTimeline(years) {
+            const slider = document.getElementById('yearSlider');
+            const playButton = document.getElementById('playButton');
+
+            slider.addEventListener('input', (e) => {
+                updateYear(e.target.value);
+            });
+
+            playButton.addEventListener('click', togglePlay);
+        }
+
+        function togglePlay() {
+            if (isPlaying) {
+                stopAnimation();
+            } else {
+                // check if we are at max year 
+                const slider = document.getElementById('yearSlider');
+                if (parseInt(slider.value) >= parseInt(slider.max)) {
+                    //reset to start year
+                    slider.value = slider.min;
+                    updateYear(slider.min);
+                }
+                startAnimation();
+            }
+        }
+
+        function startAnimation() {
+            const slider = document.getElementById('yearSlider');
+            const playButton = document.getElementById('playButton');
+            
+            isPlaying = true;
+            playButton.textContent = '⏸ Pause';
+
+            animationInterval = setInterval(() => {
+                let year = parseInt(slider.value);
+                if (year >= parseInt(slider.max)) {
+                    // Stop the animation when reaching max year
+                    stopAnimation();
+                    return;
+                }
+                year++;
+                slider.value = year;
+                updateYear(year);
+            }, 1000);
+        }
+
+        function stopAnimation() {
+            const playButton = document.getElementById('playButton');
+            
+            isPlaying = false;
+            playButton.textContent = '▶ Play';
+            clearInterval(animationInterval);
+        }
+
+        function updateYear(year) {
+            document.getElementById('currentYear').textContent = year;
+            drawMap(
+                d3.select("#map svg"),
+                geoJsonData,
+                worldData[year],
+                d3.scaleSequential(d3.interpolateReds).domain([20, 65]),
+                d3.geoPath().projection(d3.geoMercator()
+                    .scale(120)
+                    .center([0, 20])
+                    .translate([960 / 2, 500 / 2]))
+            );
+        }
+
+        function drawMap(svg, geoData, yearData, colorScale, path) {
+            // Update paths
+            svg.selectAll("path")
+                .data(geoData.features)
+                .join("path")
+                .attr("d", path)
+                .attr("class", "country")
+                .transition()
+                .duration(200)
+                .attr("fill", d => {
+                    const countryData = yearData?.[d.properties.name];
+                    if (!countryData) return "#ccc";
+                    const giniValue = parseFloat(countryData.gini);
+                    return !isNaN(giniValue) ? colorScale(giniValue) : "#ccc";
+                });
+
+            // Add click handlers (outside transition)
+            svg.selectAll("path")
+                .on("click", (event, d) => {
+                    const countryData = yearData?.[d.properties.name];
+                    if (countryData) {
+                        // Log the country data to verify we have the correct information
+                        console.log('Click handler - Country data:', {
+                            name: d.properties.name,
+                            countryId: countryData.countryId,
+                            fullData: countryData
+                        });
+                        showCountryInfo(d.properties.name, countryData);
+                    }
+                });
+        }
+
+        function showCountryInfo(countryName, countryData) {
+            // Parse numeric values
+            const giniValue = parseFloat(countryData.gini);
+            const palmaValue = parseFloat(countryData.palmaRatio);
+
+            // Update info box content
+            document.getElementById('info-country').textContent = countryName;
+            document.getElementById('info-year').textContent = 
+                document.getElementById('currentYear').textContent;
+            document.getElementById('info-gini').textContent = 
+                !isNaN(giniValue) ? giniValue.toFixed(1) : 'N/A';
+            document.getElementById('info-palma').textContent = 
+                !isNaN(palmaValue) ? palmaValue.toFixed(2) : 'N/A';
+
+            // Setup view more button with correct URL
+            const viewMoreBtn = document.getElementById('view-more-btn');
+            viewMoreBtn.onclick = (e) => {
+                e.preventDefault(); // Prevent any default action
+                
+                // Get the countryId from the data
+                const countryId = countryData.countryId;
+                console.log('Navigating to country:', countryId);
+
+                if (countryId) {
+                    // Construct the URL with the correct format
+                    const url = `/country.html?id=${countryId}`;
+                    // Navigate to the country page
+                    window.location.href = url;
+                } else {
+                    console.error('No country ID found for:', countryName);
+                }
+            };
+
+            // Show info box
+            document.getElementById('country-info').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        // Initialize the map when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            createMap();
+            import('/js/utils/pageLoader.js').then(module => {
+                module.initializePage();
+            });
+        });
     </script>
-    
-    <div class="tekst1">
-        <h5>tekst</h5>
-    <div class="tekst2">
-        <h5>tekst</h5>
-        <div class="tekst2">
-            <h5>tekst</h5>
-            <div class="tekst2">
-                <h5>tekst</h5>
-                <div class="tekst2">
-                    <h5>tekst</h5>
-                    <div class="tekst1">
-                        <h5>tekst</h5>
-                    <div class="tekst2">
-                        <h5>tekst</h5>
-                        <div class="tekst2">
-                            <h5>tekst</h5>
-                            <div class="tekst2">
-                                <h5>tekst</h5>
-                                <div class="tekst2">
-                                    <h5>tekst</h5>
     <div id="footer-container"></div>
+
 </body>
 </html>
