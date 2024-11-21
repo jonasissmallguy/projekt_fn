@@ -32,7 +32,28 @@
             position: relative;
         }
 
-        /* Timeline Controls */
+        .metric-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .metric-button {
+            padding: 8px 20px;
+            border: 2px solid #007bff;
+            background: white;
+            color: #007bff;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .metric-button.active {
+            background: #007bff;
+            color: white;
+        }
+
         .timeline-controls {
             width: 80%;
             max-width: 800px;
@@ -70,7 +91,6 @@
             margin: 10px 0;
         }
 
-        /* Info Box */
         #country-info {
             display: none;
             position: fixed;
@@ -125,7 +145,6 @@
             z-index: 999;
         }
 
-        /* Legend */
         .legend {
             display: flex;
             justify-content: center;
@@ -148,6 +167,106 @@
             height: 20px;
             border: 1px solid #ccc;
         }
+
+        .content-wrapper {
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .left-column {
+            padding-right: 40px;
+        }
+
+        .right-column {
+            padding-top: 28px; /* Aligns with the main heading */
+        }
+
+        .tagline {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .main-term h1 {
+            font-size: 24px;
+            color: #333;
+            margin: 0 0 16px 0;
+            font-weight: normal;
+        }
+
+        .main-term p {
+            color: #666;
+            line-height: 1.6;
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .term-container {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 24px;
+            gap: 12px;
+        }
+
+        .icon-wrapper {
+            background-color: #f5f5f5;
+            padding: 8px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .icon-wrapper i {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .term-content h2 {
+            font-size: 16px;
+            color: #333;
+            margin: 0 0 4px 0;
+            font-weight: normal;
+        }
+
+        .term-content p {
+            color: #666;
+            margin: 0;
+            line-height: 1.4;
+            font-size: 14px;
+        }
+
+        .icon-image {
+        width: 50px;  
+        height: 30px;
+        object-fit: contain;
+        }   
+
+        .article-image {
+        width: 100%; /* Ensures the image spans the full width of its container */
+        height: 200px; /* Sets a consistent height for the image area */
+        background-color: #f0f0f0; /* Placeholder background color */
+        border-radius: 4px; /* Adds slight rounding for a polished look */
+        margin-bottom: 15px; /* Adds spacing below the image */
+        }
+
+        h2 {
+            font-size: 18px; /* Sets a readable font size */
+            margin: 10px 0; /* Adds vertical spacing around the heading */
+            color: #333; /* Uses a neutral dark color */
+            font-weight: 500; /* Medium font weight for readability */
+            text-align: center; /* Ensures the heading text is centered */
+        }
+
+        .map-container h1 {
+            text-align: center; /* Centers the text within the container */
+            margin-bottom: 20px; /* Adds spacing below the title */
+        }
+
+
     </style>
 </head>
 <body>
@@ -159,7 +278,11 @@
             <p>World Bank, Poverty and Inequality Platform. Data based on primary household survey data.</p>
         </div>
 
-        <!-- Timeline Controls -->
+        <div class="metric-toggle">
+            <button class="metric-button active" data-metric="gini">GINI</button>
+            <button class="metric-button" data-metric="palma">Palma</button>
+        </div>
+
         <div class="timeline-controls">
             <button id="playButton" class="play-button">▶ Play</button>
             <div class="year-display">
@@ -174,11 +297,9 @@
 
         <div id="map"></div>
         <div id="legend" class="legend"></div>
-
-        <!-- Overlay -->
         <div id="overlay"></div>
 
-        <!-- Country Info Box -->
+
         <div id="country-info">
             <button id="close-info">&times;</button>
             <div class="info-heading">Country:</div>
@@ -191,63 +312,213 @@
             <div id="info-palma" class="info-value"></div>
             <button id="view-more-btn">View more country data</button>
         </div>
+
+        <div class="content-wrapper">
+            <div class="left-column">
+                <div class="main-term">
+                    <h1>Uligheds-termer</h1>
+                    <p>Lorem ipsum dolor sit amet et delectus accommodate his consul copiosae legendos at vix ad putent delectus delicata usu. Vidit dissentiet eos cu eum an brute copiosae hendrerit. Eos erant dolorum an.</p>
+                </div>
+            </div>
+            
+            <div class="right-column">
+                <div class="term-container">
+                    <div class="icon-wrapper">
+                        <img src="./images/icons/gini.png" alt="Gini icon" class="icon-image">
+                    </div>
+                    <div class="term-content">
+                        <h2>Gini-koefficienten</h2>
+                        <p>Lorem ipsum dolor sit amet et delectus accommodate his consul copiosae.</p>
+                    </div>
+                </div>
+            
+                <div class="term-container">
+                    <div class="icon-wrapper">
+                        <img src="./images/icons/palma.png" alt="Palma icon" class="icon-image">
+                    </div>
+                    <div class="term-content">
+                        <h2>Palma-raten</h2>
+                        <p>Lorem ipsum dolor sit amet et delectus accommodate his consul copiosae.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        let animationInterval;
-        let isPlaying = false;
-        let worldData;
-        let geoJsonData;
+        // Global variables
+        const mapConfig = {
+            width: 960,
+            height: 500,
+            initialYear: 1990
+        };
 
-        async function createMap() {
-            const width = 960;
-            const height = 500;
-            const svg = d3.select("#map")
+        const metricConfig = {
+            gini: {
+                scale: d3.scaleSequential(d3.interpolateReds).domain([20, 65]),
+                legendValues: [20, 30, 40, 50, 60, 65],
+                label: 'GINI: '
+            },
+            palma: {
+                scale: d3.scaleSequential(d3.interpolateBlues).domain([0.5, 4]),
+                legendValues: [0.5, 1, 1.5, 2, 3, 4],
+                label: 'Palma: '
+            }
+        };
+
+        let state = {
+            currentMetric: 'gini',
+            isPlaying: false,
+            animationInterval: null,
+            worldData: null,
+            geoData: null,
+            svg: null,
+            path: null
+        };
+
+        // Core map functionality
+        async function initializeMap() {
+            state.svg = d3.select("#map")
                 .append("svg")
-                .attr("width", width)
-                .attr("height", height);
+                .attr("width", mapConfig.width)
+                .attr("height", mapConfig.height);
 
             const projection = d3.geoMercator()
                 .scale(120)
                 .center([0, 20])
-                .translate([width / 2, height / 2]);
+                .translate([mapConfig.width / 2, mapConfig.height / 2]);
 
-            const path = d3.geoPath().projection(projection);
+            state.path = d3.geoPath().projection(projection);
 
-            const colorScale = d3.scaleSequential(d3.interpolateReds)
-                .domain([20, 65]);
-
-            // Setup event listeners
             setupEventListeners();
+            await loadData();
+            updateVisualization(mapConfig.initialYear);
+        }
 
+        async function loadData() {
             try {
-                // Load data
                 const [geoData, economicData] = await Promise.all([
                     d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"),
                     fetch('/api/world_data').then(res => res.json())
                 ]);
 
-                geoJsonData = geoData;
-                worldData = economicData.data;
-
-                // Create legend
-                createLegend(colorScale);
-
-                // Draw initial map
-                drawMap(svg, geoData, worldData['1990'], colorScale, path);
-
-                // Setup timeline
-                setupTimeline(Object.keys(worldData));
-
+                state.geoData = geoData;
+                state.worldData = economicData.data;
+                
+                createLegend();
+                setupTimeline();
             } catch (error) {
                 console.error('Error loading data:', error);
             }
         }
 
+        function updateVisualization(year) {
+            const yearData = state.worldData[year];
+            const metric = metricConfig[state.currentMetric];
+
+            state.svg.selectAll("path")
+                .data(state.geoData.features)
+                .join("path")
+                .attr("d", state.path)
+                .attr("class", "country")
+                .transition()
+                .duration(200)
+                .attr("fill", d => {
+                    const countryData = yearData?.[d.properties.name];
+                    if (!countryData) return "#ccc";
+                    const value = getMetricValue(countryData);
+                    return !isNaN(value) ? metric.scale(value) : "#ccc";
+                });
+
+            // Update click handlers
+            state.svg.selectAll("path")
+                .on("click", (event, d) => {
+                    const countryData = yearData?.[d.properties.name];
+                    if (countryData) {
+                        showCountryInfo(d.properties.name, countryData);
+                    }
+                });
+
+            document.getElementById('currentYear').textContent = year;
+        }
+
+        // UI Components
+        function createLegend() {
+            const metric = metricConfig[state.currentMetric];
+            const legend = d3.select("#legend").html("");
+            
+            metric.legendValues.forEach(value => {
+                const div = legend.append("div")
+                    .attr("class", "legend-item");
+                
+                div.append("div")
+                    .attr("class", "legend-color")
+                    .style("background-color", metric.scale(value));
+                
+                div.append("span")
+                    .text(`${metric.label}${value}`);
+            });
+        }
+
         function setupEventListeners() {
-            // Close info box handlers
+            // Metric toggle
+            document.querySelectorAll('.metric-button').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    document.querySelectorAll('.metric-button')
+                        .forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    state.currentMetric = e.target.dataset.metric;
+                    createLegend();
+                    updateVisualization(getCurrentYear());
+                });
+            });
+
+            // Info box
             document.getElementById('close-info').onclick = closeInfoBox;
             document.getElementById('overlay').onclick = closeInfoBox;
+        }
+
+        function setupTimeline() {
+            const slider = document.getElementById('yearSlider');
+            const playButton = document.getElementById('playButton');
+
+            slider.addEventListener('input', (e) => {
+                updateVisualization(e.target.value);
+            });
+
+            playButton.addEventListener('click', togglePlay);
+        }
+
+        // Helper functions
+        function getMetricValue(countryData) {
+            return parseFloat(state.currentMetric === 'gini' ? 
+                countryData.gini : countryData.palmaRatio);
+        }
+
+        function getCurrentYear() {
+            return document.getElementById('yearSlider').value;
+        }
+
+        function showCountryInfo(countryName, countryData) {
+            const giniValue = parseFloat(countryData.gini);
+            const palmaValue = parseFloat(countryData.palmaRatio);
+
+            document.getElementById('info-country').textContent = countryName;
+            document.getElementById('info-year').textContent = getCurrentYear();
+            document.getElementById('info-gini').textContent = 
+                !isNaN(giniValue) ? giniValue.toFixed(1) : 'N/A';
+            document.getElementById('info-palma').textContent = 
+                !isNaN(palmaValue) ? palmaValue.toFixed(2) : 'N/A';
+
+            document.getElementById('view-more-btn').onclick = (e) => {
+                e.preventDefault();
+                if (countryData.countryId) {
+                    window.location.href = `/country.html?id=${countryData.countryId}`;
+                }
+            };
+
+            document.getElementById('country-info').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
         }
 
         function closeInfoBox() {
@@ -255,45 +526,10 @@
             document.getElementById('overlay').style.display = 'none';
         }
 
-        function createLegend(colorScale) {
-            const legendValues = [20, 30, 40, 50, 60, 65];
-            const legend = d3.select("#legend");
-            
-            legendValues.forEach(value => {
-                const div = legend.append("div")
-                    .attr("class", "legend-item");
-                
-                div.append("div")
-                    .attr("class", "legend-color")
-                    .style("background-color", colorScale(value));
-                
-                div.append("span")
-                    .text(`GINI: ${value}`);
-            });
-        }
-
-        function setupTimeline(years) {
-            const slider = document.getElementById('yearSlider');
-            const playButton = document.getElementById('playButton');
-
-            slider.addEventListener('input', (e) => {
-                updateYear(e.target.value);
-            });
-
-            playButton.addEventListener('click', togglePlay);
-        }
-
         function togglePlay() {
-            if (isPlaying) {
+            if (state.isPlaying) {
                 stopAnimation();
             } else {
-                // check if we are at max year 
-                const slider = document.getElementById('yearSlider');
-                if (parseInt(slider.value) >= parseInt(slider.max)) {
-                    //reset to start year
-                    slider.value = slider.min;
-                    updateYear(slider.min);
-                }
                 startAnimation();
             }
         }
@@ -302,123 +538,40 @@
             const slider = document.getElementById('yearSlider');
             const playButton = document.getElementById('playButton');
             
-            isPlaying = true;
+            if (parseInt(slider.value) >= parseInt(slider.max)) {
+                slider.value = slider.min;
+                updateVisualization(slider.min);
+            }
+
+            state.isPlaying = true;
             playButton.textContent = '⏸ Pause';
 
-            animationInterval = setInterval(() => {
+            state.animationInterval = setInterval(() => {
                 let year = parseInt(slider.value);
                 if (year >= parseInt(slider.max)) {
-                    // Stop the animation when reaching max year
                     stopAnimation();
                     return;
                 }
-                year++;
-                slider.value = year;
-                updateYear(year);
+                slider.value = ++year;
+                updateVisualization(year);
             }, 1000);
         }
 
         function stopAnimation() {
-            const playButton = document.getElementById('playButton');
-            
-            isPlaying = false;
-            playButton.textContent = '▶ Play';
-            clearInterval(animationInterval);
+            state.isPlaying = false;
+            document.getElementById('playButton').textContent = '▶ Play';
+            clearInterval(state.animationInterval);
         }
 
-        function updateYear(year) {
-            document.getElementById('currentYear').textContent = year;
-            drawMap(
-                d3.select("#map svg"),
-                geoJsonData,
-                worldData[year],
-                d3.scaleSequential(d3.interpolateReds).domain([20, 65]),
-                d3.geoPath().projection(d3.geoMercator()
-                    .scale(120)
-                    .center([0, 20])
-                    .translate([960 / 2, 500 / 2]))
-            );
-        }
-
-        function drawMap(svg, geoData, yearData, colorScale, path) {
-            // Update paths
-            svg.selectAll("path")
-                .data(geoData.features)
-                .join("path")
-                .attr("d", path)
-                .attr("class", "country")
-                .transition()
-                .duration(200)
-                .attr("fill", d => {
-                    const countryData = yearData?.[d.properties.name];
-                    if (!countryData) return "#ccc";
-                    const giniValue = parseFloat(countryData.gini);
-                    return !isNaN(giniValue) ? colorScale(giniValue) : "#ccc";
-                });
-
-            // Add click handlers (outside transition)
-            svg.selectAll("path")
-                .on("click", (event, d) => {
-                    const countryData = yearData?.[d.properties.name];
-                    if (countryData) {
-                        // Log the country data to verify we have the correct information
-                        console.log('Click handler - Country data:', {
-                            name: d.properties.name,
-                            countryId: countryData.countryId,
-                            fullData: countryData
-                        });
-                        showCountryInfo(d.properties.name, countryData);
-                    }
-                });
-        }
-
-        function showCountryInfo(countryName, countryData) {
-            // Parse numeric values
-            const giniValue = parseFloat(countryData.gini);
-            const palmaValue = parseFloat(countryData.palmaRatio);
-
-            // Update info box content
-            document.getElementById('info-country').textContent = countryName;
-            document.getElementById('info-year').textContent = 
-                document.getElementById('currentYear').textContent;
-            document.getElementById('info-gini').textContent = 
-                !isNaN(giniValue) ? giniValue.toFixed(1) : 'N/A';
-            document.getElementById('info-palma').textContent = 
-                !isNaN(palmaValue) ? palmaValue.toFixed(2) : 'N/A';
-
-            // Setup view more button with correct URL
-            const viewMoreBtn = document.getElementById('view-more-btn');
-            viewMoreBtn.onclick = (e) => {
-                e.preventDefault(); // Prevent any default action
-                
-                // Get the countryId from the data
-                const countryId = countryData.countryId;
-                console.log('Navigating to country:', countryId);
-
-                if (countryId) {
-                    // Construct the URL with the correct format
-                    const url = `/country.html?id=${countryId}`;
-                    // Navigate to the country page
-                    window.location.href = url;
-                } else {
-                    console.error('No country ID found for:', countryName);
-                }
-            };
-
-            // Show info box
-            document.getElementById('country-info').style.display = 'block';
-            document.getElementById('overlay').style.display = 'block';
-        }
-
-        // Initialize the map when the page loads
+        // Initialize
         document.addEventListener('DOMContentLoaded', () => {
-            createMap();
+            initializeMap();
             import('/js/utils/pageLoader.js').then(module => {
                 module.initializePage();
             });
         });
     </script>
-    <div id="footer-container"></div>
 
+    <div id="footer-container"></div>
 </body>
 </html>
