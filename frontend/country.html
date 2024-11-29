@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="/components/navbar/navbar.css">
     <link rel="stylesheet" href="/components/footer/footer.css">
     <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">;
     <style>
         .country-header {
             padding: 20px;
@@ -69,6 +71,8 @@
 
 
     <script>
+        import  exceljs  from 'exceljs';
+        
         async function loadCountryData() {
             const urlParams = new URLSearchParams(window.location.search);
             const countryId = urlParams.get('id');
@@ -121,15 +125,40 @@
                 <div id="giniChart" class="chart">
                     <h3>Gini Coefficient Over Time</h3> 
                     <div class="chart-content"></div>
-                </div>
+                    </div>
+                    
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="giniDownloadButton"
+                    >
+                        <i class="bi bi-download"></i> 
+                        Download
+                    </button>
                 <div id="fertilityChart" class="chart">
                     <h3>Fertility Rate Trends</h3>
                     <div class="chart-content"></div>
-                </div>
+                    </div>
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="fertilityDownloadButton"
+                    >
+                        <i class="bi bi-download"></i> 
+                        Download
+                    </button>
                 <div id="gdpChart" class="chart">
                     <h3>GDP per capital</h3>
                     <div class="chart-content"></div>
-                </div>
+                    </div>
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        id= "GDPDownloadButton"
+                    >
+                        <i class="bi bi-download"></i> 
+                        Download
+                    </button>
             </div>
             `;
 
@@ -149,6 +178,7 @@
             createGiniChart(timeData);
             createFertilityChart(timeData);
             createGDPcitizenChart(timeData);
+            CreateDownloadButtonEventHandlers(timeData);
         }
 
         function createGiniChart(data) {
@@ -432,7 +462,28 @@
             .duration(2000)
             .attr("stroke-dashoffset", 0);
         }
+        
+        function CreateDownloadButtonEventHandlers(data){
+           
+            let giniDownloadButton = document.getElementById('giniDownloadButton');
+            let fertilityDownloadButton = document.getElementById('fertilityDownloadButton');
+            let GDPDownloadButton = document.getElementById('GDPDownloadButton');
 
+            giniDownloadButton.addEventListener('click', () => {
+           const workbook = exceljs.workbook();
+
+           workbook.creator = 'test';
+           workbook.lastModifiedBy ='thisIsATest';
+
+           const sheet = workbook.addWorkSheet('my sheet')
+
+           
+            }) 
+
+        }
+
+        
+        
         document.addEventListener('DOMContentLoaded', loadCountryData);
     </script>
 </body>
