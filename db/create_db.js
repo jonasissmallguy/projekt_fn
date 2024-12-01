@@ -16,6 +16,7 @@ const db = new pg.Pool({
 
 async function initializeDatabase() {
     const client = await db.connect();
+    console.log(client);
     try {
         console.log('Creating tables...');
         
@@ -95,14 +96,14 @@ async function initializeDatabase() {
             with csv header
             delimiter ';'`, 'db/countries.csv');
 
-        //Copy data into economic_metrics
+        //copy data into economic_metrics
         await copyIntoTable(client, `
             copy economic_metrics (country_id, year,top_10_richest_share,bottom_50_poorest_share,top_1_richest_share,gdp,gini,palma_ratio)
             from stdin
             with csv header
             delimiter ','`, 'db/economic_metrics.csv');
 
-        //Copy data into social_metrics
+        //copy data into social_metrics
         await copyIntoTable(client, `
             copy social_metrics (country_id,year,total_population,fertility_rate)
             from stdin
@@ -110,6 +111,28 @@ async function initializeDatabase() {
             delimiter ','`, 'db/social_metrics.csv');
 
         console.log('Data copied successfully');
+
+        //transform data
+        console.log('DML started');
+
+        //fixing country_name != geojson "name"
+        await client.query(`
+            update countries
+            set country_name = case 
+                when country_name = 'United Kingdom' then 'England'
+                when country_name = 'Guinea-Bissau' then 'Guinea Bissau'
+                when country_name = 'Serbia' then 'Republic of Serbia'
+                when country_name = 'Congo' then 'Republic of the Congo'
+                when country_name = 'Bahamas' then 'The Bahamas'
+                when country_name = 'United States' then 'USA'
+                else country_name
+            end 
+            where country_name in ('United Kingdom','Guinea-Bissau','Serbia','Congo','Bahamas','United States')
+            `)
+
+        
+
+        console.log('Transformtion finished')    
 
     } catch (error) {
         console.error('Error initializing database:', error);
@@ -120,6 +143,8 @@ async function initializeDatabase() {
     }
 }
 
+
+//copy data from csv files
 async function copyIntoTable(client, sql, file) {
     try {
         const ingestStream = client.query(copyFrom(sql));
@@ -130,6 +155,9 @@ async function copyIntoTable(client, sql, file) {
         throw error;
     }
 }
+
+
+
 
 // Run initialization
 initializeDatabase()

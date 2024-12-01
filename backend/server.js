@@ -2,11 +2,15 @@ import express from 'express';
 import pg from 'pg';
 import dotenv from 'dotenv';
 
-//load .env
+//loader .env filen - vores enviorement variables - anvender vores dotenv biblotek (import)
 dotenv.config();
+
+//logger, "forbinder til vores database og databasens envirorement variabele (.env)
+//process.env (node.js) bruges til at tilgå vores enviorement variables. 
 console.log('Connecting to database', process.env.PG_DATABASE);
 
-//credentials
+
+//laver variablen db (forbindelse til pg) - anvender vores pg biblotek (import) 
 const db = new pg.Pool({
     host: process.env.PG_HOST,
     port: parseInt(process.env.PG_PORT),
@@ -15,23 +19,26 @@ const db = new pg.Pool({
     password: process.env.PG_PASSWORD
 });
 
-//connect
+//laver dbResult variabel, som er en forespørgsel til vores db om tidspunkt
 const dbResult = await db.query('select now()');
 console.log('Database connection established on', dbResult.rows[0].now);
 
+//
 const port = process.env.PORT || 3000;
 const server = express();
 
 server.use(express.static('frontend'));
 server.use(onEachRequest);
-server.get('/api/countries', onGetCountries);
+//server.get('/api/countries', onGetCountries);
 server.listen(port, onServerReady);
 
 
-async function onGetCountries(request, response) {
+/*async function onGetCountries(request, response) {
     const dbResult = await db.query('select * from countries');
     response.send(dbResult.rows);
 }
+*/
+
 
 function onEachRequest(request, response, next) {
     console.log(new Date(), request.method, request.url);
@@ -63,6 +70,7 @@ server.get('/api/continents/:continentId/countries', async (request, response) =
     const dbResult = await db.query(query, [request.params.continentId]);
     response.json(dbResult.rows);
 });
+
 
 // Get specific country data
 server.get('/api/countries/:countryId', async (request, response) => {
@@ -137,17 +145,17 @@ server.get('/api/world_data', async (request, response) => {
 
         const result = await db.query(query); 
 
-        // Transform the data into the format needed by the map
+        // Transform result to requried format for our world map.
         const worldData = result.rows.reduce((acc, row) => {
             // Year as string
             const year = row.year.toString();
             
-            // Year as object since we need to group by year
+            // Year as object since we need to group by year, country_nae
             if (!acc[year]) {
                 acc[year] = {};
             }
             
-            // Generate object with relevant data
+            // Generate object with relevant data, year, country_name {data}
             acc[year][row.country_name] = { // Use Country name as object key to geojson match
                 countryId: row.country_id,
                 continentName: row.continent_name,
