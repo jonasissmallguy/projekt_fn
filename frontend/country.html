@@ -70,8 +70,8 @@
     <div id="footer-container"></div>
 
 
-    <script>
-        import  exceljs  from 'exceljs';
+    <script type="module">
+        import {excelJS} from '/node_modules/exceljs';
         
         async function loadCountryData() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -291,7 +291,7 @@
                 .range([0, width]);
 
             //scale on min/max of fertility or continent fertility
-            const y = d3.scaleLinear()
+            const y = d3.scaleLinear() 
             .domain([
                 d3.min(data, d => Math.min(d.fertility, d.avg_continent_fertility)) * 0.9, 
                 d3.max(data, d => Math.max(d.fertility, d.avg_continent_fertility)) * 1.1
