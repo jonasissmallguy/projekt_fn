@@ -1,30 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Your Page</title>
+    <title>Articles</title>
     <link rel="stylesheet" href="/components/navbar/navbar.css">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/components/footer/footer.css">
 </head>
-<body>
+<body id="articles-body">
     <!-- Navbar placeholder -->
     <div id="navbar-container"></div>
 
     <!-- Your page content here -->
     <div id="main-content">
+    
         <!-- Page specific content -->
     </div>
-
-    <script type="module">
-        import { loadComponent } from '/js/utils.js';
-        import { initializeNavbar } from '/components/navbar/navbar.js';
-
-        // When page loads
-        document.addEventListener('DOMContentLoaded', async () => {
-            // Load navbar HTML
-            await loadComponent('navbar-container', '/components/navbar/navbar_countries.html');
-            // Initialize navbar functionality
-            await initializeNavbar();
+    <div id="articles-content">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Article Cards</title>
+        <link rel="stylesheet" href="styles.css">
+        <div class="card-container">
+            <div class="card">
+                <div class="image-placeholder"></div>
+                <h3>Economical incidents</h3>
+                <p>Timeline since 1980 describing the economical situation and how it affected the equality</p>
+                <a href="#">Read more</a>
+            </div>
+            <div class="card">
+                <div class="image-placeholder"></div>
+                <h3>Countries buying power</h3>
+                <p>How many people could live a day in Denmark?</p>
+                <a href="#">Read more</a>
+            </div>
+            <div class="card">
+                <div class="image-placeholder"></div>
+                <h3>Article 3</h3>
+                <p>Lorem ipsum dolor sit amet et delectus accommodare his consul copiosae.</p>
+                <a href="#">Read more</a>
+            </div>
+            
+            <script>
+    
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeMap();
+            import('/js/utils/pageLoader.js').then(module => {
+                module.initializePage();
+            });
         });
-    </script>
+         </script>
+            
+      <div id="footer-container"></div>
 </body>
 </html>

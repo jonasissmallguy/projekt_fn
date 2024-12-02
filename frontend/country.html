@@ -55,10 +55,12 @@
         <div class="country-header">
             <!-- Flag and name will be inserted here -->
         </div>
+        
         <div id="visualizations">
             <!-- D3 visualization will be inserted here -->
         </div>
     </div>
+
 
     <script type="module">
         import { initializePage } from '/js/utils/pageLoader.js';
@@ -115,8 +117,11 @@
         function createVisualizations(countryData) {
             const visualizations = document.getElementById('visualizations');
             visualizations.innerHTML = `
+    
                 <div class="chart-container">
+                    <div class="padding1">
                 <div id="giniChart" class="chart">
+                    <div class="padding2">
                     <h3>Gini Coefficient Over Time</h3> 
                     <div class="chart-content"></div>
                 </div>
@@ -190,7 +195,8 @@
             .attr("y",-5)
             .attr("text-anchor","left")
             .style("font-size","16px")
-            .text("Change in gini-coefficient")
+            .style("font-family","Verdana, Geneva, Tahoma, sans-serif")
+            .text("Udvikling i gini-koefficienten")
 
             // Y axis
             svg.append("g")
@@ -283,7 +289,7 @@
             .attr("y",-5)
             .attr("text-anchor","left")
             .style("font-size","16px")
-            .text("Change in fertility")
+            .text("Udvikling i fertilitets-raten")
 
             // Y axis
             svg.append("g")
