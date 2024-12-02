@@ -1,55 +1,88 @@
-/*Country page*/
-.country-header {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin: 20px;
-    padding: 20px;
-    background-color: #f5f5f5;
-    border-radius: 8px;
-    justify-content: center;
-}
-
-.header {
-    text-align: center; /* Centrerer teksten */
-    margin: 50px 0; /*vertikal afstand */
-}
-.header h1 {
-    font-family: 'Arial', sans-serif; /* skrifttype */
-    font-size: 2.5em; /*skriftstørrelsen */
-    color: #333; /* tekstfarve */
-}
-
-.information {
-
-    text-align: center;
-    text-decoration: dashed;
-    font-family: 'Arial', sans-serif; /* skrifttype */
-    font-size: 1.5em; /*skriftstørterelsen */
-    color: #333; /* tekstfarve */
-}
-
-.country-flag {
-    width: 120px;
-    height: 80px;
-    object-fit: cover;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.country-name {
+/* Globale stilarter for artikelsider */
+body {
+    font-family: 'Arial', sans-serif;
     margin: 0;
-    font-size: 2.5rem;
+    padding: 0;
+    background-color: #f5f5f5;
     color: #333;
+    line-height: 1.8;
 }
 
-
-.loading {
+/* Header */
+.header {
     text-align: center;
+    padding: 20px 0;
+    background-color: #333; /* Mørk baggrund for konsistens */
+    color: white;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    margin: 0;
+}
+
+/* Artikel-container */
+.article-page {
+    max-width: 800px;
+    margin: 0 auto;
     padding: 20px;
-    font-style: italic;
-    color: #666;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Overskrifter i artiklen */
+.article-page h2, .article-page h3 {
+    color: #333; /* Neutral tekstfarve */
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.article-page p {
+    margin: 10px 0;
+    text-align: justify; /* Juster tekst for bedre læsbarhed */
+}
+
+/* Navigation (individuelle artikellinks) */
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    border: 1px solid #333;
+    padding: 8px 12px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+nav ul li a:hover {
+    background-color: #333;
+    color: white;
+}
+
+/* Footer */
+footer {
+    margin-top: 20px;
+    text-align: center;
+}
+
+footer a {
+    text-decoration: none;
+    color: white;
+    background-color: #333;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: background-color 0.3s;
 }
 
 .error {
@@ -58,4 +91,98 @@
     background-color: #f8d7da;
     border-radius: 4px;
     margin: 20px;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%; /* Footer&header width problem løst*/
+}
+
+/* styles.css */
+.articles-body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.card-container {
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+    padding: 20px;
+    flex-wrap: wrap;
+    background: #e9e9e9;
+}
+
+.card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    padding: 20px;
+    text-align: center;
+}
+
+.image-placeholder {
+    width: 100%;
+    height: 150px;
+    background-color: #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: x;
+}
+
+h3 {
+    font-size: 1.2em;
+    margin: 10px 0;
+}
+
+p {
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.articles-body {
+
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+#giniChart {
+
+border-radius: 50px;
+border-color: #666;
+}
+
+footer a:hover {
+    background-color: #555;
+}
+
+/* Responsivitet */
+@media (max-width: 600px) {
+    .article-page {
+        padding: 15px;
+    }
+
+    .header h1 {
+        font-size: 2rem;
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    nav ul li a {
+        display: block;
+        text-align: center;
+    }
 }

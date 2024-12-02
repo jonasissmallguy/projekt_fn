@@ -49,6 +49,11 @@
             font-size: 12px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
+
+        .labels {
+            font-size: 20px;
+        }
+
     </style>
 </head>
 <body>
@@ -57,17 +62,17 @@
         <div class="country-header">
             <!-- Flag and name will be inserted here -->
         </div>
+        
         <div id="visualizations">
             <!-- D3 visualization will be inserted here -->
         </div>
     </div>
 
+
     <script type="module">
         import { initializePage } from '/js/utils/pageLoader.js';
         document.addEventListener('DOMContentLoaded', initializePage);
     </script>
-
-    <div id="footer-container"></div>
 
 
     <script type="module">
@@ -121,8 +126,11 @@
         function createVisualizations(countryData) {
             const visualizations = document.getElementById('visualizations');
             visualizations.innerHTML = `
+    
                 <div class="chart-container">
+                    <div class="padding1">
                 <div id="giniChart" class="chart">
+                    <div class="padding2">
                     <h3>Gini Coefficient Over Time</h3> 
                     <div class="chart-content"></div>
                     </div>
@@ -162,6 +170,7 @@
             </div>
             `;
 
+
             const timeData = countryData
                 .map(d => ({
                     year: parseInt(d.year),
@@ -171,7 +180,10 @@
                     fertility: parseFloat(d.fertility_rate),
                     avg_continent_fertility: parseFloat(d.continent_avg_fertility),
                     gdp_citizen: parseFloat(d.gdp_per_citizen),
-                    avg_continent_gdp_citizen: parseFloat(d.continent_avg_gdp_per_citizen)
+                    avg_continent_gdp_citizen: parseFloat(d.continent_avg_gdp_per_citizen),
+                    country: d.country_name,
+                    continent: d.continent_name
+
                 }))
                 .sort((a, b) => a.year - b.year);
 
@@ -182,9 +194,9 @@
         }
 
         function createGiniChart(data) {
-            const margin = {top: 40, right: 30, bottom: 50, left: 60};
-            const width = 800 - margin.left - margin.right;
-            const height = 400 - margin.top - margin.bottom;
+            const margin = {top: 40, right: 120, bottom: 50, left: 60};
+            const width = 980 - margin.left - margin.right;
+            const height = 520 - margin.top - margin.bottom;
 
             const svg = d3.select("#giniChart")
                 .append("svg")
@@ -222,7 +234,8 @@
             .attr("y",-5)
             .attr("text-anchor","left")
             .style("font-size","16px")
-            .text("Change in gini-coefficient")
+            .style("font-family","Verdana, Geneva, Tahoma, sans-serif")
+            .text("Udvikling i gini-koefficienten")
 
             // Y axis
             svg.append("g")
@@ -272,12 +285,152 @@
             .transition()
             .duration(2000)
             .attr("stroke-dashoffset", 0);
+
+            //Tool tips
+            // Add tooltip div to the body
+            const tooltip = d3.select("body").append("div")
+                .attr("class", "tooltip")
+                .style("opacity", 0)
+                .style("position", "absolute")
+                .style("background-color", "white")
+                .style("border", "1px solid #ddd")
+                .style("padding", "10px");
+
+            // Add invisible hover areas for both lines
+            const hover_country = svg.append("path")
+                .datum(data)
+                .attr("class", "hover-area")
+                .attr("fill", "none")
+                .attr("stroke", "transparent")
+                .attr("stroke-width", 20)
+                .attr("d", line_country)
+                .on("mousemove", function(event) {
+                    const [xPos] = d3.pointer(event);
+                    const bisect = d3.bisector(d => d.year).left;
+                    const x0 = x.invert(xPos);
+                    const i = bisect(data, x0);
+                    const d = data[i];
+                    
+                    tooltip.style("opacity", 1)
+                        .html(`Year: ${d.year}<br>Value: ${d.gini}`)
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 10) + "px");
+                })
+                .on("mouseout", () => tooltip.style("opacity", 0));
+
+            // Repeat for benchmark line
+            const hover_benchmark = svg.append("path")
+                .datum(data)
+                .attr("class", "hover-area")
+                .attr("fill", "none")
+                .attr("stroke", "transparent")
+                .attr("stroke-width", 20)
+                .attr("d", line_benchmark)
+                .on("mousemove", function(event) {
+                    const [xPos] = d3.pointer(event);
+                    const bisect = d3.bisector(d => d.year).left;
+                    const x0 = x.invert(xPos);
+                    const i = bisect(data, x0);
+                    const d = data[i];
+                    
+                    tooltip.style("opacity", 1)
+                        .html(`Year: ${d.year}<br>Value: ${d.avg_continent_gini}`)
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 10) + "px");
+                })
+                .on("mouseout", () => tooltip.style("opacity", 0));
+
+
+                // Add circles that will follow the lines
+                const focusCountry = svg.append("circle")
+                    .attr("r", 5)
+                    .attr("fill", "darkblue")
+                    .style("opacity", 0);
+
+                const focusBenchmark = svg.append("circle")
+                    .attr("r", 5)
+                    .attr("fill", "steelblue")
+                    .style("opacity", 0);
+
+                // Update the mousemove handlers
+                hover_country.on("mousemove", function(event) {
+                    const [xPos] = d3.pointer(event);
+                    const bisect = d3.bisector(d => d.year).left;
+                    const x0 = x.invert(xPos);
+                    const i = bisect(data, x0);
+                    const d = data[i];
+                    
+                    focusCountry
+                        .style("opacity", 1)
+                        .attr("cx", x(d.year))
+                        .attr("cy", y(d.gini));
+                        
+                    tooltip.style("opacity", 1)
+                        .html(`Year: ${d.year}<br>Value: ${d.gini}`)
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 10) + "px");
+                })
+                .on("mouseout", () => {
+                    focusCountry.style("opacity", 0);
+                    tooltip.style("opacity", 0);
+                });
+
+                hover_benchmark.on("mousemove", function(event) {
+                    const [xPos] = d3.pointer(event);
+                    const bisect = d3.bisector(d => d.year).left;
+                    const x0 = x.invert(xPos);
+                    const i = bisect(data, x0);
+                    const d = data[i];
+                    
+                    focusBenchmark
+                        .style("opacity", 1)
+                        .attr("cx", x(d.year))
+                        .attr("cy", y(d.avg_continent_gini));
+                        
+                    tooltip.style("opacity", 1)
+                        .html(`Year: ${d.year}<br>Value: ${d.avg_continent_gini}`)
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 10) + "px");
+                })
+                .on("mouseout", () => {
+                    focusBenchmark.style("opacity", 0);
+                    tooltip.style("opacity", 0);
+                });
+
+                // Then for the labels:
+                const lastPoint = data[data.length - 1];
+
+                svg.append("text")
+                    .attr("class","labels")
+                    .attr("x", width) // Position at full width
+                    .attr("y", y(lastPoint.gini))
+                    .attr("dx", "0.5em") // Add small offset
+                    .attr("dominant-baseline", "middle")
+                    .attr("fill", "darkblue")
+                    .text(lastPoint.country)
+                    .style("opacity",0)
+                    .transition()
+                    .delay(1500)
+                    .style("opacity",1);
+
+                svg.append("text")
+                    .attr("class","labels")
+                    .attr("x", width)
+                    .attr("y", y(lastPoint.avg_continent_gini))
+                    .attr("dx", "0.5em")
+                    .attr("dominant-baseline", "middle")
+                    .attr("fill", "steelblue") 
+                    .text(lastPoint.continent)
+                    .style("opacity",0)
+                    .transition()
+                    .delay(1500)
+                    .style("opacity",1);
         }
 
         function createFertilityChart(data) {
-            const margin = {top: 40, right: 30, bottom: 50, left: 60};
-            const width = 800 - margin.left - margin.right;
-            const height = 400 - margin.top - margin.bottom;
+            const margin = {top: 40, right: 120, bottom: 50, left: 60};
+            const width = 980 - margin.left - margin.right;
+            const height = 520 - margin.top - margin.bottom;
 
             const svg = d3.select("#fertilityChart")
                 .append("svg")
@@ -315,7 +468,7 @@
             .attr("y",-5)
             .attr("text-anchor","left")
             .style("font-size","16px")
-            .text("Change in fertility")
+            .text("Udvikling i fertilitets-raten")
 
             // Y axis
             svg.append("g")
@@ -365,13 +518,153 @@
             .transition()
             .duration(2000)
             .attr("stroke-dashoffset", 0);
+        
+            //Tool tips
+            // Add tooltip div to the body
+            const tooltip = d3.select("body").append("div")
+                .attr("class", "tooltip")
+                .style("opacity", 0)
+                .style("position", "absolute")
+                .style("background-color", "white")
+                .style("border", "1px solid #ddd")
+                .style("padding", "10px");
+
+            // Add invisible hover areas for both lines
+            const hover_country = svg.append("path")
+                .datum(data)
+                .attr("class", "hover-area")
+                .attr("fill", "none")
+                .attr("stroke", "transparent")
+                .attr("stroke-width", 20)
+                .attr("d", line_country)
+                .on("mousemove", function(event) {
+                    const [xPos] = d3.pointer(event);
+                    const bisect = d3.bisector(d => d.year).left;
+                    const x0 = x.invert(xPos);
+                    const i = bisect(data, x0);
+                    const d = data[i];
+                    
+                    tooltip.style("opacity", 1)
+                        .html(`Year: ${d.year}<br>Value: ${d.fertility}`)
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 10) + "px");
+                })
+                .on("mouseout", () => tooltip.style("opacity", 0));
+
+            // Repeat for benchmark line
+            const hover_benchmark = svg.append("path")
+                .datum(data)
+                .attr("class", "hover-area")
+                .attr("fill", "none")
+                .attr("stroke", "transparent")
+                .attr("stroke-width", 20)
+                .attr("d", line_benchmark)
+                .on("mousemove", function(event) {
+                    const [xPos] = d3.pointer(event);
+                    const bisect = d3.bisector(d => d.year).left;
+                    const x0 = x.invert(xPos);
+                    const i = bisect(data, x0);
+                    const d = data[i];
+                    
+                    tooltip.style("opacity", 1)
+                        .html(`Year: ${d.year}<br>Value: ${d.avg_continent_fertility}`)
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 10) + "px");
+                })
+                .on("mouseout", () => tooltip.style("opacity", 0));
+
+
+                // Add circles that will follow the lines
+                const focusCountry = svg.append("circle")
+                    .attr("r", 5)
+                    .attr("fill", "darkblue")
+                    .style("opacity", 0);
+
+                const focusBenchmark = svg.append("circle")
+                    .attr("r", 5)
+                    .attr("fill", "steelblue")
+                    .style("opacity", 0);
+
+                // Update the mousemove handlers
+                hover_country.on("mousemove", function(event) {
+                    const [xPos] = d3.pointer(event);
+                    const bisect = d3.bisector(d => d.year).left;
+                    const x0 = x.invert(xPos);
+                    const i = bisect(data, x0);
+                    const d = data[i];
+                    
+                    focusCountry
+                        .style("opacity", 1)
+                        .attr("cx", x(d.year))
+                        .attr("cy", y(d.fertility));
+                        
+                    tooltip.style("opacity", 1)
+                        .html(`Year: ${d.year}<br>Value: ${d.fertility}`)
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 10) + "px");
+                })
+                .on("mouseout", () => {
+                    focusCountry.style("opacity", 0);
+                    tooltip.style("opacity", 0);
+                });
+
+                hover_benchmark.on("mousemove", function(event) {
+                    const [xPos] = d3.pointer(event);
+                    const bisect = d3.bisector(d => d.year).left;
+                    const x0 = x.invert(xPos);
+                    const i = bisect(data, x0);
+                    const d = data[i];
+                    
+                    focusBenchmark
+                        .style("opacity", 1)
+                        .attr("cx", x(d.year))
+                        .attr("cy", y(d.avg_continent_fertility));
+                        
+                    tooltip.style("opacity", 1)
+                        .html(`Year: ${d.year}<br>Value: ${d.avg_continent_fertility}`)
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 10) + "px");
+                })
+                .on("mouseout", () => {
+                    focusBenchmark.style("opacity", 0);
+                    tooltip.style("opacity", 0);
+                });
+
+                // Then for the labels:
+                const lastPoint = data[data.length - 1];
+
+                svg.append("text")
+                    .attr("class","labels")
+                    .attr("x", width) // Position at full width
+                    .attr("y", y(lastPoint.fertility))
+                    .attr("dx", "0.5em") // Add small offset
+                    .attr("dominant-baseline", "middle")
+                    .attr("fill", "darkblue")
+                    .text(lastPoint.country)
+                    .style("opacity",0)
+                    .transition()
+                    .delay(1500)
+                    .style("opacity",1);
+
+                svg.append("text")
+                    .attr("class","labels")
+                    .attr("x", width)
+                    .attr("y", y(lastPoint.avg_continent_fertility))
+                    .attr("dx", "0.5em")
+                    .attr("dominant-baseline", "middle")
+                    .attr("fill", "steelblue") 
+                    .text(lastPoint.continent)
+                    .style("opacity",0)
+                    .transition()
+                    .delay(1500)
+                    .style("opacity",1);
         }
 
         
         function createGDPcitizenChart(data) {
-            const margin = {top: 40, right: 30, bottom: 50, left: 60};
-            const width = 800 - margin.left - margin.right;
-            const height = 400 - margin.top - margin.bottom;
+            const margin = {top: 40, right: 120, bottom: 50, left: 60};
+            const width = 980 - margin.left - margin.right;
+            const height = 520 - margin.top - margin.bottom;
 
             const svg = d3.select("#gdpChart")
                 .append("svg")
@@ -391,7 +684,6 @@
             ])
             .range([height, 0]);
 
-            
 
             // X axis
             svg.append("g")
@@ -461,6 +753,148 @@
             .transition()
             .duration(2000)
             .attr("stroke-dashoffset", 0);
+
+
+        
+            //Tool tips
+            // Add tooltip div to the body
+            const tooltip = d3.select("body").append("div")
+                .attr("class", "tooltip")
+                .style("opacity", 0)
+                .style("position", "absolute")
+                .style("background-color", "white")
+                .style("border", "1px solid #ddd")
+                .style("padding", "10px");
+
+            // Add invisible hover areas for both lines
+            const hover_country = svg.append("path")
+                .datum(data)
+                .attr("class", "hover-area")
+                .attr("fill", "none")
+                .attr("stroke", "transparent")
+                .attr("stroke-width", 20)
+                .attr("d", line_country)
+                .on("mousemove", function(event) {
+                    const [xPos] = d3.pointer(event);
+                    const bisect = d3.bisector(d => d.year).left;
+                    const x0 = x.invert(xPos);
+                    const i = bisect(data, x0);
+                    const d = data[i];
+                    
+                    tooltip.style("opacity", 1)
+                        .html(`Year: ${d.year}<br>Value: ${d.gdp_per_citizen}`)
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 10) + "px");
+                })
+                .on("mouseout", () => tooltip.style("opacity", 0));
+
+            // Repeat for benchmark line
+            const hover_benchmark = svg.append("path")
+                .datum(data)
+                .attr("class", "hover-area")
+                .attr("fill", "none")
+                .attr("stroke", "transparent")
+                .attr("stroke-width", 20)
+                .attr("d", line_benchmark)
+                .on("mousemove", function(event) {
+                    const [xPos] = d3.pointer(event);
+                    const bisect = d3.bisector(d => d.year).left;
+                    const x0 = x.invert(xPos);
+                    const i = bisect(data, x0);
+                    const d = data[i];
+                    
+                    tooltip.style("opacity", 1)
+                        .html(`Year: ${d.year}<br>Value: ${d.avg_continent_gdp_citizen}`)
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 10) + "px");
+                })
+                .on("mouseout", () => tooltip.style("opacity", 0));
+
+
+                // Add circles that will follow the lines
+                const focusCountry = svg.append("circle")
+                    .attr("r", 5)
+                    .attr("fill", "darkblue")
+                    .style("opacity", 0);
+
+                const focusBenchmark = svg.append("circle")
+                    .attr("r", 5)
+                    .attr("fill", "steelblue")
+                    .style("opacity", 0);
+
+                // Update the mousemove handlers
+                hover_country.on("mousemove", function(event) {
+                    const [xPos] = d3.pointer(event);
+                    const bisect = d3.bisector(d => d.year).left;
+                    const x0 = x.invert(xPos);
+                    const i = bisect(data, x0);
+                    const d = data[i];
+                    
+                    focusCountry
+                        .style("opacity", 1)
+                        .attr("cx", x(d.year))
+                        .attr("cy", y(d.gdp_citizen ));
+                        
+                    tooltip.style("opacity", 1)
+                        .html(`Year: ${d.year}<br>Value: ${d.gdp_citizen}`)
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 10) + "px");
+                })
+                .on("mouseout", () => {
+                    focusCountry.style("opacity", 0);
+                    tooltip.style("opacity", 0);
+                });
+
+                hover_benchmark.on("mousemove", function(event) {
+                    const [xPos] = d3.pointer(event);
+                    const bisect = d3.bisector(d => d.year).left;
+                    const x0 = x.invert(xPos);
+                    const i = bisect(data, x0);
+                    const d = data[i];
+                    
+                    focusBenchmark
+                        .style("opacity", 1)
+                        .attr("cx", x(d.year))
+                        .attr("cy", y(d.avg_continent_gdp_citizen));
+                        
+                    tooltip.style("opacity", 1)
+                        .html(`Year: ${d.year}<br>Value: ${d.avg_continent_gdp_citizen}`)
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 10) + "px");
+                })
+                .on("mouseout", () => {
+                    focusBenchmark.style("opacity", 0);
+                    tooltip.style("opacity", 0);
+                });
+
+                // Then for the labels:
+                const lastPoint = data[data.length - 1];
+
+                svg.append("text")
+                    .attr("class","labels")
+                    .attr("x", width) // Position at full width
+                    .attr("y", y(lastPoint.gdp_citizen))
+                    .attr("dx", "0.5em") // Add small offset
+                    .attr("dominant-baseline", "middle")
+                    .attr("fill", "darkblue")
+                    .text(lastPoint.country)
+                    .style("opacity",0)
+                    .transition()
+                    .delay(1500)
+                    .style("opacity",1);
+
+                svg.append("text")
+                    .attr("class","labels")
+                    .attr("x", width)
+                    .attr("y", y(lastPoint.avg_continent_gdp_citizen))
+                    .attr("dx", "0.5em")
+                    .attr("dominant-baseline", "middle")
+                    .attr("fill", "steelblue") 
+                    .text(lastPoint.continent)
+                    .style("opacity",0)
+                    .transition()
+                    .delay(1500)
+                    .style("opacity",1);
         }
         
         function CreateDownloadButtonEventHandlers(data){
@@ -486,5 +920,8 @@
         
         document.addEventListener('DOMContentLoaded', loadCountryData);
     </script>
+
+    <div id="footer-container"></div>
+
 </body>
 </html>
