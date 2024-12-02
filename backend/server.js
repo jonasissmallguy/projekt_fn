@@ -32,16 +32,7 @@ const server = express();
 
 server.use(express.static('frontend'));
 server.use(onEachRequest);
-//server.get('/api/countries', onGetCountries);
 server.listen(port, onServerReady);
-
-
-/*async function onGetCountries(request, response) {
-    const dbResult = await db.query('select * from countries');
-    response.send(dbResult.rows);
-}
-*/
-
 
 function onEachRequest(request, response, next) {
     console.log(new Date(), request.method, request.url);
