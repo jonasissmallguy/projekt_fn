@@ -74,56 +74,55 @@ server.get('/api/continents/:continentId/countries', async (request, response) =
 
 // Get specific country data
 server.get('/api/countries/:countryId', async (request, response) => {
+    const countryId = Number(request.params.countryId);
     const query = `
-        select distinct on (em.year)
+        select distinct on (m.year)
             c.country_id,
             c.country_name,
             c.country_iso,
             cont.continent_name,
             cont.continent_id,
-            em.year,
-            em.gini,
-            ca.continent_avg_gini,
-            sm.fertility_rate,
-            cf.continent_avg_fertility,
-            round((em.gdp::numeric / sm.total_population)::numeric, 2) as gdp_per_citizen,
-            round(cavg.continent_avg_gdp_per_citizen::numeric, 2) as continent_avg_gdp_per_citizen
+            m.year,
+            m.gini,
+            cont_avgs.continent_avg_gini,
+            m.fertility_rate,
+            cont_avgs.continent_avg_fertility,
+            round((m.gdp::numeric / m.total_population)::numeric, 2) as gdp_per_citizen,
+            round(cont_avgs.continent_avg_gdp_per_citizen::numeric, 2) as continent_avg_gdp_per_citizen
         from countries c
         join continents cont on c.continent_id = cont.continent_id
-        join economic_metrics em on c.country_id = em.country_id
-        join social_metrics sm on c.country_id = sm.country_id and em.year = sm.year
+        join metrics m on c.country_id = m.country_id
         left join (
-            select e.year, cont.continent_id, round(avg(e.gini)::numeric, 2) as continent_avg_gini
-            from economic_metrics e
-            join countries c on e.country_id = c.country_id
-            join continents cont on c.continent_id = cont.continent_id
-            group by e.year, cont.continent_id
-        )   ca on em.year = ca.year AND cont.continent_id = ca.continent_id
-        left join (
-            select s.year, cont.continent_id, round(avg(s.fertility_rate)::numeric,2) as continent_avg_fertility
-            from social_metrics s
-            join countries c on s.country_id = c.country_id
-            join continents cont on c.continent_id = cont.continent_id
-            group by s.year, cont.continent_id
-        )   cf on sm.year = cf.year AND cont.continent_id = cf.continent_id
-        left join (
-            select 
-            e.year,cont.continent_id,avg(e.gdp::numeric / s.total_population) as continent_avg_gdp_per_citizen
-            from economic_metrics e
-            join social_metrics s on e.country_id = s.country_id and e.year = s.year
-            join countries c on e.country_id = c.country_id
-            join continents cont on c.continent_id = cont.continent_id
-            group by e.year, cont.continent_id
-        )   cavg on em.year = cavg.year AND cont.continent_id = cavg.continent_id
+        select 
+            m.year,
+            cont.continent_id,
+            round(avg(m.gini)::numeric, 2) as continent_avg_gini,
+            round(avg(m.fertility_rate)::numeric, 2) as continent_avg_fertility,
+            avg(m.gdp::numeric / m.total_population) as continent_avg_gdp_per_citizen
+        from metrics m
+        join countries c on m.country_id = c.country_id
+        join continents cont on c.continent_id = cont.continent_id
+        group by m.year, cont.continent_id
+        ) cont_avgs on m.year = cont_avgs.year 
+        and cont.continent_id = cont_avgs.continent_id
         where c.country_id = $1
-        order by em.year
+        order by m.year;
          `;
-    const dbResult = await db.query(query, [request.params.countryId]);
-    if (dbResult.rows.length === 0) {
-        response.status(404).json({ error: 'Country not found' });
-        return;
+    
+    try {
+        const dbResult = await db.query(query, [countryId]);
+
+        if (dbResult.rows.length === 0) {
+            return response.status(400).json({error: 'Country not found'});
+        }
+
+        return response.json(dbResult.rows);
+
+    } 
+    catch(error) {
+        console.error('Database error;', error);
+        return response.status(500).json({error: 'Internal server error - check your pg.'})
     }
-    response.json(dbResult.rows);
 });
 
 // Get data for world map
@@ -140,7 +139,7 @@ server.get('/api/world_data', async (request, response) => {
             em.palma_ratio
         from countries c
         join continents cont on c.continent_id = cont.continent_id
-        join economic_metrics em on c.country_id = em.country_id
+        join metrics em on c.country_id = em.country_id
         order by c.country_name, em.year`;
 
         const result = await db.query(query); 
@@ -150,7 +149,7 @@ server.get('/api/world_data', async (request, response) => {
             // Year as string
             const year = row.year.toString();
             
-            // Year as object since we need to group by year, country_nae
+            // Year as object since we need to group by year, country_name
             if (!acc[year]) {
                 acc[year] = {};
             }
