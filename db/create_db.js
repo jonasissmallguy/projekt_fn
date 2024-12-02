@@ -11,12 +11,14 @@ const db = new pg.Pool({
     port: parseInt(process.env.PG_PORT),
     database: process.env.PG_DATABASE,
     user: process.env.PG_USER,
-    password: process.env.PG_PASSWORD
+    password: process.env.PG_PASSWORD,
+    ssl: process.env.PG_REQUIRE_SSL ? {
+        rejectUnauthorized: false,
+    } : undefined,
 });
 
 async function initializeDatabase() {
-    const client = await db.connect();
-    console.log(client);
+    const client = await db.connect();   
     try {
         console.log('Creating tables...');
         
