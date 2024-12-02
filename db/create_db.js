@@ -11,23 +11,28 @@ const db = new pg.Pool({
     port: parseInt(process.env.PG_PORT),
     database: process.env.PG_DATABASE,
     user: process.env.PG_USER,
-    password: process.env.PG_PASSWORD
+    password: process.env.PG_PASSWORD,
+    ssl: process.env.PG_REQUIRE_SSL ? {
+        rejectUnauthorized: false,
+    } : undefined,
 });
 
 async function initializeDatabase() {
-    const client = await db.connect();
+    const client = await db.connect();   
     try {
         console.log('Creating tables...');
         
         // Create tables
         await client.query(`
 
-            /*DDL*/
+            /* DDL */ 
+            /* Documentation:*/
 
             drop table if exists countries cascade;
             drop table if exists continents cascade;
-            drop table if exists economic_metrics;
-            drop table if exists social_metrics;
+            drop table if exists metrics cascade;
+            drop table if exists social_metrics cascade;
+            drop table if exists economic_metrics cascade;
 
             create table continents (
             continent_id int not null generated always as identity primary key,
@@ -41,7 +46,7 @@ async function initializeDatabase() {
             continent_id int not null references continents(continent_id) on delete cascade
             );
 
-            create table economic_metrics (
+            create table metrics (
             metric_id int not null generated always as identity primary key, 
             country_id int not null references countries(country_id) on delete cascade,
             year int not null check (year >= 1990 AND year <= 2022), 
@@ -51,29 +56,18 @@ async function initializeDatabase() {
             gdp bigint check(gdp > 0), 
             gini decimal (5,2) check (gini > 0 AND gini <= 100), 
             palma_ratio decimal (6,2) check (palma_ratio > 0),
-            constraint unique_countryid_year unique (country_id, year)
-            );
-            
-            create table social_metrics (
-            metric_id int not null generated always as identity primary key,
-            country_id int not null references countries(country_id) on delete cascade,
-            year int not null check (year >= 1990 AND year <= 2022), 
             fertility_rate decimal(5,2) check (fertility_rate > 0),
             total_population bigint check (total_population > 0),
-            constraint unique_country_id_year unique (country_id,year)
+            constraint unique_countryid_year unique (country_id, year)
             );
-
+    
             /*Indexes - Countries*/
             create index idx_country_id on countries(country_id);
             create index idx_country_iso on countries(country_iso);
 
-            /*Indexes - Economic Metrics*/
-            create index idx_em_country_year on economic_metrics(country_id,year);
-            create index idx_em_year on economic_metrics(year);
-
-            /*Indexes - Social Metrics*/
-            create index idx_sm_country_year on social_metrics(country_id,year);
-            create index idx_sn_year on social_metrics(year);
+            /*Indexes - Metrics*/
+            create index idx_m_country_year on metrics(country_id,year);
+            create index idx_m_year on metrics(year);
 
         `);
 
@@ -95,21 +89,78 @@ async function initializeDatabase() {
             with csv header
             delimiter ';'`, 'db/countries.csv');
 
-        //Copy data into economic_metrics
+        // Copy data into economic_metrics
         await copyIntoTable(client, `
-            copy economic_metrics (country_id, year,top_10_richest_share,bottom_50_poorest_share,top_1_richest_share,gdp,gini,palma_ratio)
+            copy metrics (country_id, year,top_10_richest_share,bottom_50_poorest_share,top_1_richest_share,gdp,gini,palma_ratio,total_population,fertility_rate)
             from stdin
             with csv header
-            delimiter ','`, 'db/economic_metrics.csv');
-
-        //Copy data into social_metrics
-        await copyIntoTable(client, `
-            copy social_metrics (country_id,year,total_population,fertility_rate)
-            from stdin
-            with csv header
-            delimiter ','`, 'db/social_metrics.csv');
+            delimiter ','`, 'db/nyeste_projekt_data.csv');
 
         console.log('Data copied successfully');
+
+        // Transform data - start
+        console.log('DML started');
+
+        // Fixing country_name != geojson "name"
+        await client.query(`
+            update countries
+            set country_name = case 
+                when country_name = 'United Kingdom' then 'England'
+                when country_name = 'Guinea-Bissau' then 'Guinea Bissau'
+                when country_name = 'Serbia' then 'Republic of Serbia'
+                when country_name = 'Congo' then 'Republic of the Congo'
+                when country_name = 'Bahamas' then 'The Bahamas'
+                when country_name = 'United States' then 'USA'
+                else country_name
+            end 
+            where country_name in ('United Kingdom','Guinea-Bissau','Serbia','Congo','Bahamas','United States')
+            `)
+        
+        // Deleting countries with no metrics at all
+        await client.query(`
+            delete from countries where country_id not in (
+                select country_id from metrics where country_id in (select distinct country_id from countries)
+            group by country_id)
+            `)
+        
+        // Deleting countries with less than 5 year of metrics
+        await client.query(`
+            delete from countries where country_id in( 
+            select country_id from metrics
+            group by country_id
+            having count(*) < 5
+            order by count(*))
+            `)
+
+        // Fixing null values for ['gdp] - using partition to:
+        // 1. Use original GDP if not null 
+        // 2. Use previous year's GDP (lag)
+        // 3. First Value, we use the latest data 
+        await client.query(`
+            with filled_data as (
+            select 
+                country_id,
+                year,
+                coalesce(
+                    gdp,
+                    lag(gdp) over (partition by country_id order by year),
+                    first_value(gdp) over (
+                        partition by country_id 
+                        order by case when gdp is not null then year end nulls last
+                    )
+                ) as filled_gdp
+            from metrics
+            )
+            update metrics m
+            set gdp = f.filled_gdp
+            from filled_data f
+            where m.country_id = f.country_id 
+            and m.year = f.year
+            and m.gdp is null;
+        `)
+
+ 
+        console.log('Transformtion finished')    
 
     } catch (error) {
         console.error('Error initializing database:', error);
@@ -120,6 +171,8 @@ async function initializeDatabase() {
     }
 }
 
+
+// Copy data from csv files to PG
 async function copyIntoTable(client, sql, file) {
     try {
         const ingestStream = client.query(copyFrom(sql));
@@ -130,6 +183,7 @@ async function copyIntoTable(client, sql, file) {
         throw error;
     }
 }
+
 
 // Run initialization
 initializeDatabase()

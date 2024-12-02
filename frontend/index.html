@@ -290,8 +290,8 @@
             </div>
             <div class="slider-container">
                 <span>1990</span>
-                <input type="range" id="yearSlider" min="1990" max="2020" value="1990" step="1">
-                <span>2020</span>
+                <input type="range" id="yearSlider" min="1990" max="2017" value="1990" step="1">
+                <span>2017</span>
             </div>
         </div>
 
@@ -355,7 +355,7 @@
 
         const metricConfig = {
             gini: {
-                scale: d3.scaleSequential(d3.interpolateReds).domain([20, 65]),
+                scale: d3.scaleSequential(d3.interpolateBlues).domain([20, 65]),
                 legendValues: [20, 30, 40, 50, 60, 65],
                 label: 'GINI: '
             },
