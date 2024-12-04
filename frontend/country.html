@@ -8,6 +8,13 @@
     <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">;
+    <!-- <script rel = "module" src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script> -->
+    <script 
+    src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js" integrity="sha512-UnrKxsCMN9hFk7M56t4I4ckB4N/2HHi0w/7+B/1JsXIX3DmyBcsGpT3/BsuZMZf+6mAr0vP81syWtfynHJ69JA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script 
+src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js" integrity="sha512-Qlv6VSKh1gDKGoJbnyA5RMXYcvnpIqhO++MhIM2fStMcGT9i2T//tSwYFlcyoRRDcDZ+TYHpH8azBBCyhpSeqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <style>
         .country-header {
             padding: 20px;
@@ -76,8 +83,10 @@
 
 
     <script type="module">
-        import {excelJS} from '/node_modules/exceljs';
         
+        
+       
+
         async function loadCountryData() {
             const urlParams = new URLSearchParams(window.location.search);
             const countryId = urlParams.get('id');
@@ -897,23 +906,96 @@
                     .style("opacity",1);
         }
         
-        function CreateDownloadButtonEventHandlers(data){
-           
-            let giniDownloadButton = document.getElementById('giniDownloadButton');
-            let fertilityDownloadButton = document.getElementById('fertilityDownloadButton');
-            let GDPDownloadButton = document.getElementById('GDPDownloadButton');
+        function CreateDownloadButtonEventHandlers(data) {
 
-            giniDownloadButton.addEventListener('click', () => {
-           const workbook = exceljs.workbook();
+                let giniDownloadButton = document.getElementById('giniDownloadButton');
+                let fertilityDownloadButton = document.getElementById('fertilityDownloadButton');
+                let GDPDownloadButton = document.getElementById('GDPDownloadButton');
 
-           workbook.creator = 'test';
-           workbook.lastModifiedBy ='thisIsATest';
+                giniDownloadButton.addEventListener("click", async  (event) => {
 
-           const sheet = workbook.addWorkSheet('my sheet')
+                    console.log("ginidownloadbutton event was triggered");
+                   
+                        const workbook = generateWorkbookWithHeadersAndData([],timeData)
+                   
+                        const buffer = await workbook.xlsx.writeBuffer();
 
-           
-            }) 
+                        const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
 
+                        const link = document.createElement("a");
+                        link.href = URL.createObjectURL(blob);
+                        link.download = "GiniData.xlsx";
+
+                        link.click();
+
+                        URL.revokeObjectURL(link.href);
+                        console.log("File was saved to user's PC");
+                   
+
+                });
+
+                fertilityDownloadButton.addEventListener("click", async  (event) => {
+
+                    console.log("fertilityDownloadButton event was triggered");
+
+                    const workbook = generateWorkbookWithHeadersAndData(['year','fertility','avg continent fertility'], timeData);
+                    workbook.title = 'Fertility Data'
+                    const buffer = await workbook.xlsx.writeBuffer();
+
+                    const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+
+                    const link = document.createElement("a");
+                    link.href = URL.createObjectURL(blob);
+                    link.download = "GiniData.xlsx";
+
+                    link.click();
+
+                    URL.revokeObjectURL(link.href);
+                    console.log("File was saved to user's PC");
+
+
+                });
+                GDPDownloadButton.addEventListener("click", async (event) => {
+
+                console.log("GDPDownloadButton event was triggered");
+
+                const workbook = generateWorkbookWithHeadersAndData([], timeData)
+
+                const buffer = await workbook.xlsx.writeBuffer();
+
+                const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = "GiniData.xlsx";
+
+                link.click();
+
+                URL.revokeObjectURL(link.href);
+                console.log("File was saved to user's PC");
+
+
+            });
+
+        }
+        
+        function generateWorkbookWithHeadersAndData(header,data){
+            const ExcelJS = window.ExcelJS;
+            const workbook = new ExcelJS.Workbook();
+
+            workbook.creator = 'DownloadedByUser';
+
+            const sheet = workbook.addWorksheet('my sheet')
+
+            sheet.columns = [
+                { header: 'id', key: 'id' },
+                { header: 'name', key: 'name' },
+                { header: 'age', key: 'age' }
+            ];
+
+            sheet.addRow({ id: 1, name: 'testrow', age: 22 })
+
+            return workbook;
         }
 
         
