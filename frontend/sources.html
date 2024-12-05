@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sources</title>
+    <link rel="stylesheet" href="/components/navbar/navbar.css">
+    <link rel="stylesheet" href="/components/footer/footer.css">
+
+    <style>
+        .content-container {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            color: #333;
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+
+        .source-section {
+            margin: 2rem 0;
+        }
+
+        .source-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .source-title {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .source-details {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .source-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .source-link:hover {
+            text-decoration: underline;
+        }
+
+        .source-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            .content-container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar-container"></div>
+    <script type="module">
+        import { initializePage } from '/js/utils/pageLoader.js';
+        document.addEventListener('DOMContentLoaded', initializePage);
+    </script>
+    
+    <div class="content-container">
+        <h1>Datakilder og referencer</h1>
+        
+        <div class="source-section">
+            <h2>Datakilder</h2>
+            <div class="source-card">
+                <h3 class="source-title">Our World in Data</h3>
+                <div class="source-details">
+                    <p>Our World in Data er en videnskabelig udgiver der fokuserer på store globale problemer 
+                       og indsamler dens data fra diverse anerkendte instanser som World Bank.
+                    </p>
+                    <span class="source-date">Sidst opdateret: December 2024</span>
+                </div>
+                <a href="https://ourworldindata.org" class="source-link">Vis kilde →</a>
+            </div>
+
+            <div class="source-card">
+                <h3 class="source-title">World bank - DataBank</h3>
+                <div class="source-details">
+                    <p>DataBank er en anerkendt global instants under Verdensbanken, som blandt andet udgiver data omkring et lands økonomiske udvikling.
+                    </p>
+                    <span class="source-date">Sidst opdateret: December 2024</span>
+                </div>
+                <a href="https://databank.worldbank.org/" class="source-link">Vis kilde →</a>
+            </div>
+        </div>
+
+        <div class="source-section">
+            <h2>Additional References</h2>
+            
+            <div class="source-card">
+                <h3 class="source-title">Research Paper Title</h3>
+                <div class="source-details">
+                    <p>Authors, publication, and relevant findings that informed the analysis.</p>
+                    <span class="source-date">Published: 2023</span>
+                </div>
+                <a href="#" class="source-link">Read Paper →</a>
+            </div>
+        </div>
+
+        <div class="source-section">
+            <h2>Methodology Notes</h2>
+            <div class="source-card">
+                <div class="source-details">
+                    <p>Brief explanation of how the data was processed, analyzed, and visualized. Include any important caveats or limitations of the analysis.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="footer-container"></div>
+</body>
+</html>
