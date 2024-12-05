@@ -265,6 +265,10 @@
             text-align: center; /* Centers the text within the container */
             margin-bottom: 20px; /* Adds spacing below the title */
         }
+
+        .information {
+            text-align: center;
+        }
         
 </style>
 </head>
@@ -272,18 +276,22 @@
     <div id="navbar-container"></div>
     
     <div class="map-container">
-        <h1>World Economic Inequality Map</h1>
+        <h1>Udvikling i ulighed</h1>
         <div class="information">
-            <p>World Bank, Poverty and Inequality Platform. Data based on primary household survey data.</p>
+            <p>Dette verdenskort giver dig mulighed for at følge udviklingen i ulighed fra 1990-2017.
+                <br>
+                Fokuser på et land, afspil og følg udviklingen!
+            </p>
+
         </div>
 
         <div class="metric-toggle">
-            <button class="metric-button active" data-metric="gini">GINI</button>
+            <button class="metric-button active" data-metric="gini">Gini</button>
             <button class="metric-button" data-metric="palma">Palma</button>
         </div>
 
         <div class="timeline-controls">
-            <button id="playButton" class="play-button">▶ Play</button>
+            <button id="playButton" class="play-button">▶ Se udviklingen</button>
             <div class="year-display">
                 Year: <span id="currentYear">1990</span>
             </div>
@@ -316,7 +324,11 @@
             <div class="left-column">
                 <div class="main-term">
                     <h1>Uligheds-termer</h1>
-                    <p>Lorem ipsum dolor sit amet et delectus accommodate his consul copiosae legendos at vix ad putent delectus delicata usu. Vidit dissentiet eos cu eum an brute copiosae hendrerit. Eos erant dolorum an.</p>
+                    <p>Vi måler typisk  økonomisk ulighed i et samfund med udgangspunkt i Gini-koefficenten og Palma-raten</p>
+                    <br>
+                    <br>
+                    <p>Gini koefficenten bruges ofte til at måle bredt, hvor Palma-raten sammenligner de rigeste med de fattigeste.</p>
+                    <p></p>
                 </div>
             </div>
             
@@ -326,8 +338,9 @@
                         <img src="./images/icons/gini.png" alt="Gini icon" class="icon-image">
                     </div>
                     <div class="term-content">
-                        <h2>Gini-koefficienten</h2>
-                        <p>Lorem ipsum dolor sit amet et delectus accommodate his consul copiosae.</p>
+                        <h2>Gini</h2>
+                        <p>Gini-koefficienten er et tal mellem 0 og 100 der måler økonomisk ulighed i en befolkning. 
+                            En høj Gini-koefficent, indikierer større ulighed, mens en lavere gini tyder på mindre ulighed i samfundet.</p>
                     </div>
                 </div>
             
@@ -336,8 +349,10 @@
                         <img src="./images/icons/palma.png" alt="Palma icon" class="icon-image">
                     </div>
                     <div class="term-content">
-                        <h2>Palma-raten</h2>
-                        <p>Lorem ipsum dolor sit amet et delectus accommodate his consul copiosae.</p>
+                        <h2>Palma</h2>
+                        <p>Palma-raten er en indikator for ulighed, der fokuserer på forholdet mellem de rigeste 10% og
+                            de fattigeste 40% af befolkningen. En høj Palma-rate indikerer stor ulighed, mens en lav rate tyder på større lighed. 
+                        </p>
                     </div>
                 </div>
             </div>
@@ -543,7 +558,7 @@
             }
 
             state.isPlaying = true;
-            playButton.textContent = '⏸ Pause';
+            playButton.textContent = '⏸ Stop';
 
             state.animationInterval = setInterval(() => {
                 let year = parseInt(slider.value);
@@ -558,7 +573,7 @@
 
         function stopAnimation() {
             state.isPlaying = false;
-            document.getElementById('playButton').textContent = '▶ Play';
+            document.getElementById('playButton').textContent = '▶ Afspil';
             clearInterval(state.animationInterval);
         }
 
@@ -590,6 +605,7 @@
             <p>Lorem ipsum dolor sit amet et delectus accommodare his consul copiosae.</p>
             <a href="#">Read more</a>
         </div>
+    </div>
 
     <div id="footer-container"></div>
 </body>
