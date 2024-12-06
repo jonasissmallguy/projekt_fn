@@ -911,111 +911,133 @@
 
         function CreateDownloadButtonEventHandlers(graphData) {
 
-            let giniDownloadButton = document.getElementById('giniDownloadButton');
-            let fertilityDownloadButton = document.getElementById('fertilityDownloadButton');
-            let GDPDownloadButton = document.getElementById('GDPDownloadButton');
+                let giniDownloadButton = document.getElementById('giniDownloadButton');
+                let fertilityDownloadButton = document.getElementById('fertilityDownloadButton');
+                let GDPDownloadButton = document.getElementById('GDPDownloadButton');
 
-            giniDownloadButton.addEventListener("click", async (event) => {
+                giniDownloadButton.addEventListener("click", async (event) => {
 
-                console.log("ginidownloadbutton event was triggered");
+                    console.log("ginidownloadbutton event was triggered");
 
-                const workbook = generateWorkbookWithHeadersAndData([], graphData)
+                    const workbook = generateWorkbookWithHeadersAndData(['year', 'gini', 'avg_continent_gini', 'country', 'continent'], graphData, giniDownloadButton.id)
 
-                const buffer = await workbook.xlsx.writeBuffer();
+                    const buffer = await workbook.xlsx.writeBuffer();
 
-                const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+                    const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
 
-                const link = document.createElement("a");
-                link.href = URL.createObjectURL(blob);
-                link.download = "GiniData.xlsx";
+                    const link = document.createElement("a");
+                    link.href = URL.createObjectURL(blob);
+                    link.download = `GiniData_${graphData[0].country}.xlsx`;
 
-                link.click();
+                    link.click();
 
-                URL.revokeObjectURL(link.href);
-                console.log("File was saved to user's PC");
-
-
-            });
-
-            fertilityDownloadButton.addEventListener("click", async (event) => {
-
-                console.log("fertilityDownloadButton event was triggered");
-
-                const workbook = generateWorkbookWithHeadersAndData(['year', 'fertility', 'avg_continent_fertility'], graphData,fertilityDownloadButton.id);
-                workbook.title = 'Fertility Data'
-                const buffer = await workbook.xlsx.writeBuffer();
-
-                const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
-
-                const link = document.createElement("a");
-                link.href = URL.createObjectURL(blob);
-                link.download = "Fertility_Data.xlsx";
-
-                link.click();
-
-                URL.revokeObjectURL(link.href);
-                console.log("File was saved to user's PC");
+                    URL.revokeObjectURL(link.href);
+                    console.log("File was saved to user's PC");
 
 
-            });
-            GDPDownloadButton.addEventListener("click", async (event) => {
+                });
 
-                console.log("GDPDownloadButton event was triggered");
+                fertilityDownloadButton.addEventListener("click", async (event) => {
 
-                const workbook = generateWorkbookWithHeadersAndData([], graphData,GDPDownloadButton.id)
+                    console.log("fertilityDownloadButton event was triggered");
 
-                const buffer = await workbook.xlsx.writeBuffer();
+                    const workbook = generateWorkbookWithHeadersAndData(['year', 'fertility', 'avg_continent_fertility', 'country', 'continent'], graphData, fertilityDownloadButton.id);
+                    workbook.title = 'Fertility Data'
+                    const buffer = await workbook.xlsx.writeBuffer();
 
-                const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+                    const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
 
-                const link = document.createElement("a");
-                link.href = URL.createObjectURL(blob);
-                link.download = "GiniData.xlsx";
+                    const link = document.createElement("a");
+                    link.href = URL.createObjectURL(blob);
+                    link.download = `Fertility_Data_${graphData[0].country}.xlsx`;
 
-                link.click();
+                    link.click();
 
-                URL.revokeObjectURL(link.href);
-                console.log("File was saved to user's PC");
+                    URL.revokeObjectURL(link.href);
+                    console.log("File was saved to user's PC");
 
 
-            });
+                });
+                GDPDownloadButton.addEventListener("click", async (event) => {
 
-        }
+                    console.log("GDPDownloadButton event was triggered");
 
-        function generateWorkbookWithHeadersAndData(headerArray, graphData,htmlElementId) {
-            const ExcelJS = window.ExcelJS;
-            const workbook = new ExcelJS.Workbook();
+                    const workbook = generateWorkbookWithHeadersAndData(['year', 'gdp', 'gdp_citizen', 'avg_continent_gdp_citizen', 'country', 'continent'], graphData, GDPDownloadButton.id)
 
-            workbook.creator = 'DownloadedByUser';
+                    const buffer = await workbook.xlsx.writeBuffer();
 
-            const sheet = workbook.addWorksheet('Graph data')
+                    const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
 
-            headerArray.forEach(headeritem => {
-                console.log('value of header item:'+ headeritem);
-                sheet.columns.push({ header: headeritem, key: `${headeritem}` });
-            });
+                    const link = document.createElement("a");
+                    link.href = URL.createObjectURL(blob);
+                    link.download = `GiniData_${graphData[0].country}.xlsx`;
 
-            graphData.forEach(element => {
-                //check if their is data in the object:
-                console.log(element);
+                    link.click();
 
-                switch (htmlElementId) {
-                    case htmlElementId === 'fertilityDownloadButton':
-                        sheet.addRow({ year: element.year, fertility: element.fertility, avg_continent_fertility: elem.avg_continent_fertility });
-                        break;
-                    case htmlElementId === 'giniDownloadButton':
-                        sheet.addRow({})
-                        break;
-                    case htmlElementId === 'GDPDownloadButton':
-                        sheet.addRow({})
-                        break;
-                    default:
-                        break;
-                }
-            });
+                    URL.revokeObjectURL(link.href);
+                    console.log("File was saved to user's PC");
 
-            return workbook;
-        }
+
+                });
+
+            }
+
+            function generateWorkbookWithHeadersAndData(headerArray, graphData, htmlElementId) {
+                const ExcelJS = window.ExcelJS;
+                const workbook = new ExcelJS.Workbook();
+
+                workbook.creator = 'DownloadedByUser';
+
+                const graphDataSheet = workbook.addWorksheet('Graph data');
+                const aboutDataSheet = workbook.addWorksheet('About Data');
+
+                graphDataSheet.columns = headerArray.map(headeritem => ({
+                    header: headeritem,
+                    key: headeritem
+                }));
+
+                aboutDataSheet.columns = headerArray.map(headeritem => ({
+                    header: headeritem,
+                    key: headeritem
+                }));
+
+                graphData.forEach(element => {
+                    switch (htmlElementId) {
+                        case 'fertilityDownloadButton':
+                            graphDataSheet.addRow({
+                                year: element.year,
+                                fertility: element.fertility,
+                                avg_continent_fertility: element.avg_continent_fertility,
+                                country: element.country,
+                                continent: element.continent
+                            });
+                            break;
+                        case 'giniDownloadButton':
+                            graphDataSheet.addRow({
+                                year: element.year,
+                                gini: element.gini,
+                                avg_continent_gini: element.avg_continent_gini,
+                                country: element.country,
+                                continent: element.continent
+                            });
+                            break;
+                        case 'GDPDownloadButton':
+                            graphDataSheet.addRow({
+                                year: element.year,
+                                gdp: element.gdp,
+                                gdp_citizen: element.gdp_citizen,
+                                avg_continent_gdp_citizen: element.avg_continent_gdp_citizen,
+                                country: element.country,
+                                continent: element.continent
+                            });
+                            break;
+                        default:
+                            break;
+                    }
+                });
+
+                return workbook;
+            }
 
         
 
