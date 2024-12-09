@@ -4,11 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hvorfor fødes der flere børn i fattige lande?</title>
+    <link rel="stylesheet" href="/components/navbar/navbar.css">
+    <link rel="stylesheet" href="/components/footer/footer.css">
     <link rel="stylesheet" href="styles.css">
+
+    <div id="navbar-container"></div>
+    <script type="module">
+        // import { loadComponent } from '/js/utils.js';
+        // import { initializeNavbar } from '/components/navbar/navbar.js';
+
+        // document.addEventListener('DOMContentLoaded', async () => {
+        //     await loadComponent('navbar-container', '/components/navbar/navbar_countries.html');
+        //     await initializeNavbar();
+        // });
+           // Initialize
+           document.addEventListener('DOMContentLoaded', () => {
+            import('/js/utils/pageLoader.js').then(module => {
+                module.initializePage();
+            });
+        });
+         </script>
 </head>
 <body>
-    <header class="header">
-        <h1>Hvorfor fødes der flere børn i fattige lande?</h1>
+  
     </header>
     <main class="article-page">
         <p><!DOCTYPE html>
@@ -21,41 +39,52 @@
             </head>
             <body>
                 <header>
-                    <h1>Artikler om Ulighed</h1>
+                    <h1>Artikel 1</h1>
                     <nav>
                         <ul>
-                            <li><a href="article1.html">Artikel 1</a></li>
-                            <li><a href="article2.html">Artikel 2</a></li>
-                            <li><a href="article3.html">Artikel 3</a></li>
-                        </ul>
+                           
                     </nav>
                 </header>
             
                 <div class="container">
                     <article>
-                        <h2>Hvorfor fødes der flere børn i fattige lande?</h2>
-                        <p>Hvad siger det om verden, at nogle lande oplever markant højere fødselsrater end andre? Og hvordan hænger det sammen med, hvor rige eller fattige lande er?</p>
-                        <p>I dag står vi overfor en global virkelighed, hvor fertilitetsraterne i nogle af verdens fattigste lande er mere end dobbelt så høje som i de rigeste. Dette fænomen er ikke blot et spørgsmål om kultur eller tradition, men dybt forbundet med økonomiske og sociale forhold.</p>
-            
-                        <h3>Høj fertilitet: et symptom på fattigdom</h3>
-                        <p>Høj fertilitet i fattige lande er ofte et resultat af begrænset adgang til uddannelse, sundhedsydelser og præventionsmidler – især for kvinder. Når piger får mulighed for at blive i skolen længere, har de en tendens til at få færre børn og vente længere med at stifte familie. I mange udviklingslande, hvor piger ofte træder ud af skolesystemet tidligt, ser vi derimod det modsatte; kvinder bliver mødre i en ung alder og får mange børn.</p>
-                        <p>Manglende adgang til sundhedsydelser spiller også en væsentlig rolle. I lande med utilstrækkelig sundhedspleje vælger mange familier at få flere børn som en form for “forsikring” mod børnedødelighed, som er mere udbredt i fattige lande.</p>
-            
-                        <h3>Lav fertilitet i rige lande: en anden udfordring</h3>
-                        <p>På den anden side kæmper mange velhavende lande med det modsatte problem: lave fertilitetsrater. Dette kan føre til en aldrende befolkning, hvor færre unge skal forsørge flere ældre, hvilket kan lægge pres på økonomier og sociale systemer. Årsagerne til lav fertilitet kan ofte spores til ændrede sociale normer, højere leveomkostninger og et øget fokus på karriere blandt kvinder.</p>
-            
+                        <h2>Hvorfor fødes der flere børn i nogle lande, og hvordan ændrer det sig over tid?</h2>
+                        <p>Fødselsrater varierer dramatisk på tværs af lande og regioner, og denne variation er dybt forbundet med sociale, økonomiske og kulturelle forhold. Ved at se nærmere på Burundi, Niger, Bangladesh og Danmark får vi et bredere perspektiv på, hvordan disse faktorer spiller ind.</p>
+                    
+                        <h3>Burundi: Høj fertilitet som overlevelsesstrategi</h3>
+                        <p>Burundi er et land, hvor fertilitetsraten traditionelt har været meget høj, med over 7 børn pr. kvinde i starten af 1990'erne. Selvom der er sket et fald, ligger fertilitetsraten stadig på over 5 børn pr. kvinde.</p>
+                        <p>Høje fødselsrater i Burundi afspejler landets begrænsede adgang til sundhedsydelser og uddannelse, især for kvinder. Familier vælger ofte at få mange børn som en forsikring mod høj børnedødelighed. Uddannelse af piger og adgang til prævention er stadig udfordringer, der hæmmer en yderligere reduktion i fødselsraterne.</p>
+                    
+                        <h3>Niger: Verdens højeste fertilitetsrate</h3>
+                        <p>Niger topper listen over lande med verdens højeste fertilitetsrate, som ligger tæt på 8 børn pr. kvinde. Denne rate har været bemærkelsesværdigt stabil i flere årtier, selvom der nu ses en langsom nedgang.</p>
+                        <p>I Niger skyldes de høje fødselsrater en kombination af fattigdom, kulturelle normer og manglende adgang til familieplanlægning. Familier i Niger får ofte mange børn, da de udgør en vigtig arbejdskraft, især i landdistrikterne, og som en sikkerhed i tilfælde af sygdom eller død. Uden investeringer i kvinders uddannelse og sundhed vil fertilitetsraten forblive høj.</p>
+                    
+                        <h3>Bangladesh: Et eksempel på succes</h3>
+                        <p>Bangladesh har været en succeshistorie inden for reduktion af fertilitetsraten. Fra over 6 børn pr. kvinde i 1980'erne er landet nu nede på under 2,5 børn pr. kvinde. Dette resultat skyldes omfattende investeringer i uddannelse, familieplanlægning og kvinders rettigheder.</p>
+                        <p>I modsætning til Burundi og Niger viser Bangladesh, hvordan adgang til prævention og bevidsthed om fordelene ved mindre familier kan føre til markante ændringer. Det er et eksempel på, hvordan målrettede politiske initiativer kan ændre en nations demografiske profil.</p>
+                    
+                        <h3>Danmark: Lav fertilitet og økonomisk stabilitet</h3>
+                        <p>Danmark repræsenterer den anden ende af spekteret. Landet har en fertilitetsrate på omkring 1,7 børn pr. kvinde – lavere end de fleste udviklingslande, men relativt stabilt sammenlignet med andre europæiske lande.</p>
+                        <p>Lav fertilitet i Danmark skyldes flere faktorer, herunder høje leveomkostninger, sen familieskabelse og et fokus på karriere blandt kvinder. På trods af dette har Danmark formået at undgå de ekstremt lave fødselsrater, der ses i nogle andre europæiske lande, delvist takket være statslige støtteordninger som barselsorlov og børnepenge, der fremmer balancen mellem arbejde og familieliv.</p>
+                    
+                        <h3>Fællesnævnere og kontraster</h3>
+                        <p>Burundi og Niger deler høje fertilitetsrater, der afspejler fattigdom og mangel på ressourcer. Bangladesh demonstrerer, hvordan uddannelse og sundhedsinitiativer kan reducere fertiliteten dramatisk. Danmark repræsenterer en stabil, men lav fertilitetsrate, hvor sociale støtteordninger spiller en central rolle.</p>
+                    
                         <h3>Konklusion</h3>
-                        <p>Det er tydeligt, at forholdene i både fattige og velhavende lande spiller en afgørende rolle i, hvor mange børn kvinder får. I fattige lande er høj fertilitet et symptom på økonomiske og sociale udfordringer, mens lave fertilitetsrater i velhavende lande kan skabe sine egne problemer med en aldrende befolkning. For at kunne tackle disse udfordringer er det vigtigt at forstå de underliggende faktorer og arbejde hen imod løsninger, der kan støtte både kvinder og samfund globalt.</p>
+                        <p>Disse fire lande fremhæver, hvordan fertilitetsrater varierer på tværs af økonomiske og kulturelle sammenhænge. Hvor Niger og Burundi kæmper med udfordringer relateret til høj fertilitet, viser Bangladesh, hvordan politiske indsatser kan føre til forbedringer. Danmark giver et eksempel på de komplekse faktorer, der former fertilitet i velstående samfund.</p>
+                        <p>At forstå disse dynamikker er afgørende for at finde løsninger, der kan understøtte både økonomisk udvikling og befolkningsvækst på en bæredygtig måde.</p>
                     </article>
+                    
             
                     <footer>
-                        <a href="articles.html">Tilbage til oversigten</a>
+                        <a href="articles.html">Tilbage til artikler</a>
+                        <a href="article2.html">Næste artikel</a>
                     </footer>
                 </div>
             </body>
             </html>
             </p>
-        <a href="articles.html" class="back-button">Tilbage til oversigten</a>
+      
     </main>
 </body>
 </html>

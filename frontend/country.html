@@ -42,6 +42,7 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             margin: 20px;
             text-align: center;
+
         }
 
         .chart {
@@ -63,6 +64,24 @@
         .labels {
             font-size: 20px;
         }
+
+        #visualizations {
+        margin-bottom: 60px;
+        min-height: 1600px; /* Height for 3 charts */
+        }
+
+        .chart {
+        border: 15px solid #f5f5f5; 
+        margin: 0 auto 50px auto;
+        padding: 10px; 
+        border-radius: 0; 
+        background-color: white; 
+        max-width: 1100px; 
+        width: 90%;
+        box-sizing: border-box; 
+        }
+
+
     </style>
 </head>
 
@@ -155,6 +174,8 @@
                         <i class="bi bi-download"></i> 
                         Download
                     </button>
+                    </div>
+                </div>
                 <div id="fertilityChart" class="chart">
                     <h3>Fertility Rate Trends</h3>
                     <div class="chart-content"></div>

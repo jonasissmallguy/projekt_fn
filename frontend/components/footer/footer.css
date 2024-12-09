@@ -1,12 +1,13 @@
 
 .footer {
-    background-color: #193931;
+    background-color: #0074c6;
     color: #f5f5f5;
     padding: 20px 10px;
     text-align: left;
     width: 100%;
+    box-sizing: border-box; 
+    overflow-x: hidden;
 }
-
 .footer-content {
     display: flex;
     justify-content: space-between;
@@ -29,13 +30,13 @@
 
 .footer-section p, .footer-section ul, .footer-section li, .footer-section a {
     font-size: 0.9em;
-    color: #d1d1d1;
+    color: white;
     line-height: 1.4;
 }
 
 .footer-section a {
     text-decoration: none;
-    color: #d1d1d1;
+    color: white;
 }
 
 .footer-section a:hover {

@@ -4,11 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hvor meget lever verdens fattigste for?</title>
+    <link rel="stylesheet" href="/components/navbar/navbar.css">
+    <link rel="stylesheet" href="/components/footer/footer.css">
     <link rel="stylesheet" href="styles.css">
+
+    <div id="navbar-container"></div>
+    <script type="module">
+        // import { loadComponent } from '/js/utils.js';
+        // import { initializeNavbar } from '/components/navbar/navbar.js';
+
+        // document.addEventListener('DOMContentLoaded', async () => {
+        //     await loadComponent('navbar-container', '/components/navbar/navbar_countries.html');
+        //     await initializeNavbar();
+        // });
+           // Initialize
+           document.addEventListener('DOMContentLoaded', () => {
+            import('/js/utils/pageLoader.js').then(module => {
+                module.initializePage();
+            });
+        });
+         </script>
 </head>
 <body>
-    <header class="header">
-        <h1>Hvor meget lever verdens fattigste for?</h1>
+ 
     </header>
     <main class="article-page">
         <!DOCTYPE html>
@@ -21,42 +39,51 @@
 </head>
 <body>
     <header>
-        <h1>Artikler om Ulighed</h1>
+        <h1>Artikel 2</h1>
         <nav>
             <ul>
-                <li><a href="article1.html">Artikel 1</a></li>
-                <li><a href="article2.html">Artikel 2</a></li>
-                <li><a href="article3.html">Artikel 3</a></li>
-            </ul>
+            
         </nav>
     </header>
 
     <div class="container">
         <article>
-            <h2>Hvor meget lever verdens fattigste for?</h2>
-            <p>Ulighed er et globalt fænomen, men måden, det opleves på, varierer enormt fra land til land. Mens Danmark er kendt for sit relativt lige samfund og stærke velfærdsstat, står millioner i verdens fattigste lande over for en helt anden virkelighed. Hvordan ser hverdagen ud for de fattigste i Danmark sammenlignet med de fattigste i verdens mest ulige lande?</p>
-
-            <h3>Den globale bund: ekstrem fattigdom</h3>
-            <p>Verdensbanken definerer ekstrem fattigdom som at leve for mindre end $1,90 om dagen – cirka 13 danske kroner. Omkring 9 % af verdens befolkning lever under denne grænse. De fleste bor i lande som Niger, Den Centralafrikanske Republik, DR Congo og Somalia, hvor basale ressourcer som mad, rent vand og adgang til sundhed er en daglig kamp.</p>
-            <p>Ekstrem fattigdom handler ikke kun om manglen på penge, men også om fraværet af muligheder. Uddannelse, sundhedspleje og social sikkerhed er enten ikke-eksisterende eller utilgængelige for størstedelen af befolkningen. Det skaber en ond cirkel, hvor fattigdom går i arv fra generation til generation.</p>
-
-            <h3>Fattigdom i Danmark: et helt andet billede</h3>
-            <p>Selvom Danmark også oplever økonomisk ulighed, er forskellen mellem rig og fattig langt mindre markant end i mange udviklingslande. Her sikrer velfærdsstaten, at selv de mest økonomisk udfordrede har adgang til basale fornødenheder som sundhed, uddannelse og sociale ydelser.</p>
-            <p>For eksempel lever en dansk borger, der modtager kontanthjælp, for væsentligt mere end $1,90 om dagen. Selvom økonomisk pres og sociale udfordringer stadig kan føre til marginalisering i Danmark, er adgangen til hjælp langt større end i de lande, hvor ekstrem fattigdom hersker.</p>
-
-            <h3>Hvad skaber forskellen?</h3>
-            <p>Den største forskel mellem Danmark og mange af verdens fattigste lande ligger i opbygningen af deres økonomiske og sociale systemer. I mange udviklingslande er rigdom ofte koncentreret i hænderne på en lille økonomisk elite, hvilket efterlader størstedelen af befolkningen med meget få ressourcer. Fraværet af en stærk stat til at omfordele ressourcer gennem skatter og sociale programmer forværrer uligheden.</p>
-            <p>I Danmark, derimod, reducerer en stærk velfærdsmodel og progressivt skattesystem de økonomiske forskelle og sikrer, at alle har adgang til basale rettigheder som uddannelse og sundhed.</p>
-        </article>
+            <article>
+                <h2>Hvor meget lever verdens fattigste for?</h2>
+                <p>Økonomisk ulighed og indkomstniveau varierer dramatisk mellem lande og regioner, og dette har en dybtgående effekt på folks hverdag og muligheder. Ved at se nærmere på Nepal, Sydafrika, USA, og Danmark kan vi få et indblik i, hvordan økonomisk udvikling og ulighed påvirker forskellige samfund.</p>
+            
+                <h3>Nepal: Små skridt mod lighed</h3>
+                <p>Nepal er et af de fattigste lande i Asien, med en GDP pr. indbygger på under $700 i 2017 – en beskeden stigning fra omkring $200 i 1990. På trods af dette viser Gini-koefficienten en positiv tendens med et fald fra omkring 54 til 48 i samme periode. Dette indikerer, at ressourcerne i landet er blevet lidt mere ligeligt fordelt, selvom befolkningen stadig kæmper med lave indkomster og begrænsede muligheder.</p>
+            
+                <h3>Sydafrika: Velstand uden lighed</h3>
+                <p>Sydafrika har oplevet betydelig økonomisk vækst, hvor GDP pr. indbygger nåede over $8.000 i 2011, før den faldt til omkring $6.500 i 2017. På trods af denne vækst er Sydafrika et af de mest ulige lande i verden med en Gini-koefficient på over 63. Denne ekstreme ulighed afspejler sig i adgangen til basale fornødenheder som sundhed, uddannelse og beskæftigelse for størstedelen af befolkningen.</p>
+            
+                <h3>USA: Velstand med høj ulighed</h3>
+                <p>USA har haft en imponerende økonomisk vækst med GDP pr. indbygger, der steg fra $25.000 i 1990 til næsten $60.000 i 2017. På trods af dette har landet en konstant høj Gini-koefficient omkring 41-42, hvilket viser, at velstanden ikke er ligeligt fordelt. Uligheden begrænser stadig mulighederne for lavindkomstgrupper og skaber sociale udfordringer i et ellers rigt land.</p>
+            
+                <h3>Danmark: Velstand og lighed</h3>
+                <p>Danmark står som et eksempel på, hvordan økonomisk vækst kan kombineres med lav ulighed. GDP pr. indbygger steg fra $30.000 i 1990 til over $60.000 i 2017 – på linje med USA. Men med en Gini-koefficient på omkring 27 har Danmark en af de mest ligelige indkomstfordelinger i verden. Dette skyldes landets stærke velfærdsmodel, der sikrer adgang til sundhed, uddannelse og sociale ydelser for alle.</p>
+            
+                <h3>Fællesnævnere og forskelle</h3>
+                <p>Nepal viser, hvordan selv små skridt mod økonomisk lighed kan gøre en forskel for de fattigste.</p>
+                <p>Sydafrika illustrerer, hvordan økonomisk vækst kan ske uden forbedringer i ulighed.</p>
+                <p>USA fremhæver, hvordan høj velstand kan eksistere side om side med høj ulighed.</p>
+                <p>Danmark demonstrerer, hvordan en stærk velfærdsstat kan sikre både vækst og lighed.</p>
+            
+                <h3>Konklusion</h3>
+                <p>De økonomiske data fra disse fire lande viser, hvordan ulighed og økonomisk udvikling hænger sammen. Nepal og Sydafrika kæmper med forskellige former for ulighed, mens USA og Danmark repræsenterer to forskellige veje for rige nationer. At reducere ulighed kræver ikke kun økonomisk vækst, men også målrettede politiske indsatser, der sikrer en mere retfærdig fordeling af ressourcer.</p>
+            </article>
+            
 
         <footer>
-            <a href="articles.html">Tilbage til oversigten</a>
+            <a href="articles.html">Tilbage til artikler</a>
+            <a href="article3.html">Næste artikel</a>
         </footer>
     </div>
 </body>
 </html>
 
-        <a href="articles.html" class="back-button">Tilbage til oversigten</a>
+        
     </main>
 </body>
 </html>
