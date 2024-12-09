@@ -179,30 +179,29 @@
                 <div id="fertilityChart" class="chart">
                     <h3>Fertility Rate Trends</h3>
                     <div class="chart-content"></div>
-                    </div>
                     <button
-                        type="button"
-                        class="btn btn-primary"
-                        id="fertilityDownloadButton"
+                    type="button"
+                    class="btn btn-primary"
+                    id="fertilityDownloadButton"
                     >
-                        <i class="bi bi-download"></i> 
-                        Download
+                    <i class="bi bi-download"></i> 
+                    Download
                     </button>
+                    </div>
                 <div id="gdpChart" class="chart">
                     <h3>GDP per capital</h3>
                     <div class="chart-content"></div>
-                    </div>
                     <button
-                        type="button"
-                        class="btn btn-primary"
-                        id= "GDPDownloadButton"
+                    type="button"
+                    class="btn btn-primary"
+                    id= "GDPDownloadButton"
                     >
-                        <i class="bi bi-download"></i> 
-                        Download
+                    <i class="bi bi-download"></i> 
+                    Download
                     </button>
+                    </div>
             </div>
             `;
-
 
             const timeData = countryData
                 .map(d => ({
@@ -936,70 +935,39 @@
                 let fertilityDownloadButton = document.getElementById('fertilityDownloadButton');
                 let GDPDownloadButton = document.getElementById('GDPDownloadButton');
 
-                giniDownloadButton.addEventListener("click", async (event) => {
+                giniDownloadButton.addEventListener("click", async () => {
 
-                    console.log("ginidownloadbutton event was triggered");
-
-                    const workbook = generateWorkbookWithHeadersAndData(['year', 'gini', 'avg_continent_gini', 'country', 'continent'], graphData, giniDownloadButton.id)
-
-                    const buffer = await workbook.xlsx.writeBuffer();
-
-                    const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
-
-                    const link = document.createElement("a");
-                    link.href = URL.createObjectURL(blob);
-                    link.download = `GiniData_${graphData[0].country}.xlsx`;
-
-                    link.click();
-
-                    URL.revokeObjectURL(link.href);
-                    console.log("File was saved to user's PC");
-
-
+                    setupDownloadButton(['year', 'gini', 'avg_continent_gini', 'country', 'continent'], giniDownloadButton, graphData);
                 });
 
-                fertilityDownloadButton.addEventListener("click", async (event) => {
+                fertilityDownloadButton.addEventListener("click", async () => {
 
-                    console.log("fertilityDownloadButton event was triggered");
-
-                    const workbook = generateWorkbookWithHeadersAndData(['year', 'fertility', 'avg_continent_fertility', 'country', 'continent'], graphData, fertilityDownloadButton.id);
-                    workbook.title = 'Fertility Data'
-                    const buffer = await workbook.xlsx.writeBuffer();
-
-                    const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
-
-                    const link = document.createElement("a");
-                    link.href = URL.createObjectURL(blob);
-                    link.download = `Fertility_Data_${graphData[0].country}.xlsx`;
-
-                    link.click();
-
-                    URL.revokeObjectURL(link.href);
-                    console.log("File was saved to user's PC");
-
-
+                    await setupDownloadButton(['year', 'fertility', 'avg_continent_fertility', 'country', 'continent'], fertilityDownloadButton, graphData);
                 });
-                GDPDownloadButton.addEventListener("click", async (event) => {
+                GDPDownloadButton.addEventListener("click", async () => {
 
-                    console.log("GDPDownloadButton event was triggered");
-
-                    const workbook = generateWorkbookWithHeadersAndData(['year', 'gdp', 'gdp_citizen', 'avg_continent_gdp_citizen', 'country', 'continent'], graphData, GDPDownloadButton.id)
-
-                    const buffer = await workbook.xlsx.writeBuffer();
-
-                    const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
-
-                    const link = document.createElement("a");
-                    link.href = URL.createObjectURL(blob);
-                    link.download = `GiniData_${graphData[0].country}.xlsx`;
-
-                    link.click();
-
-                    URL.revokeObjectURL(link.href);
-                    console.log("File was saved to user's PC");
-
-
+                    await setupDownloadButton(['year', 'gdp', 'gdp_citizen', 'avg_continent_gdp_citizen', 'country', 'continent'], GDPDownloadButton, graphData);
                 });
+
+            }
+
+            async function setupDownloadButton(excelHeaderArray, buttonElement, graphData) {
+                console.log("GDPDownloadButton event was triggered");
+
+                const workbook = generateWorkbookWithHeadersAndData(excelHeaderArray, graphData, buttonElement.id)
+
+                const buffer = await workbook.xlsx.writeBuffer();
+
+                const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = `GiniData_${graphData[0].country}.xlsx`;
+
+                link.click();
+
+                URL.revokeObjectURL(link.href);
+                console.log("File was saved to user's PC");
 
             }
 
