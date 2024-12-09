@@ -22,40 +22,17 @@
     justify-content: center;
     flex-grow: 1; /* Allow links to grow and center relative to logo */
 }
+
 .nav li {
     position: relative;
 }
+
 .nav a {
     display: block;
     color: rgb(54, 54, 54);
     text-decoration: none;
     padding: 15px 25px;
-}
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 200px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-}
-.dropdown:hover .dropdown-content {
-    display: block;
-}
-.continent-content {
-    display: none;
-    position: absolute;
-    left: 100%;
-    top: 0;
-    background-color: #f9f9f9;
-    min-width: 200px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-}
-.dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .nav a:hover {
@@ -78,6 +55,7 @@
 .nav a:hover::after {
     width: 100%;
 }
+
 .dropdown-content {
     display: none;
     position: absolute;
@@ -117,14 +95,14 @@
     padding: 12px 16px;
     text-decoration: none;
     display: block;
+    break-inside: avoid;
 }
+
 .dropdown-content a:hover,
 .continent-content a:hover {
     background-color: #ebebeb;
 }
-.dropdown-item:hover .continent-content {
-    display: block;
-}
+
 .country-iso {
     color: #dcdcdc;
     font-size: 0.8em;

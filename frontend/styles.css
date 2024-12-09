@@ -8,46 +8,81 @@ body {
     line-height: 1.8;
 }
 
+/* Header */
 .header {
-    text-align: center; /* Centrerer teksten */
-    margin: 50px 0; /*vertikal afstand */
+    text-align: center;
+    padding: 20px 0;
+    background-color: #333; /* Mørk baggrund for konsistens */
+    color: white;
+    margin-bottom: 20px;
 }
+
 .header h1 {
-    font-family: 'Arial', sans-serif; /* skrifttype */
-    font-size: 2.5em; /*skriftstørrelsen */
-    color: #333; /* tekstfarve */
-}
-
-.information {
-
-    text-align: center;
-    text-decoration: dashed;
-    font-family: 'Arial', sans-serif; /* skrifttype */
-    font-size: 1.5em; /*skriftstørterelsen */
-    color: #333; /* tekstfarve */
-}
-
-.country-flag {
-    width: 120px;
-    height: 80px;
-    object-fit: cover;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.country-name {
-    margin: 0;
     font-size: 2.5rem;
-    color: #333;
+    margin: 0;
 }
 
-
-.loading {
-    text-align: center;
+/* Artikel-container */
+.article-page {
+    max-width: 800px;
+    margin: 0 auto;
     padding: 20px;
-    font-style: italic;
-    color: #666;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Overskrifter i artiklen */
+.article-page h2, .article-page h3 {
+    color: #333; /* Neutral tekstfarve */
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.article-page p {
+    margin: 10px 0;
+    text-align: justify; /* Juster tekst for bedre læsbarhed */
+}
+
+/* Navigation (individuelle artikellinks) */
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    border: 1px solid #333;
+    padding: 8px 12px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+nav ul li a:hover {
+    background-color: #333;
+    color: white;
+}
+
+/* Footer */
+footer {
+    margin-top: 20px;
+    text-align: center;
+}
+
+footer a {
+    text-decoration: none;
+    color: white;
+    /*background-color: #333;*/
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: background-color 0.3s;
 }
 
 .error {
