@@ -15,11 +15,12 @@
 
         .country-flag {
             max-width: 150px;
-            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .country-name {
-            margin: 10px 0;
+            margin: -5px 0;
+            font-size: medium;
             color: #333;
         }
 
@@ -52,18 +53,65 @@
             font-size: 20px;
         }
 
+        #visualizations {
+        margin-bottom: 60px;
+        min-height: 1600px; /* Height for 3 charts */
+        }
+
+        .chart {
+        border: 15px solid #eef2f5; 
+        margin: 0 auto 50px auto;
+        padding: 10px;        
+        border-radius: 0; 
+        background-color: white; 
+        max-width: 1100px; 
+        width: 75%;
+        box-sizing: border-box; 
+        }
+
+
     </style>
 </head>
 <body>
     <div id="navbar-container"></div>
-    <div id="country-info">
+  
         <div class="country-header">
-            <!-- Flag and name will be inserted here -->
         </div>
+
+        <div class="country-info">
+                <h1>Velkommen til Vores Verdensdata</h1>
+           
+            <div class="container">
+                <div class="box">
+                    <h2>Gini-koefficient</h2>
+                    <p class="value">værdi</p>
+                    <p class="year">2017</p>
+                </div>
+                <div class="box">
+                    <h2>Fertilitetsrate</h2>
+                    <p class="value">værdi</p>
+                    <p class="year">2017</p>
+                </div>
+                <div class="box">
+                    <h2>BNP pr. indbygger</h2>
+                    <p class="value">værdi</p>
+                    <p class="year">2017</p>
+                </div>
+                </div>
+               
+        <div class="under-boks">
+                <p5>Disse tal hænger ofte sammen og fortæller os noget om, hvordan samfund fungerer.</p>
+                <p4> For eksempel kan høj økonomisk ulighed påvirke fertilitetsrater og velstand, mens en høj velstand ofte ledsages af lavere fertilitet og mindre ulighed.</p>
+            </div>
+        </div>
+        </div>
+             
         
         <div id="visualizations">
-            <!-- D3 visualization will be inserted here -->
+        
         </div>
+
+       
     </div>
 
 
@@ -127,15 +175,20 @@
                     <div class="padding1">
                 <div id="giniChart" class="chart">
                     <div class="padding2">
-                    <h3>Gini Coefficient Over Time</h3> 
+                        <h1>Udviklingen i Gini-koefficienten</h1>
+                    <h3d>Her kan du se udviklingen i Gini-koefficienten over tid. En høj Gini-koefficent, indikierer større ulighed, mens en lavere gini tyder på mindre ulighed i samfundet. </h3> 
                     <div class="chart-content"></div>
+        
+                    </div>
                 </div>
                 <div id="fertilityChart" class="chart">
-                    <h3>Fertility Rate Trends</h3>
+                    <h1>Udviklingen i fertilitetsraten</h1>
+                    <h33>Her kan du se udviklingen i fertilitetsraten over tid. Fertilitetsraten er Antallet af levendefødte børn per kvinde i den fødedygtige alder (15-49 år) i gennemsnit over en periode.</h3>
                     <div class="chart-content"></div>
                 </div>
                 <div id="gdpChart" class="chart">
-                    <h3>GDP per capital</h3>
+                    <h1>Udviklingen i BNP pr. indbygger</h1>
+                    <h3d>Her kan du se udviklingen i BNP pr. indbygger over tid. BNP pr. indbygger er den samlede mængde produktion i et land, divideret med populationen.</h3>
                     <div class="chart-content"></div>
                 </div>
             </div>
@@ -205,7 +258,7 @@
             .attr("text-anchor","left")
             .style("font-size","16px")
             .style("font-family","Verdana, Geneva, Tahoma, sans-serif")
-            .text("Udvikling i gini-koefficienten")
+            .text("Gini-koefficient:")
 
             // Y axis
             svg.append("g")
@@ -438,7 +491,7 @@
             .attr("y",-5)
             .attr("text-anchor","left")
             .style("font-size","16px")
-            .text("Udvikling i fertilitets-raten")
+            .text("Fertilitetsrate:")
 
             // Y axis
             svg.append("g")
@@ -673,7 +726,7 @@
             .attr("y",-5)
             .attr("text-anchor","left")
             .style("font-size","16px")
-            .text("Change in GDP/citizen (USD)")
+            .text("BNP pr. indbygger (USD):")
 
             // Y axis
             svg.append("g")
