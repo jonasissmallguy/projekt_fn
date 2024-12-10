@@ -43,7 +43,6 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             margin: 20px;
             text-align: center;
-
         }
 
         .chart {
@@ -82,6 +81,12 @@
         box-sizing: border-box; 
         }
 
+        .download-button-container{
+           position:relative;
+           top: 525px;
+           left: 89%;
+           
+        }
 
     </style>
 </head>
@@ -197,7 +202,7 @@
                     <h3d>Her kan du se udviklingen i Gini-koefficienten over tid. En høj Gini-koefficent, indikierer større ulighed, mens en lavere gini tyder på mindre ulighed i samfundet. </h3> 
                     <div class="chart-content"></div>
                     </div>
-                    
+                    <div class=download-button-container> 
                     <button
                         type="button"
                         class="btn btn-primary"
@@ -207,11 +212,13 @@
                         Download
                     </button>
                     </div>
+                    </div>
                 </div>
                 <div id="fertilityChart" class="chart">
                     <h1>Udviklingen i fertilitetsraten</h1>
                     <h33>Her kan du se udviklingen i fertilitetsraten over tid. Fertilitetsraten er Antallet af levendefødte børn per kvinde i den fødedygtige alder (15-49 år) i gennemsnit over en periode.</h3>
                     <div class="chart-content"></div>
+                    <div class=download-button-container> 
                     <button
                     type="button"
                     class="btn btn-primary"
@@ -221,10 +228,12 @@
                     Download
                     </button>
                     </div>
+                    </div>
                 <div id="gdpChart" class="chart">
                     <h1>Udviklingen i BNP pr. indbygger</h1>
                     <h3d>Her kan du se udviklingen i BNP pr. indbygger over tid. BNP pr. indbygger er den samlede mængde produktion i et land, divideret med populationen.</h3>
                     <div class="chart-content"></div>
+                    <div class=download-button-container> 
                     <button
                     type="button"
                     class="btn btn-primary"
@@ -233,6 +242,7 @@
                     <i class="bi bi-download"></i> 
                     Download
                     </button>
+                    </div>
                     </div>
             </div>
             `;
