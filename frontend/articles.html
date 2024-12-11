@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Artikler om Ulighed</title>
+    <title>Articles</title>
 
     <link rel="stylesheet" href="/components/navbar/navbar.css">
     <link rel="stylesheet" href="/components/footer/footer.css">
@@ -15,11 +15,18 @@
             padding: 0;
             background-color: #f4f4f9;
         }
-        .header {
-            background-color: #09170b;
-            color: white;
+        .articles-header {
             text-align: center;
-            padding: 1em 0;
+            margin-top: 20px;
+            padding: 20px;
+        }
+        .articles-header h1 {
+            font-size: 24px;
+            color: #333;
+        }
+        .articles-header p {
+            font-size: 16px;
+            color: #555;
         }
         .articles {
             display: flex;
@@ -41,83 +48,74 @@
             border-radius: 5px;
             margin-bottom: 10px;
         }
-        .read-more-button, .back-button {
-            display: inline-block;
-            background-color: #09170b;
-            color: white;
-            text-decoration: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            margin-top: 10px;
-            transition: background-color 0.3s;
-        }
-        .read-more-button:hover, .back-button:hover {
-            background-color: #2e8b42;
-        }
-        .footer {
-            text-align: center;
-            background: #222;
-            color: white;
-            padding: 10px 0;
-            margin-top: 20px;
-        }
-        .back-to-home {
-            display: inline-block;
-            margin: 20px auto;
-            padding: 10px 20px;
-            background-color: #09170b;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-        .back-to-home:hover {
-            background-color: #2e8b42;
-        }
+        .read-more-button, .back-to-home {
+    display: inline-block;
+    background-color: rgba(0, 153, 255, 0.7); /* Light blue with transparency */
+    color: white;
+    text-decoration: none;
+    padding: 12px 18px; /* Slightly larger padding for a modern look */
+    border-radius: 30px; /* Fully rounded corners */
+    border: 1px solid rgba(0, 153, 255, 0.9); /* Adds a border with a slightly darker shade */
+    font-weight: 600; /* Bold font for readability */
+    font-size: 16px; /* Increased font size */
+    transition: all 0.3s ease; /* Smooth transition for hover effect */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.read-more-button:hover, .back-to-home:hover {
+    background-color: rgba(0, 122, 204, 0.8); /* Slightly darker blue with transparency on hover */
+    color: white; /* Ensures text remains white */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+    transform: translateY(-2px); /* Subtle lift effect */
+    cursor: pointer; /* Change cursor to pointer */
+}
+
+        
+
     </style>
 </head>
 <body>
     <!-- Navbar -->
     <div id="navbar-container"></div>
 
-    <!-- Page content -->
-    <header class="header">
-        <h1>Artikler om ulighed</h1>
+    <!-- Articles Header -->
+    <header class="articles-header">
+        <h1>Explore Our Articles on Inequality</h1>
+        <p>Here you can find a selection of articles that delve into different aspects of inequality around the world. 
+        Click below to learn more.</p>
     </header>
+    
+    <!-- Articles Section -->
     <main class="articles">
-        <!-- Artikel 1 -->
+        <!-- Article 1 -->
         <article class="article-box">
-            <h2>Hvorfor fødes der flere børn i fattige lande?</h2>
-            <img src="https://sosbornebyerne.dk/wp-content/uploads/2022/07/kvinde-med-barn-etiopien-kreditering-eduardo-soteras-afp-ritzau-scanpix-scaled.jpg" alt="Kvinde med barn i Etiopien">
-            <a href="article1.html" class="read-more-button">Gå til artiklen</a>
+            <h2>Why Are More Children Born in Some Countries?</h2>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTW4pak6KsHTup5THo_BEQIIBtQwDCZfCgK4A&s" alt="Woman with child">
+            <a href="article1.html" class="read-more-button">Read More</a>
         </article>
-        <!-- Artikel 2 -->
+        <!-- Article 2 -->
         <article class="article-box">
-            <h2>Hvor meget lever verdens fattigste for?</h2>
-            <img src="https://i0.wp.com/www.unicef.dk/wp-content/uploads/2023/10/600x600_fattigdom-1.jpg?quality=89&ssl=1" alt="Fattigdom billede">
-            <a href="article2.html" class="read-more-button">Gå til artiklen</a>
+            <h2>The Economic Reality of the World's Poorest</h2>
+            <img src="https://piopio.dk/sites/default/files/ulighed_balder.jpg" alt="Poverty image">
+            <a href="article2.html" class="read-more-button">Read More</a>
         </article>
-        <!-- Artikel 3 -->
+        <!-- Article 3 -->
         <article class="article-box">
-            <h2>Hvordan har økonomiske kriser påvirket uligheden?</h2>
-            <img src="https://videnskab.dk/wp-content/uploads/2016/05/286c261a28d3f9909ab096088f16a94ea6f3de6e6471eeaef5c21259eee2f47c.jpeg" alt="Kriser billede">
-            <a href="article3.html" class="read-more-button">Gå til artiklen</a>
+            <h2>Economic Crises Impact on Inequality Since 1990</h2>
+            <img src="https://media.istockphoto.com/id/521606332/vector/the-caricature-of-the-global-financial-crisis.jpg?s=612x612&w=0&k=20&c=eQCObPLgH3ofAmPyiV-HX0XZQQLTNufAR4GW1qcFcjM=" alt="Economic crises image">
+            <a href="article3.html" class="read-more-button">Read More</a>
         </article>
     </main>
 
-    <!-- Back to Home button -->
+    <!-- Back to Home -->
     <div style="text-align: center;">
-        <a href="index.html" class="back-to-home">Tilbage til forsiden</a>
+        <a href="index.html" class="back-to-home">Back to Home</a>
     </div>
 
-    <div id="footer-container"></div>
     <!-- Footer -->
-    <footer class="footer">
-        <p>© 2024 WomboCombo. Alle rettigheder forbeholdes.</p>
-    </footer>
+    <div id="footer-container"></div>
 
-    <!-- Navbar script -->
+    <!-- JavaScript -->
     <script type="module">
         // import { loadComponent } from '/js/utils.js';
         // import { initializeNavbar } from '/components/navbar/navbar.js';
@@ -132,8 +130,6 @@
                 module.initializePage();
             });
         });
-         </script>
-            
-      <div id="footer-container"></div>
+    </script>
 </body>
 </html>
