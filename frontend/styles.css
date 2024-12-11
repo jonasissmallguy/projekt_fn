@@ -447,3 +447,13 @@ p {
     text-decoration: underline; /* Understregning ved hover */
 }
 
+
+
+    .map-container h2, .main-term {
+        text-align: left;
+    }
+
+    .icon-image {
+        padding-top: 75px;
+    }
+
