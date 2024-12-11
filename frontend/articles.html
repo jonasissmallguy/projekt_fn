@@ -117,7 +117,15 @@
 
     <!-- JavaScript -->
     <script type="module">
-        document.addEventListener('DOMContentLoaded', () => {
+        // import { loadComponent } from '/js/utils.js';
+        // import { initializeNavbar } from '/components/navbar/navbar.js';
+
+        // document.addEventListener('DOMContentLoaded', async () => {
+        //     await loadComponent('navbar-container', '/components/navbar/navbar_countries.html');
+        //     await initializeNavbar();
+        // });
+           // Initialize
+           document.addEventListener('DOMContentLoaded', () => {
             import('/js/utils/pageLoader.js').then(module => {
                 module.initializePage();
             });
