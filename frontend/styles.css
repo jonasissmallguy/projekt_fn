@@ -202,21 +202,23 @@ a:hover {
     margin-bottom: 10px;
 }
 
-.read-more-button {
+
+.read-more-button, .back-to-home {
     display: inline-block;
-    background-color: #09170b;
-    color: white;
+    background-color: #ADD8E6; /* Lyseblå baggrund */
+    color: white; /* Hvid tekst */
     text-decoration: none;
     padding: 10px 15px;
     border-radius: 5px;
-    margin-top: auto; /* Skubber knappen ned */
+    margin-top: 10px;
     transition: background-color 0.3s;
-    text-align: center;
 }
 
-.read-more-button:hover {
-    background-color: #2e8b42;
+.read-more-button:hover, .back-to-home:hover {
+    background-color: #87CEEB; /* Mørkere lyseblå på hover */
+    color: white; /* Sikrer hvid tekst */
 }
+
 
 .articles {
     display: flex;
@@ -261,22 +263,7 @@ p {
     color: #555;
 }
 
-.read-more-link {
-    display: inline-block;
-    margin: 10px 0;
-    color: #09170b;
-    text-decoration: none;
-    font-weight: bold;
-    border: 1px solid #09170b;
-    padding: 5px 15px;
-    border-radius: 5px;
-    transition: background-color 0.3s, color 0.3s;
-}
 
-.read-more-link:hover {
-    background-color: #09170b;
-    color: white;
-}
 .card {
     background-color: white;
     border-radius: 10px;
@@ -314,19 +301,23 @@ p {
 .card a {
     display: inline-block;
     margin: 10px 0;
-    color: #09170b;
+    color: white;
     text-decoration: none;
     font-weight: bold;
-    border: 1px solid #09170b;
-    padding: 5px 15px;
-    border-radius: 5px;
-    transition: background-color 0.3s, color 0.3s;
+    padding: 10px 20px; /* Increased padding for a better click area */
+    border-radius: 25px; /* Fully rounded for a modern button look */
+    background-color: #0099ff; /* Bright blue background */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
 }
 
 .card a:hover {
-    background-color: #09170b;
-    color: white;
+    background-color: #007acc; /* Slightly darker blue on hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+    transform: translateY(-2px); /* Slight upward movement */
 }
+
+
 
 .card-container {
     display: flex;
@@ -413,3 +404,45 @@ p {
     font-size: 14px;
     color: #888;
 }
+
+
+.article-navigation {
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* Mellemrum mellem knapper */
+    margin-top: 20px; /* Afstand fra artiklen */
+}
+
+.btn {
+    display: inline-block;
+    background-color: rgba(0, 153, 255, 0.7); /* Light blue with transparency */
+    color: white;
+    text-decoration: none;
+    padding: 12px 18px; /* Slightly larger padding for a modern look */
+    border-radius: 30px; /* Fully rounded corners */
+    border: 1px solid rgba(0, 153, 255, 0.9); /* Adds a border with a slightly darker shade */
+    font-weight: 600; /* Bold font for readability */
+    font-size: 16px; /* Increased font size */
+    transition: all 0.3s ease; /* Smooth transition for hover effect */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.btn:hover {
+    background-color: rgba(0, 122, 204, 0.8); /* Slightly darker blue with transparency on hover */
+    color: white; /* Ensures text remains white */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+    transform: translateY(-2px); /* Subtle lift effect */
+    cursor: pointer; /* Change cursor to pointer */
+}
+
+
+.view-data-link {
+    color: #007bff; /* Blå farve */
+    text-decoration: none; /* Fjern understregning */
+    font-weight: bold;
+}
+
+.view-data-link:hover {
+    text-decoration: underline; /* Understregning ved hover */
+}
+

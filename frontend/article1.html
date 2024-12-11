@@ -3,88 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hvorfor fødes der flere børn i fattige lande?</title>
+    <title>Why Are More Children Born in Some Countries?</title>
     <link rel="stylesheet" href="/components/navbar/navbar.css">
     <link rel="stylesheet" href="/components/footer/footer.css">
     <link rel="stylesheet" href="styles.css">
+</head>
+<style>
 
-    <div id="navbar-container"></div>
+
+
+</style>
+
+<body>
+    <!-- Navbar -->
+    <header>
+        <div id="navbar-container"></div>
+    </header>
+
+    <main class="article-page">
+        <h1>Article 1</h1>
+        <article>
+            <h2>Why Are More Children Born in Some Countries, and How Does This Change Over Time?</h2>
+            <p>Birth rates vary dramatically across countries and regions, deeply connected to social, economic, and cultural factors. By examining Burundi, Niger, Bangladesh, and Denmark, we gain a broader perspective on how these factors come into play.</p>
+        
+            <h3>Burundi: High Fertility as a Survival Strategy</h3>
+            <p>Burundi has traditionally had very high fertility rates, with over 7 children per woman in the early 1990s. Although there has been a decline, the fertility rate remains above 5 children per woman.</p>
+            <p>High fertility rates in Burundi reflect limited access to healthcare and education, especially for women. Families often choose to have many children as a safeguard against high child mortality. The lack of education for girls and access to contraception remains a significant challenge, preventing further reductions in fertility rates.
+                <a href="/country.html?id=29" class="view-data-link">View Burundi's Data</a>
+            </p>
+        
+            <h3>Niger: The World's Highest Fertility Rate</h3>
+            <p>Niger tops the global list with the highest fertility rate, close to 8 children per woman. This rate has remained remarkably stable over decades, although a slow decline is now visible.</p>
+            <p>In Niger, high fertility rates are a result of poverty, cultural norms, and limited access to family planning. Families in Niger often have many children to serve as labor, particularly in rural areas, and as a safety net in case of illness or death. Without investments in women’s education and health, fertility rates are likely to remain high.
+                <a href="/country.html?id=127" class="view-data-link">View Niger's Data</a>
+            </p>
+        
+            <h3>Bangladesh: A Success Story</h3>
+            <p>Bangladesh has been a success story in reducing fertility rates. From over 6 children per woman in the 1980s, the country is now down to fewer than 2.5 children per woman. This outcome is due to extensive investments in education, family planning, and women's rights.</p>
+            <p>Unlike Burundi and Niger, Bangladesh demonstrates how access to contraception and awareness of the benefits of smaller families can lead to significant changes. It stands as an example of how targeted policy initiatives can transform a nation's demographic profile.
+                <a href="/country.html?id=14" class="view-data-link">View Bangladesh's Data</a>
+            </p>
+        
+            <h3>Denmark: Low Fertility and Economic Stability</h3>
+            <p>Denmark represents the opposite end of the spectrum. The country has a fertility rate of about 1.7 children per woman – lower than most developing countries but relatively stable compared to other European nations.</p>
+            <p>Low fertility in Denmark is due to several factors, including high living costs, delayed family formation, and a focus on careers among women. However, Denmark has managed to avoid the extremely low fertility rates seen in some other European countries, partly due to government support programs such as parental leave and child benefits, which help balance work and family life.
+                <a href="/country.html?id=47" class="view-data-link">View Denmark's Data</a>
+            </p>
+        
+            <h3>Commonalities and Contrasts</h3>
+            <p>Burundi and Niger share high fertility rates, reflecting poverty and a lack of resources. Bangladesh demonstrates how education and health initiatives can dramatically reduce fertility rates. Denmark represents a stable but low fertility rate, where social support systems play a central role.</p>
+        
+            <h3>Conclusion</h3>
+            <p>These four countries highlight how fertility rates vary across economic and cultural contexts. While Niger and Burundi face challenges related to high fertility, Bangladesh shows how political efforts can lead to improvements. Denmark exemplifies the complex factors shaping fertility in prosperous societies.</p>
+            <p>Understanding these dynamics is crucial for finding solutions that support both economic development and sustainable population growth.</p>
+        </article>
+    
+    <!-- Navigation Buttons -->
+    <div class="article-navigation">
+        <a href="articles.html" class="btn">Back to Articles</a>
+        <a href="article2.html" class="btn">Next Article</a>
+    </div>
+    
+
+    <!-- Navbar Initialization -->
     <script type="module">
-        // import { loadComponent } from '/js/utils.js';
-        // import { initializeNavbar } from '/components/navbar/navbar.js';
-
-        // document.addEventListener('DOMContentLoaded', async () => {
-        //     await loadComponent('navbar-container', '/components/navbar/navbar_countries.html');
-        //     await initializeNavbar();
-        // });
-           // Initialize
-           document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', () => {
             import('/js/utils/pageLoader.js').then(module => {
-                module.initializePage();
+                module.initializePage(); // Ensure navbar-container is populated
             });
         });
-         </script>
-</head>
-<body>
-  
-    </header>
-    <main class="article-page">
-        <p><!DOCTYPE html>
-            <html lang="da">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Hvorfor fødes der flere børn i fattige lande?</title>
-                <link rel="stylesheet" href="style.css"> <!-- Link til den eksterne CSS-fil -->
-            </head>
-            <body>
-                <header>
-                    <h1>Artikel 1</h1>
-                    <nav>
-                        <ul>
-                           
-                    </nav>
-                </header>
+    </script>
+</div>
             
-                <div class="container">
-                    <article>
-                        <h2>Hvorfor fødes der flere børn i nogle lande, og hvordan ændrer det sig over tid?</h2>
-                        <p>Fødselsrater varierer dramatisk på tværs af lande og regioner, og denne variation er dybt forbundet med sociale, økonomiske og kulturelle forhold. Ved at se nærmere på Burundi, Niger, Bangladesh og Danmark får vi et bredere perspektiv på, hvordan disse faktorer spiller ind.</p>
-                    
-                        <h3>Burundi: Høj fertilitet som overlevelsesstrategi</h3>
-                        <p>Burundi er et land, hvor fertilitetsraten traditionelt har været meget høj, med over 7 børn pr. kvinde i starten af 1990'erne. Selvom der er sket et fald, ligger fertilitetsraten stadig på over 5 børn pr. kvinde.</p>
-                        <p>Høje fødselsrater i Burundi afspejler landets begrænsede adgang til sundhedsydelser og uddannelse, især for kvinder. Familier vælger ofte at få mange børn som en forsikring mod høj børnedødelighed. Uddannelse af piger og adgang til prævention er stadig udfordringer, der hæmmer en yderligere reduktion i fødselsraterne.</p>
-                    
-                        <h3>Niger: Verdens højeste fertilitetsrate</h3>
-                        <p>Niger topper listen over lande med verdens højeste fertilitetsrate, som ligger tæt på 8 børn pr. kvinde. Denne rate har været bemærkelsesværdigt stabil i flere årtier, selvom der nu ses en langsom nedgang.</p>
-                        <p>I Niger skyldes de høje fødselsrater en kombination af fattigdom, kulturelle normer og manglende adgang til familieplanlægning. Familier i Niger får ofte mange børn, da de udgør en vigtig arbejdskraft, især i landdistrikterne, og som en sikkerhed i tilfælde af sygdom eller død. Uden investeringer i kvinders uddannelse og sundhed vil fertilitetsraten forblive høj.</p>
-                    
-                        <h3>Bangladesh: Et eksempel på succes</h3>
-                        <p>Bangladesh har været en succeshistorie inden for reduktion af fertilitetsraten. Fra over 6 børn pr. kvinde i 1980'erne er landet nu nede på under 2,5 børn pr. kvinde. Dette resultat skyldes omfattende investeringer i uddannelse, familieplanlægning og kvinders rettigheder.</p>
-                        <p>I modsætning til Burundi og Niger viser Bangladesh, hvordan adgang til prævention og bevidsthed om fordelene ved mindre familier kan føre til markante ændringer. Det er et eksempel på, hvordan målrettede politiske initiativer kan ændre en nations demografiske profil.</p>
-                    
-                        <h3>Danmark: Lav fertilitet og økonomisk stabilitet</h3>
-                        <p>Danmark repræsenterer den anden ende af spekteret. Landet har en fertilitetsrate på omkring 1,7 børn pr. kvinde – lavere end de fleste udviklingslande, men relativt stabilt sammenlignet med andre europæiske lande.</p>
-                        <p>Lav fertilitet i Danmark skyldes flere faktorer, herunder høje leveomkostninger, sen familieskabelse og et fokus på karriere blandt kvinder. På trods af dette har Danmark formået at undgå de ekstremt lave fødselsrater, der ses i nogle andre europæiske lande, delvist takket være statslige støtteordninger som barselsorlov og børnepenge, der fremmer balancen mellem arbejde og familieliv.</p>
-                    
-                        <h3>Fællesnævnere og kontraster</h3>
-                        <p>Burundi og Niger deler høje fertilitetsrater, der afspejler fattigdom og mangel på ressourcer. Bangladesh demonstrerer, hvordan uddannelse og sundhedsinitiativer kan reducere fertiliteten dramatisk. Danmark repræsenterer en stabil, men lav fertilitetsrate, hvor sociale støtteordninger spiller en central rolle.</p>
-                    
-                        <h3>Konklusion</h3>
-                        <p>Disse fire lande fremhæver, hvordan fertilitetsrater varierer på tværs af økonomiske og kulturelle sammenhænge. Hvor Niger og Burundi kæmper med udfordringer relateret til høj fertilitet, viser Bangladesh, hvordan politiske indsatser kan føre til forbedringer. Danmark giver et eksempel på de komplekse faktorer, der former fertilitet i velstående samfund.</p>
-                        <p>At forstå disse dynamikker er afgørende for at finde løsninger, der kan understøtte både økonomisk udvikling og befolkningsvækst på en bæredygtig måde.</p>
-                    </article>
-                    
-            
-                    <footer>
-                        <a href="articles.html">Tilbage til artikler</a>
-                        <a href="article2.html">Næste artikel</a>
-                    </footer>
-                </div>
-            </body>
-            </html>
-            </p>
-      
-    </main>
+</div>
 </body>
 </html>
+
+    
+</main>
+</body>
+</html>
+<style>
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+</style>
+<div id="footer-container"></div>
