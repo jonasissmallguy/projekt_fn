@@ -1,4 +1,4 @@
-
+/* Globale stilarter for artikelsider */
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
@@ -8,10 +8,11 @@ body {
     line-height: 1.8;
 }
 
+/* Header */
 .header {
     text-align: center;
     padding: 20px 0;
-    background-color: #333;
+    background-color: #333; /* Mørk baggrund for konsistens */
     color: white;
     margin-bottom: 20px;
 }
@@ -21,7 +22,7 @@ body {
     margin: 0;
 }
 
-
+/* Artikel-container */
 .article-page {
     max-width: 800px;
     margin: 0 auto;
@@ -31,17 +32,19 @@ body {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Overskrifter i artiklen */
 .article-page h2, .article-page h3 {
-    color: #333; 
+    color: #333; /* Neutral tekstfarve */
     margin-top: 20px;
     margin-bottom: 10px;
 }
 
 .article-page p {
     margin: 10px 0;
-    text-align: justify; 
+    text-align: justify; /* Juster tekst for bedre læsbarhed */
 }
 
+/* Navigation (individuelle artikellinks) */
 nav ul {
     list-style: none;
     padding: 0;
@@ -66,6 +69,7 @@ nav ul li a:hover {
     color: white;
 }
 
+/* Footer */
 footer {
     margin-top: 20px;
     text-align: center;
@@ -74,7 +78,7 @@ footer {
 footer a {
     text-decoration: none;
     color: white;
-   
+    /*background-color: #333;*/
     padding: 10px 15px;
     border-radius: 5px;
     font-size: 1rem;
@@ -92,10 +96,10 @@ footer a {
 html, body {
     margin: 0;
     padding: 0;
-    height: 100%; 
+    height: 100%; /* Footer&header width problem løst*/
 }
 
-
+/* styles.css */
 .articles-body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -152,10 +156,11 @@ a:hover {
     text-decoration: underline;
 }
 
-a:hover {
+/*footer a:hover {
     background-color: #555;
 }
-
+*/
+/* Responsivitet */
 @media (max-width: 600px) {
     .article-page {
         padding: 15px;
@@ -191,27 +196,29 @@ a:hover {
 
 .article-box img {
     width: 100%;
-    height: 180px;
-    object-fit: cover;
+    height: 180px; /* Fast højde */
+    object-fit: cover; /* Gør billedet skaleret uden at strække */
     border-radius: 5px;
     margin-bottom: 10px;
 }
 
-.read-more-button {
+
+.read-more-button, .back-to-home {
     display: inline-block;
-    background-color: #09170b;
-    color: white;
+    background-color: #ADD8E6; /* Lyseblå baggrund */
+    color: white; /* Hvid tekst */
     text-decoration: none;
     padding: 10px 15px;
     border-radius: 5px;
-    margin-top: auto;
+    margin-top: 10px;
     transition: background-color 0.3s;
-    text-align: center;
 }
 
-.read-more-button:hover {
-    background-color: #2e8b42;
+.read-more-button:hover, .back-to-home:hover {
+    background-color: #87CEEB; /* Mørkere lyseblå på hover */
+    color: white; /* Sikrer hvid tekst */
 }
+
 
 .articles {
     display: flex;
@@ -219,7 +226,7 @@ a:hover {
     gap: 20px;
     padding: 20px;
     flex-wrap: wrap;
-    align-items: stretch;
+    align-items: stretch; /* Sørger for ens højde på artikler */
 }
 .card-container {
     display: flex;
@@ -256,22 +263,7 @@ p {
     color: #555;
 }
 
-.read-more-link {
-    display: inline-block;
-    margin: 10px 0;
-    color: #09170b;
-    text-decoration: none;
-    font-weight: bold;
-    border: 1px solid #09170b;
-    padding: 5px 15px;
-    border-radius: 5px;
-    transition: background-color 0.3s, color 0.3s;
-}
 
-.read-more-link:hover {
-    background-color: #09170b;
-    color: white;
-}
 .card {
     background-color: white;
     border-radius: 10px;
@@ -309,19 +301,23 @@ p {
 .card a {
     display: inline-block;
     margin: 10px 0;
-    color: #09170b;
+    color: white;
     text-decoration: none;
     font-weight: bold;
-    border: 1px solid #09170b;
-    padding: 5px 15px;
-    border-radius: 5px;
-    transition: background-color 0.3s, color 0.3s;
+    padding: 10px 20px; /* Increased padding for a better click area */
+    border-radius: 25px; /* Fully rounded for a modern button look */
+    background-color: #0099ff; /* Bright blue background */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
 }
 
 .card a:hover {
-    background-color: #09170b;
-    color: white;
+    background-color: #007acc; /* Slightly darker blue on hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+    transform: translateY(-2px); /* Slight upward movement */
 }
+
+
 
 .card-container {
     display: flex;
@@ -332,10 +328,10 @@ p {
 }
 .card .image-placeholder {
     width: 100%;
-    height: 150px;
-    background-color: #f0f0f0;
+    height: 150px; /* Juster højden til din ramme */
+    background-color: #f0f0f0; /* Match rammefarven */
     border-radius: 8px;
-    overflow: hidden;
+    overflow: hidden; /* Sørg for, at billeder holder sig inden for rammen */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -344,8 +340,8 @@ p {
 .card .image-placeholder img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: center;
+    object-fit: cover; /* Sørger for, at billedet fylder rammen uden at forvrænges */
+    object-position: center; /* Centrer billedet i rammen */
 }
 
 
@@ -370,7 +366,7 @@ p {
 
     background-color: white;
 }
-
+/* Container styling */
 .container {
     display: flex;
     gap: 20px;
@@ -378,15 +374,17 @@ p {
     margin: 20px;
 }
 
+/* Box styling */
 .box {
     background-color: #f5faff;
     border-radius: 4px;
     padding: 20px;
     text-align: center;
  
-    width: 150px;
+    width: 150px; /* Tilpas bredde som ønsket */
 }
 
+/* Titel styling */
 .box h2 {
     font-size: 16px;
     font-weight: bold;
@@ -394,20 +392,57 @@ p {
     color: #000;
 }
 
+/* Værdi styling */
 .value {
     font-size: 32px;
     font-weight: bold;
-    color: #007bff;
+    color: #007bff; /* Blå farve til værdien */
 }
 
+/* Årstal styling */
 .year {
     font-size: 14px;
     color: #888;
 }
 
-.chart h1, .chart p {
-    margin-left: 50px; }
 
-    .padding2 p {
-        size-adjust: 10px;
-    }
+.article-navigation {
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* Mellemrum mellem knapper */
+    margin-top: 20px; /* Afstand fra artiklen */
+}
+
+.btn {
+    display: inline-block;
+    background-color: rgba(0, 153, 255, 0.7); /* Light blue with transparency */
+    color: white;
+    text-decoration: none;
+    padding: 12px 18px; /* Slightly larger padding for a modern look */
+    border-radius: 30px; /* Fully rounded corners */
+    border: 1px solid rgba(0, 153, 255, 0.9); /* Adds a border with a slightly darker shade */
+    font-weight: 600; /* Bold font for readability */
+    font-size: 16px; /* Increased font size */
+    transition: all 0.3s ease; /* Smooth transition for hover effect */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.btn:hover {
+    background-color: rgba(0, 122, 204, 0.8); /* Slightly darker blue with transparency on hover */
+    color: white; /* Ensures text remains white */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+    transform: translateY(-2px); /* Subtle lift effect */
+    cursor: pointer; /* Change cursor to pointer */
+}
+
+
+.view-data-link {
+    color: #007bff; /* Blå farve */
+    text-decoration: none; /* Fjern understregning */
+    font-weight: bold;
+}
+
+.view-data-link:hover {
+    text-decoration: underline; /* Understregning ved hover */
+}
+
