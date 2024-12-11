@@ -16,7 +16,9 @@
     max-width: 1000px;
     margin: 0 auto;
 }
-
+.footer-section h2 {
+    text-align: left;
+}
 .footer-section {
     flex: 1;
     margin: 5px;
@@ -30,7 +32,7 @@
 }
 
 .footer-section p, .footer-section ul, .footer-section li, .footer-section a {
-    font-size: 0.9em;
+
     color: rgb(54, 54, 54);
     line-height: 1.4;
 }
@@ -38,11 +40,17 @@
 .footer-section a {
     text-decoration: none;
     color: rgb(54, 54, 54);
+    
 }
 
 .footer-section a:hover {
-    color: rgb(54, 54, 54);
+    color: rgb(255, 255, 255);
+    text-align: center;
+    
+    text-decoration: none; /* Remove the underline on hover */
 }
+
+
 
 .footer-bottom {
     text-align: center;

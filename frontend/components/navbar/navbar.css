@@ -3,7 +3,7 @@
     align-items: center;
     justify-content: space-between;
     background-color: #ffffff;
-    padding: 0px;
+    padding: 20px;
     border-radius: 10px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
     font-family: 'Arial', sans-serif;
@@ -12,6 +12,9 @@
 .nav-logo {
     height: 60px;
     width: 60px;
+    top: 20px;
+    left: 20px;
+    position:absolute;
 }
 
 .nav ul {

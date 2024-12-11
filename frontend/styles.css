@@ -71,16 +71,6 @@ footer {
     text-align: center;
 }
 
-footer a {
-    text-decoration: none;
-    color: white;
-   
-    padding: 10px 15px;
-    border-radius: 5px;
-    font-size: 1rem;
-    transition: background-color 0.3s;
-}
-
 .error {
     color: #dc3545;
     padding: 20px;
@@ -411,3 +401,12 @@ p {
     .padding2 p {
         size-adjust: 10px;
     }
+
+    .map-container h2, .main-term {
+        text-align: left;
+    }
+
+    .icon-image {
+        padding-top: 75px;
+    }
+

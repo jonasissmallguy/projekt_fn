@@ -177,12 +177,13 @@
             gap: 40px;
         }
 
-        .left-column {
+        .left-column h2, .left-column p{
             padding-right: 40px;
+            margin-bottom: 20px;
         }
 
-        .right-column {
-            padding-top: 28px; /* Aligns with the main heading */
+        .right-column h2, .right-column p {
+            padding-top: 0px;
         }
 
         .tagline {
@@ -226,17 +227,16 @@
             font-size: 16px;
             color: #666;
         }
+    
 
         .term-content h2 {
-            font-size: 16px;
+            font-size: 18px;
             color: #333;
-            margin: 0 0 4px 0;
             font-weight: normal;
         }
 
         .term-content p {
             color: #666;
-            margin: 0;
             line-height: 1.4;
             font-size: 14px;
         }
@@ -263,11 +263,15 @@
             text-align: center; /* Ensures the heading text is centered */
         }
 
+        .map-container h2 {
+            text-align: left; /* Centers the text within the container */
+            margin-bottom: 20px; /* Adds spacing below the title */
+        }
+
         .map-container h1 {
             text-align: center; /* Centers the text within the container */
             margin-bottom: 20px; /* Adds spacing below the title */
         }
-
         .information {
             text-align: center;
         }
@@ -325,11 +329,10 @@
         <div class="content-wrapper">
             <div class="left-column">
                 <div class="main-term">
-                    <h1>Uligheds-termer</h1>
+                    <h2>Uligheds-termer</h2>
                     <p>Vi måler typisk  økonomisk ulighed i et samfund med udgangspunkt i Gini-koefficenten og Palma-raten</p>
                     <br>
-                    <br>
-                    <p>Gini koefficenten bruges ofte til at måle bredt, hvor Palma-raten sammenligner de rigeste med de fattigeste.</p>
+                    <p>Gini koefficenten bruges ofte til at måle bredt, på mange forkellige parametre for velværd, bl.a. indkomst eller uddannelse, hvor Palma-raten, på mere fokuseret vis, sammenligner indkostfordelingen for de rigeste og de fattigeste.f</p>
                     <p></p>
                 </div>
             </div>
@@ -340,7 +343,7 @@
                         <img src="./images/icons/gini.png" alt="Gini icon" class="icon-image">
                     </div>
                     <div class="term-content">
-                        <h2>Gini</h2>
+                        <h2>Gini-koefficienten</h2>
                         <p>Gini-koefficienten er et tal mellem 0 og 100 der måler økonomisk ulighed i en befolkning. 
                             En høj Gini-koefficent, indikierer større ulighed, mens en lavere gini tyder på mindre ulighed i samfundet.</p>
                     </div>
@@ -351,7 +354,7 @@
                         <img src="./images/icons/palma.png" alt="Palma icon" class="icon-image">
                     </div>
                     <div class="term-content">
-                        <h2>Palma</h2>
+                        <h2>Palma-raten</h2>
                         <p>Palma-raten er en indikator for ulighed, der fokuserer på forholdet mellem de rigeste 10% og
                             de fattigeste 40% af befolkningen. En høj Palma-rate indikerer stor ulighed, mens en lav rate tyder på større lighed. 
                         </p>
