@@ -82,9 +82,6 @@
     <div id="navbar-container"></div>
 
     <!-- Page content -->
-    <header class="header">
-        <h1>Artikler om ulighed</h1>
-    </header>
     <main class="articles">
         <!-- Artikel 1 -->
         <article class="article-box">
@@ -110,22 +107,8 @@
     <div style="text-align: center;">
         <a href="index.html" class="back-to-home">Tilbage til forsiden</a>
     </div>
-
-    <div id="footer-container"></div>
-    <!-- Footer -->
-    <footer class="footer">
-        <p>© 2024 WomboCombo. Alle rettigheder forbeholdes.</p>
-    </footer>
-
     <!-- Navbar script -->
     <script type="module">
-        // import { loadComponent } from '/js/utils.js';
-        // import { initializeNavbar } from '/components/navbar/navbar.js';
-
-        // document.addEventListener('DOMContentLoaded', async () => {
-        //     await loadComponent('navbar-container', '/components/navbar/navbar_countries.html');
-        //     await initializeNavbar();
-        // });
            // Initialize
            document.addEventListener('DOMContentLoaded', () => {
             import('/js/utils/pageLoader.js').then(module => {

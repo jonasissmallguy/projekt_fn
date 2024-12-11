@@ -28,10 +28,12 @@
         }
 
         #map {
-            margin-top: 20px;
-            position: relative;
-            box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
-            box-shadow: inset;
+        margin-top: 20px;
+        position: relative;
+        box-shadow: 
+            0 0 1px rgba(0, 0, 0, 0.1),      /* Outer shadow */
+            inset 0 0 1px rgba(0, 0, 0, 0.1); /* Inner shadow */
+        padding: 10px;
         }
 
         .metric-toggle {
@@ -278,11 +280,11 @@
     <div id="navbar-container"></div>
     
     <div class="map-container">
-        <h1>Udvikling i ulighed</h1>
+        <h1>Change in inequality</h1>
         <div class="information">
-            <p>Dette verdenskort giver dig mulighed for at følge udviklingen i ulighed fra 1990-2017.
+            <p>This world map allows you to follow the development in inequality from 1990-2017.
                 <br>
-                Fokuser på et land, afspil og følg udviklingen!
+                Focus on a country, press play and follow the development!
             </p>
 
         </div>
@@ -293,7 +295,7 @@
         </div>
 
         <div class="timeline-controls">
-            <button id="playButton" class="play-button">▶ Se udviklingen</button>
+            <button id="playButton" class="play-button">▶ Play</button>
             <div class="year-display">
                 Year: <span id="currentYear">1990</span>
             </div>
@@ -311,6 +313,8 @@
 
         <div id="country-info">
             <button id="close-info">&times;</button>
+            <div class="info-heading"></div>
+            <div id="info-flags" class="info-value"></div>
             <div class="info-heading">Country:</div>
             <div id="info-country" class="info-value"></div>
             <div class="info-heading">Year:</div>
@@ -325,11 +329,11 @@
         <div class="content-wrapper">
             <div class="left-column">
                 <div class="main-term">
-                    <h1>Uligheds-termer</h1>
-                    <p>Vi måler typisk  økonomisk ulighed i et samfund med udgangspunkt i Gini-koefficenten og Palma-raten</p>
+                    <h1>Inequality-terms</h1>
+                    <p>We typically meassure economic inequality in a society based on the Gini-coefficient and the Palma rate</p>
                     <br>
                     <br>
-                    <p>Gini koefficenten bruges ofte til at måle bredt, hvor Palma-raten sammenligner de rigeste med de fattigeste.</p>
+                    <p>The Gini coefficient is often used to measure broadly, where the Palma rate compares the richest with the poorest.</p>
                     <p></p>
                 </div>
             </div>
@@ -341,8 +345,8 @@
                     </div>
                     <div class="term-content">
                         <h2>Gini</h2>
-                        <p>Gini-koefficienten er et tal mellem 0 og 100 der måler økonomisk ulighed i en befolkning. 
-                            En høj Gini-koefficent, indikierer større ulighed, mens en lavere gini tyder på mindre ulighed i samfundet.</p>
+                        <p>The Gini coefficient is a number between 0 and 100 that measures economic inequality in a population.
+                            A high Gini coefficient indicates greater inequality, while a lower Gini indicates less inequality in society.</p>
                     </div>
                 </div>
             
@@ -352,8 +356,8 @@
                     </div>
                     <div class="term-content">
                         <h2>Palma</h2>
-                        <p>Palma-raten er en indikator for ulighed, der fokuserer på forholdet mellem de rigeste 10% og
-                            de fattigeste 40% af befolkningen. En høj Palma-rate indikerer stor ulighed, mens en lav rate tyder på større lighed. 
+                        <p>The Palma rate is an indicator of inequality that focuses on the ratio between the richest 10% and the poorest 40% of the population. 
+                            A high Palma rate indicates high inequality, while a low rate indicates greater equality.
                         </p>
                     </div>
                 </div>
@@ -371,13 +375,13 @@
 
         const metricConfig = {
             gini: {
-                scale: d3.scaleSequential(d3.interpolateBlues).domain([20, 65]),
-                legendValues: [20, 30, 40, 50, 60, 65],
+                scale: d3.scaleSequential(d3.interpolateBlues).domain([0, 80]),
+                legendValues: [0,10,20, 30, 40, 50, 60, 70, 80],
                 label: 'GINI: '
             },
             palma: {
-                scale: d3.scaleSequential(d3.interpolateBlues).domain([0.5, 4]),
-                legendValues: [0.5, 1, 1.5, 2, 3, 4],
+                scale: d3.scaleSequential(d3.interpolateBlues).domain([0, 4]),
+                legendValues: [0, 0.5, 1, 1.5, 2, 3, 4],
                 label: 'Palma: '
             }
         };
@@ -518,7 +522,18 @@
         function showCountryInfo(countryName, countryData) {
             const giniValue = parseFloat(countryData.gini);
             const palmaValue = parseFloat(countryData.palmaRatio);
+            
+            // Flag - images
+            const flagImg = document.createElement('img');            
+            flagImg.src = `/images/flags/${countryData.country_iso.toLowerCase()}.png`;
+            flagImg.alt = `Flag of ${countryData.country_name}`;
+            flagImg.style.width = '30px';
 
+            const flagContainer = document.getElementById('info-flags');
+            flagContainer.innerHTML = ''; // Clear existing content
+            flagContainer.appendChild(flagImg);
+
+            document.getElementById('info-flags').appendChild(flagImg)
             document.getElementById('info-country').textContent = countryName;
             document.getElementById('info-year').textContent = getCurrentYear();
             document.getElementById('info-gini').textContent = 
