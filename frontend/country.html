@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/components/footer/footer.css">
     <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">;
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <!-- <script rel = "module" src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"
         integrity="sha512-UnrKxsCMN9hFk7M56t4I4ckB4N/2HHi0w/7+B/1JsXIX3DmyBcsGpT3/BsuZMZf+6mAr0vP81syWtfynHJ69JA=="
@@ -21,21 +21,19 @@
     <style>
         .country-header {
             padding: 20px;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
             text-align: center;
         }
 
         .country-flag {
             max-width: 150px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 2.5px;
         }
 
         .country-name {
-            margin: -2px 0;
+            margin: -5px 0;
             font-size: medium;
             color: #333;
-            font-size: 20px;        
         }
 
         .chart-container {
@@ -94,15 +92,40 @@
         <div class="country-header">
         </div>
 
-        <div class="country-info">      
-        <br>
-        <br>   
+        <div class="country-info">
+                <h1>Velkommen til Vores Verdensdata</h1>
+           
+            <div class="container">
+                <div class="box">
+                    <h2>Gini-koefficient</h2>
+                    <p class="value">værdi</p>
+                    <p class="year">2017</p>
+                </div>
+                <div class="box">
+                    <h2>Fertilitetsrate</h2>
+                    <p class="value">værdi</p>
+                    <p class="year">2017</p>
+                </div>
+                <div class="box">
+                    <h2>BNP pr. indbygger</h2>
+                    <p class="value">værdi</p>
+                    <p class="year">2017</p>
+                </div>
+                </div>
+               
+        <div class="under-boks">
+                <p5>Disse tal hænger ofte sammen og fortæller os noget om, hvordan samfund fungerer.</p>
+                <p4> For eksempel kan høj økonomisk ulighed påvirke fertilitetsrater og velstand, mens en høj velstand ofte ledsages af lavere fertilitet og mindre ulighed.</p>
+            </div>
         </div>
         </div>
              
         
         <div id="visualizations">
+        
         </div>
+
+       
     </div>
 
 
@@ -147,8 +170,6 @@
             flagImg.className = 'country-flag';
             flagImg.src = `/images/flags/${countryData.country_iso.toLowerCase()}.png`;
             flagImg.alt = `Flag of ${countryData.country_name}`;
-            flagImg.style.width = '120px';
-            flagImg.style.height = '80px';
 
             flagImg.onerror = function () {
                 this.src = '/images/flags/placeholder.png';
@@ -157,69 +178,26 @@
             const nameH1 = document.createElement('h1');
             nameH1.className = 'country-name';
             nameH1.textContent = countryData.country_name;
-            const isoh2 = document.createElement('i');
-            isoh2.className = 'iso-name';
-            isoh2.textContent = `(${countryData.country_iso})`;
-
 
             header.appendChild(flagImg);
             header.appendChild(nameH1);
-            header.appendChild(isoh2)
 
             document.title = `${countryData.country_name} - Country Page`;
-
-            const value = document.querySelector('.value');
-
         }
 
         function createVisualizations(countryData) {
-
-            const timeData = countryData
-                .map(d => ({
-                    year: parseInt(d.year),
-                    gini: parseFloat(d.gini),
-                    palma: parseFloat(d.palma_ratio),
-                    avg_continent_gini: parseFloat(d.continent_avg_gini),
-                    fertility: parseFloat(d.fertility_rate),
-                    avg_continent_fertility: parseFloat(d.continent_avg_fertility),
-                    gdp_citizen: parseFloat(d.gdp_per_citizen),
-                    avg_continent_gdp_citizen: parseFloat(d.continent_avg_gdp_per_citizen),
-                    country: d.country_name,
-                    continent: d.continent_name,
-                    iso: d.country_iso
-
-                }))
-                .sort((a, b) => a.year - b.year);
-            
-            const latestYearData = timeData[timeData.length - 1];
-
             const visualizations = document.getElementById('visualizations');
             visualizations.innerHTML = `
-                 <div class="container">
-                    <div class="box">
-                        <h2>Gini-koefficient</h2>
-                        <p class="value">${latestYearData.gini.toFixed(2)}</p>
-                        <p class="year">2017</p>
-                    </div>
-                    <div class="box">
-                        <h2>Fertilitetsrate</h2>
-                        <p class="value">${latestYearData.fertility.toFixed(2)} </p>
-                        <p class="year">2017</p>
-                    </div>
-                    <div class="box">
-                        <h2>BNP pr. indbygger</h2>
-                        <p class="value">${latestYearData.gdp_citizen}$</p>
-                        <p class="year">2017</p>
-                    </div>
-                </div>
+    
                 <div class="chart-container">
                     <div class="padding1">
                 <div id="giniChart" class="chart">
                     <div class="padding2">
                         <h1>Udviklingen i Gini-koefficienten</h1>
-                    <h3d>Her kan du se udviklingen i Gini-koefficienten over tid. En høj Gini-koefficent, indikierer større ulighed, mens en lavere gini tyder på mindre ulighed i samfundet. </h3> 
+                    <p>Her kan du se udviklingen i Gini-koefficienten over tid. En høj Gini-koefficent, indikierer større ulighed, mens en lavere gini tyder på mindre ulighed i samfundet. </p> 
                     <div class="chart-content"></div>
                     </div>
+                    
                     <button
                         type="button"
                         class="btn btn-primary"
@@ -232,7 +210,7 @@
                 </div>
                 <div id="fertilityChart" class="chart">
                     <h1>Udviklingen i fertilitetsraten</h1>
-                    <h33>Her kan du se udviklingen i fertilitetsraten over tid. Fertilitetsraten er Antallet af levendefødte børn per kvinde i den fødedygtige alder (15-49 år) i gennemsnit over en periode.</h3>
+                    <p>Her kan du se udviklingen i fertilitetsraten over tid. Fertilitetsraten er Antallet af levendefødte børn per kvinde i den fødedygtige alder (15-49 år) i gennemsnit over en periode.<p>
                     <div class="chart-content"></div>
                     <button
                     type="button"
@@ -245,7 +223,7 @@
                     </div>
                 <div id="gdpChart" class="chart">
                     <h1>Udviklingen i BNP pr. indbygger</h1>
-                    <h3d>Her kan du se udviklingen i BNP pr. indbygger over tid. BNP pr. indbygger er den samlede mængde produktion i et land, divideret med populationen.</h3>
+                    <p>Her kan du se udviklingen i BNP pr. indbygger over tid. BNP pr. indbygger er den samlede mængde produktion i et land, divideret med populationen.<p>
                     <div class="chart-content"></div>
                     <button
                     type="button"
@@ -259,6 +237,22 @@
             </div>
             `;
 
+            const timeData = countryData
+                .map(d => ({
+                    year: parseInt(d.year),
+                    gini: parseFloat(d.gini),
+                    palma: parseFloat(d.palma_ratio),
+                    avg_continent_gini: parseFloat(d.continent_avg_gini),
+                    fertility: parseFloat(d.fertility_rate),
+                    avg_continent_fertility: parseFloat(d.continent_avg_fertility),
+                    gdp_citizen: parseFloat(d.gdp_per_citizen),
+                    avg_continent_gdp_citizen: parseFloat(d.continent_avg_gdp_per_citizen),
+                    country: d.country_name,
+                    continent: d.continent_name
+
+                }))
+                .sort((a, b) => a.year - b.year);
+
             createGiniChart(timeData);
             createFertilityChart(timeData);
             createGDPcitizenChart(timeData);
@@ -266,7 +260,7 @@
         }
 
         function createGiniChart(data) {
-            const margin = { top: 40, right: 140, bottom: 50, left: 60 };
+            const margin = { top: 40, right: 120, bottom: 50, left: 60 };
             const width = 980 - margin.left - margin.right;
             const height = 520 - margin.top - margin.bottom;
 
@@ -306,7 +300,7 @@
             .attr("y",-5)
             .attr("text-anchor","left")
             .style("font-size","16px")
-            .style("font-family","Verdana, Geneva, Tahoma, sans-serif")
+            .style("font-family","Arial, sans-serif")
             .text("Gini-koefficient:")
 
             // Y axis
@@ -471,7 +465,6 @@
 
             // Then for the labels:
             const lastPoint = data[data.length - 1];
-            const country_text = lastPoint.country.length > 15 ? lastPoint.iso : lastPoint.country;
 
             svg.append("text")
                 .attr("class", "labels")
@@ -480,7 +473,7 @@
                 .attr("dx", "0.5em") // Add small offset
                 .attr("dominant-baseline", "middle")
                 .attr("fill", "darkblue")
-                .text(country_text)
+                .text(lastPoint.country)
                 .style("opacity", 0)
                 .transition()
                 .delay(1500)
@@ -489,7 +482,7 @@
             svg.append("text")
                 .attr("class", "labels")
                 .attr("x", width)
-                .attr("y", y(lastPoint.avg_continent_gini) - 20)
+                .attr("y", y(lastPoint.avg_continent_gini))
                 .attr("dx", "0.5em")
                 .attr("dominant-baseline", "middle")
                 .attr("fill", "steelblue")
@@ -501,7 +494,7 @@
         }
 
         function createFertilityChart(data) {
-            const margin = { top: 40, right: 140, bottom: 50, left: 60 };
+            const margin = { top: 40, right: 120, bottom: 50, left: 60 };
             const width = 980 - margin.left - margin.right;
             const height = 520 - margin.top - margin.bottom;
 
@@ -705,8 +698,6 @@
 
             // Then for the labels:
             const lastPoint = data[data.length - 1];
-            const country_text = lastPoint.country.length > 15 ? lastPoint.iso : lastPoint.country;
-
 
             svg.append("text")
                 .attr("class", "labels")
@@ -715,7 +706,7 @@
                 .attr("dx", "0.5em") // Add small offset
                 .attr("dominant-baseline", "middle")
                 .attr("fill", "darkblue")
-                .text(country_text)
+                .text(lastPoint.country)
                 .style("opacity", 0)
                 .transition()
                 .delay(1500)
@@ -724,7 +715,7 @@
             svg.append("text")
                 .attr("class", "labels")
                 .attr("x", width)
-                .attr("y", y(lastPoint.avg_continent_fertility) - 20)
+                .attr("y", y(lastPoint.avg_continent_fertility))
                 .attr("dx", "0.5em")
                 .attr("dominant-baseline", "middle")
                 .attr("fill", "steelblue")
@@ -737,7 +728,7 @@
 
 
         function createGDPcitizenChart(data) {
-            const margin = { top: 40, right: 140, bottom: 50, left: 60 };
+            const margin = { top: 40, right: 120, bottom: 50, left: 60 };
             const width = 980 - margin.left - margin.right;
             const height = 520 - margin.top - margin.bottom;
 
@@ -944,8 +935,6 @@
 
             // Then for the labels:
             const lastPoint = data[data.length - 1];
-            const country_text = lastPoint.country.length > 15 ? lastPoint.iso : lastPoint.country;
-
 
             svg.append("text")
                 .attr("class", "labels")
@@ -954,7 +943,7 @@
                 .attr("dx", "0.5em") // Add small offset
                 .attr("dominant-baseline", "middle")
                 .attr("fill", "darkblue")
-                .text(country_text)
+                .text(lastPoint.country)
                 .style("opacity", 0)
                 .transition()
                 .delay(1500)
@@ -963,7 +952,7 @@
             svg.append("text")
                 .attr("class", "labels")
                 .attr("x", width)
-                .attr("y", y(lastPoint.avg_continent_gdp_citizen) - 20)
+                .attr("y", y(lastPoint.avg_continent_gdp_citizen))
                 .attr("dx", "0.5em")
                 .attr("dominant-baseline", "middle")
                 .attr("fill", "steelblue")
@@ -1081,4 +1070,5 @@
     <div id="footer-container"></div>
 
 </body>
+
 </html>
