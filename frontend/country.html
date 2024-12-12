@@ -966,7 +966,6 @@
                 let GDPDownloadButton = document.getElementById('GDPDownloadButton');
 
                 giniDownloadButton.addEventListener("click", async () => {
-
                     setupDownloadButton(['year', 'gini', 'avg_continent_gini', 'country', 'continent'], giniDownloadButton, graphData);
                 });
 
@@ -982,7 +981,6 @@
             }
 
             async function setupDownloadButton(excelHeaderArray, buttonElement, graphData) {
-                    console.log("GDPDownloadButton event was triggered");
 
                     const workbook = generateWorkbookWithHeadersAndData(excelHeaderArray, graphData, buttonElement.id)
 
