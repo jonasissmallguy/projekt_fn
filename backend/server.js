@@ -153,6 +153,7 @@ server.get('/api/world_data', async (request, response) => {
                 countryId: row.country_id,
                 continentName: row.continent_name,
                 continentId: row.continent_id,
+                country_iso: row.country_iso,
                 gini: row.gini,
                 palmaRatio: row.palma_ratio
             };
