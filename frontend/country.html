@@ -17,105 +17,24 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"
         integrity="sha512-Qlv6VSKh1gDKGoJbnyA5RMXYcvnpIqhO++MhIM2fStMcGT9i2T//tSwYFlcyoRRDcDZ+TYHpH8azBBCyhpSeqw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-    <style>
-        .country-header {
-            padding: 20px;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-
-        .country-flag {
-            max-width: 150px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 2.5px;
-        }
-
-        .country-name {
-            margin: -2px 0;
-            font-size: medium;
-            color: #333;
-            font-size: 20px;        
-        }
-
-        .chart-container {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin: 20px;
-            text-align: center;
-
-        }
-
-        .chart {
-            width: 100%;
-            height: 100%;
-        }
-
-        .tooltip {
-            position: absolute;
-            padding: 8px;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            pointer-events: none;
-            font-size: 12px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .labels {
-            font-size: 20px;
-        }
-
-        #visualizations {
-        margin-bottom: 60px;
-        min-height: 1600px; /* Height for 3 charts */
-        }
-
-        .chart {
-        border: 15px solid #eef2f5; 
-        margin: 0 auto 50px auto;
-        padding: 10px;        
-        border-radius: 0; 
-        background-color: white; 
-        max-width: 1100px; 
-        width: 75%;
-        box-sizing: border-box; 
-        }
-
-
-    </style>
 </head>
 
 <body>
+    <!--navbar  -->
     <div id="navbar-container"></div>
-  
-        <div class="country-header">
-        </div>
+    <!-- selve graferne -->
+    <div class="country-header"></div>
+    
+    <div id="visualizations"></div>
 
-        <div class="country-info">      
-        <br>
-        <br>   
-        </div>
-        </div>
-             
-        
-        <div id="visualizations">
-        </div>
-    </div>
-
-
+    <!-- indlæser data - kører funktionen, "initializePage" -->
     <script type="module">
         import { initializePage } from '/js/utils/pageLoader.js';
         document.addEventListener('DOMContentLoaded', initializePage);
     </script>
 
-
+    <!-- søger countryID -->
     <script type="module">
-
-
-
 
         async function loadCountryData() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -131,7 +50,7 @@
                 if (!response.ok) throw new Error('Country not found');
 
                 const countryData = await response.json();
-                displayCountryHeader(countryData[0]); // Use first item for country info
+                displayCountryHeader(countryData[0]);
                 createVisualizations(countryData);
             } catch (error) {
                 console.error('Error loading country data:', error);
@@ -197,30 +116,29 @@
             visualizations.innerHTML = `
                  <div class="container">
                     <div class="box">
-                        <h2>Gini-koefficient</h2>
+                        <h2>Gini-coefficient</h2>
                         <p class="value">${latestYearData.gini.toFixed(2)}</p>
                         <p class="year">2017</p>
                     </div>
                     <div class="box">
-                        <h2>Fertilitetsrate</h2>
+                        <h2>Fertility rate</h2>
                         <p class="value">${latestYearData.fertility.toFixed(2)} </p>
                         <p class="year">2017</p>
                     </div>
                     <div class="box">
-                        <h2>BNP pr. indbygger</h2>
+                        <h2>GDP per. capita</h2>
                         <p class="value">${latestYearData.gdp_citizen}$</p>
                         <p class="year">2017</p>
                     </div>
                 </div>
-                <div class="chart-container">
-                    <div class="padding1">
-                <div id="giniChart" class="chart">
-                    <div class="padding2">
-                        <h1>Udviklingen i Gini-koefficienten</h1>
-                    <p>Her kan du se udviklingen i Gini-koefficienten over tid. En høj Gini-koefficent, indikierer større ulighed, mens en lavere gini tyder på mindre ulighed i samfundet. </p> 
-                    <div class="chart-content"></div>
-                    </div>
-                    <button
+              <div class="chart-container">
+  <div class="padding1">
+    <div id="giniChart" class="chart">
+      <div class="padding2">
+        <h1>Change in Gini-coefficient</h1>
+        <P>Here you can see the development of the Gini coefficient over time. A high Gini coefficient indicates greater inequality, while a lower Gini suggests less inequality in society.</P> 
+        <div class="chart-content"></div>
+          <button
                         type="button"
                         class="btn btn-primary"
                         id="giniDownloadButton"
@@ -229,10 +147,16 @@
                         Download
                     </button>
                     </div>
+      </div>
+    </div>
+  </div>
+</div>
+                  
                 </div>
                 <div id="fertilityChart" class="chart">
-                    <h1>Udviklingen i fertilitetsraten</h1>
-                    <p>Her kan du se udviklingen i fertilitetsraten over tid. Fertilitetsraten er Antallet af levendefødte børn per kvinde i den fødedygtige alder (15-49 år) i gennemsnit over en periode.<p>
+                    <h1>Change in Fertility rate</h1>
+                    <p>
+                    Here you can see the development of the fertility rate over time. The fertility rate is the average number of live-born children per woman of childbearing age (15-49 years) over a given period.<p>
                     <div class="chart-content"></div>
                     <button
                     type="button"
@@ -244,8 +168,8 @@
                     </button>
                     </div>
                 <div id="gdpChart" class="chart">
-                    <h1>Udviklingen i BNP pr. indbygger</h1>
-                    <p>Her kan du se udviklingen i BNP pr. indbygger over tid. BNP pr. indbygger er den samlede mængde produktion i et land, divideret med populationen.<p>
+                    <h1>Change in GDP per. capita</h1>
+                    <p>Here you can see the development of GDP per capita over time. GDP per capita is the total amount of production in a country divided by the population.<p>
                     <div class="chart-content"></div>
                     <button
                     type="button"
@@ -301,13 +225,6 @@
                 .attr("transform", "rotate(-45)");
 
             //title
-            svg.append("text")
-            .attr("x",0)
-            .attr("y",-5)
-            .attr("text-anchor","left")
-            .style("font-size","16px")
-            .style("font-family","Arial, sans-serif")
-            .text("Gini-koefficient:")
 
             // Y axis
             svg.append("g")
@@ -535,13 +452,6 @@
                 .attr("dx", "-.8em")
                 .attr("dy", ".15em")
                 .attr("transform", "rotate(-45)");
-
-            svg.append("text")
-            .attr("x",0)
-            .attr("y",-5)
-            .attr("text-anchor","left")
-            .style("font-size","16px")
-            .text("Fertilitetsrate:")
 
             // Y axis
             svg.append("g")
@@ -773,12 +683,7 @@
                 .attr("transform", "rotate(-45)");
 
 
-            svg.append("text")
-            .attr("x",0)
-            .attr("y",-5)
-            .attr("text-anchor","left")
-            .style("font-size","16px")
-            .text("BNP pr. indbygger (USD):")
+        
 
             // Y axis
             svg.append("g")

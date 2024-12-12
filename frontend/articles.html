@@ -12,6 +12,7 @@
         body {
             font-family: Arial, sans-serif;
             margin: 0;
+            text-decoration: none;
             padding: 0;
             background-color: #f4f4f9;
         }
@@ -32,6 +33,7 @@
             display: flex;
             justify-content: center;
             gap: 20px;
+            text-decoration: none;
             padding: 20px;
             flex-wrap: wrap;
         }
@@ -50,24 +52,18 @@
         }
         .read-more-button, .back-to-home {
     display: inline-block;
-    background-color: rgba(0, 153, 255, 0.7); /* Light blue with transparency */
-    color: white;
+    margin: 10px 0;
+    color: rgb(44, 44, 44);
     text-decoration: none;
-    padding: 12px 18px; /* Slightly larger padding for a modern look */
-    border-radius: 30px; /* Fully rounded corners */
-    border: 1px solid rgba(0, 153, 255, 0.9); /* Adds a border with a slightly darker shade */
-    font-weight: 600; /* Bold font for readability */
-    font-size: 16px; /* Increased font size */
-    transition: all 0.3s ease; /* Smooth transition for hover effect */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    font-weight: normal;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background-color: #eaeaea;
+    transition: background-color 0.3s ease
 }
 
 .read-more-button:hover, .back-to-home:hover {
-    background-color: rgba(0, 122, 204, 0.8); /* Slightly darker blue with transparency on hover */
-    color: white; /* Ensures text remains white */
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
-    transform: translateY(-2px); /* Subtle lift effect */
-    cursor: pointer; /* Change cursor to pointer */
+    background-color: #c6c6c6;
 }
 
         

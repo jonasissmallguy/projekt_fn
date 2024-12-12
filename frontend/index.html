@@ -6,279 +6,7 @@
     <link rel="stylesheet" href="/components/footer/footer.css">
     <link rel="stylesheet" href="/styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
-    <style>
-        .map-container {
-            width: 60%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            position: relative;
-        }
-        
-        .country {
-            stroke: #fff;
-            stroke-width: 0.5;
-            transition: all 0.2s;
-        }
-        
-        .country:hover {
-            stroke: #000;
-            stroke-width: 1;
-            cursor: pointer;
-        }
 
-        #map {
-        margin-top: 20px;
-        position: relative;
-        box-shadow: 
-            0 0 1px rgba(0, 0, 0, 0.1),      /* Outer shadow */
-            inset 0 0 1px rgba(0, 0, 0, 0.1); /* Inner shadow */
-        padding: 10px;
-        }
-
-        .metric-toggle {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 20px 0;
-        }
-
-        .metric-button {
-            padding: 8px 20px;
-            border: 2px solid #007bff;
-            background: white;
-            color: #007bff;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .metric-button.active {
-            background: #007bff;
-            color: white;
-        }
-
-        .timeline-controls {
-            width: 80%;
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background: #ffffff;
-            border-radius: 8px;
-            text-align: center;
-        }
-
-        .play-button {
-            padding: 8px 20px;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .slider-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        #yearSlider {
-            flex-grow: 1;
-            height: 8px;
-        }
-
-        .year-display {
-            font-size: 20px;
-            font-weight: bold;
-            margin: 10px 0;
-        }
-
-        #country-info {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.2);
-            z-index: 1000;
-            min-width: 300px;
-        }
-
-        .info-heading {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .info-value {
-            margin-bottom: 15px;
-        }
-
-        #view-more-btn {
-            width: 100%;
-            padding: 10px;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        #close-info {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            border: none;
-            background: none;
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        #overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 999;
-        }
-
-        .legend {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 20px 0;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 4px;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 12px;
-        }
-
-        .legend-color {
-            width: 20px;
-            height: 20px;
-            border: 1px solid #ccc;
-        }
-
-        .content-wrapper {
-            max-width: 1200px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-        }
-
-        .left-column h2, .left-column p{
-            padding-right: 40px;
-            margin-bottom: 20px;
-        }
-
-        .right-column h2, .right-column p {
-            padding-top: 0px;
-        }
-
-        .tagline {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 16px;
-        }
-
-        .main-term h1 {
-            font-size: 24px;
-            color: #333;
-            margin: 0 0 16px 0;
-            font-weight: normal;
-        }
-
-        .main-term p {
-            color: #666;
-            line-height: 1.6;
-            margin: 0;
-            font-size: 14px;
-        }
-
-        .term-container {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 24px;
-            gap: 12px;
-        }
-
-        .icon-wrapper {
-            background-color: #ffffff;
-            padding: 8px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .icon-wrapper i {
-            font-size: 16px;
-            color: #666;
-        }
-    
-
-        .term-content h2 {
-            font-size: 18px;
-            color: #333;
-            font-weight: normal;
-        }
-
-        .term-content p {
-            color: #666;
-            line-height: 1.4;
-            font-size: 14px;
-        }
-
-        .icon-image {
-        width: 50px;  
-        height: 30px;
-        object-fit: contain;
-        }   
-
-        .article-image {
-        width: 100%; /* Ensures the image spans the full width of its container */
-        height: 200px; /* Sets a consistent height for the image area */
-        background-color: #f0f0f0; /* Placeholder background color */
-        border-radius: 4px; /* Adds slight rounding for a polished look */
-        margin-bottom: 15px; /* Adds spacing below the image */
-        }
-
-        h2 {
-            font-size: 18px; /* Sets a readable font size */
-            margin: 10px 0; /* Adds vertical spacing around the heading */
-            color: #333; /* Uses a neutral dark color */
-            font-weight: 500; /* Medium font weight for readability */
-            text-align: center; /* Ensures the heading text is centered */
-        }
-
-        .map-container h2 {
-            text-align: left; /* Centers the text within the container */
-            margin-bottom: 20px; /* Adds spacing below the title */
-        }
-
-        .map-container h1 {
-            text-align: center; /* Centers the text within the container */
-            margin-bottom: 20px; /* Adds spacing below the title */
-        }
-        .information {
-            text-align: center;
-        }
-        
-</style>
 </head>
 <body>
     <div id="navbar-container"></div>
@@ -333,11 +61,11 @@
         <div class="content-wrapper">
             <div class="left-column">
                 <div class="main-term">
-                    <h1>Inequality-terms</h1>
+                    <h2>Inequality-terms</h2>
                     <p>We typically meassure economic inequality in a society based on the Gini-coefficient and the Palma rate</p>
                     <br>
                     <br>
-                    <p>The Gini coefficient is often used to measure broadly, where the Palma rate compares the richest with the poorest.</p>
+                    <p>The Gini coefficient is often used to broadly measure various parameters of well-being, such as income or education, while the Palma ratio more specifically compares the income distribution between the richest and the poorest.</p>
                     <p></p>
                 </div>
             </div>
@@ -348,7 +76,7 @@
                         <img src="./images/icons/gini.png" alt="Gini icon" class="icon-image">
                     </div>
                     <div class="term-content">
-                        <h2>Gini</h2>
+                        <h2>Gini-coefficient</h2>
                         <p>The Gini coefficient is a number between 0 and 100 that measures economic inequality in a population.
                             A high Gini coefficient indicates greater inequality, while a lower Gini indicates less inequality in society.</p>
                     </div>
@@ -359,7 +87,7 @@
                         <img src="./images/icons/palma.png" alt="Palma icon" class="icon-image">
                     </div>
                     <div class="term-content">
-                        <h2>Palma</h2>
+                        <h2>Palma rate</h2>
                         <p>The Palma rate is an indicator of inequality that focuses on the ratio between the richest 10% and the poorest 40% of the population. 
                             A high Palma rate indicates high inequality, while a low rate indicates greater equality.
                         </p>
@@ -612,7 +340,7 @@
             <div class="image-placeholder">
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTW4pak6KsHTup5THo_BEQIIBtQwDCZfCgK4A&s">
             </div>
-            <h3>Article 1</h3>
+            <h3>Fertility rate</h3>
             <p>How some countries have a lot more kids</p>
             <br>
             <a href="article1.html" class="read-more-link">Read More</a>
@@ -621,7 +349,7 @@
             <div class="image-placeholder">
             <img src="https://piopio.dk/sites/default/files/ulighed_balder.jpg" alt="Fattigdom billede">
         </div>
-            <h3>Article 2</h3>
+            <h3>Poverty</h3>
             <p>The Economic Reality of the World's Poorest</p>
             <br>
             <a href="article2.html" class="read-more-link">Read More</a>
@@ -630,7 +358,7 @@
             <div class="image-placeholder">
                 <img src="https://media.istockphoto.com/id/521606332/vector/the-caricature-of-the-global-financial-crisis.jpg?s=612x612&w=0&k=20&c=eQCObPLgH3ofAmPyiV-HX0XZQQLTNufAR4GW1qcFcjM=" alt="Kriser billede">
             </div>
-            <h3>Article 3</h3>
+            <h3>Economics</h3>
             <p>Economic Crises Impact on Inequality Since 1990</p>
             <a href="article3.html" class="read-more-link">Read More</a>
         </div>
